@@ -82,7 +82,7 @@ Not using Tailwind yet? Import just the tokens — `svelte-aria/styles/theme.css
 | `variant` | `'primary' \| 'secondary' \| 'outline' \| 'ghost' \| 'destructive'`   | `'primary'` |
 | `size`    | `'sm' \| 'md' \| 'lg'`                                                 | `'md'`      |
 | `disabled`| `boolean`                                                             | `false`     |
-| `loading` | `boolean` — shows a spinner and blocks interaction                     | `false`     |
+| `loading` | `boolean` — replaces the label with a spinner (React Aria's isPending) | `false`     |
 | `onPress` | `(event: PressEvent) => void` — unified mouse/touch/keyboard press      | —           |
 | `class`   | `string` — merged with Tailwind conflict resolution                    | —           |
 

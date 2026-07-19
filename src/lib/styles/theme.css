@@ -173,6 +173,19 @@
 	--sa-radius: 8px;
 	--sa-radius-sm: 6px;
 	--sa-radius-lg: 10px;
+
+	/* Spacing scale (4px step), matching React Aria */
+	--sa-spacing: 0.25rem;
+	--sa-spacing-1: calc(1 * var(--sa-spacing));
+	--sa-spacing-2: calc(2 * var(--sa-spacing));
+	--sa-spacing-3: calc(3 * var(--sa-spacing));
+	--sa-spacing-4: calc(4 * var(--sa-spacing));
+	--sa-spacing-5: calc(5 * var(--sa-spacing));
+	--sa-spacing-6: calc(6 * var(--sa-spacing));
+	--sa-spacing-7: calc(7 * var(--sa-spacing));
+	--sa-spacing-8: calc(8 * var(--sa-spacing));
+	--sa-spacing-9: calc(9 * var(--sa-spacing));
+	--sa-spacing-10: calc(10 * var(--sa-spacing));
 }
 
 /* Windows high-contrast mode */

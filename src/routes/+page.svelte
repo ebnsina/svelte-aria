@@ -1,193 +1,86 @@
 <script lang="ts">
-	import { Button, Checkbox, TextField } from '$lib/index.js';
-	import { Search, Mail, FolderGit2, Sparkles } from '@lucide/svelte';
+	import { Button } from '$lib/index.js';
+	import { ArrowRight, Keyboard, Palette, Accessibility, Feather } from '@lucide/svelte';
+	import CodeBlock from '$lib/site/CodeBlock.svelte';
 
-	// --- Button demo state ---
-	let clickCount = $state(0);
-	let loading = $state(false);
+	const install = `npm install svelte-aria`;
+	const usage = `<script>
+  import { Button } from 'svelte-aria';
+<\/script>
 
-	function simulateAsync() {
-		loading = true;
-		// Fake network latency; no timers in the lib itself.
-		setTimeout(() => (loading = false), 1200);
-	}
+<Button variant="primary" onPress={() => save()}>
+  Save changes
+</Button>`;
 
-	// --- Checkbox demo state ---
-	let subscribed = $state(true);
-	const options = ['Email', 'SMS', 'Push'] as const;
-	let selected = $state<Record<string, boolean>>({ Email: true, SMS: false, Push: false });
-	const allChecked = $derived(options.every((o) => selected[o]));
-	const someChecked = $derived(options.some((o) => selected[o]));
-
-	function toggleAll(next: boolean) {
-		for (const o of options) selected[o] = next;
-	}
-
-	// --- TextField demo state ---
-	let email = $state('');
-	const emailError = $derived(
-		email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-			? 'Please enter a valid email address.'
-			: undefined
-	);
+	const features = [
+		{
+			icon: Accessibility,
+			title: 'React Aria–level behaviour',
+			body: 'Interaction models and ARIA wiring modelled on Adobe React Aria — the edge cases handled.'
+		},
+		{
+			icon: Keyboard,
+			title: 'Mouse, touch & keyboard',
+			body: 'A single press abstraction unifies pointer and keyboard, with correct focus-visible rings.'
+		},
+		{
+			icon: Palette,
+			title: 'React Aria palette',
+			body: 'An OKLCH, re-tintable token system with automatic dark mode and high-contrast support.'
+		},
+		{
+			icon: Feather,
+			title: 'Svelte-native DX',
+			body: 'Built on runes, attachments and snippets — composable behaviour, no prop-spreading ceremony.'
+		}
+	];
 </script>
 
-<svelte:head>
-	<title>svelte-aria · accessible Svelte components</title>
-	<meta
-		name="description"
-		content="React Aria–level behaviour, Svelte-level DX. Accessible, headless-first Svelte 5 components."
-	/>
-</svelte:head>
-
-<!-- Hero -->
-<header class="border-b border-sa-border bg-sa-field">
-	<div class="mx-auto max-w-4xl px-6 py-16">
-		<div
-			class="mb-4 inline-flex items-center gap-2 rounded-full bg-sa-subtle px-3 py-1 text-xs font-medium text-sa-accent"
-		>
-			<Sparkles class="size-3.5" />
-			Svelte 5 · runes + attachments
-		</div>
-		<h1 class="text-4xl font-bold tracking-tight text-sa-fg">svelte-aria</h1>
-		<p class="mt-3 max-w-xl text-lg text-sa-fg-muted">
-			React Aria–level behaviour, Svelte-level DX. Accessible components built on composable
-			interaction primitives — keyboard, pointer and touch, done right.
-		</p>
-		<div class="mt-6 flex gap-3">
-			<Button onPress={() => (location.href = 'https://github.com/ebnsina/svelte-aria')}>
-				<FolderGit2 class="size-4" />
-				GitHub
-			</Button>
-			<Button variant="outline" onPress={() => (location.href = '#components')}>
-				Browse components
-			</Button>
-		</div>
+<div class="mx-auto w-full max-w-4xl px-4 py-16 lg:px-8">
+	<div
+		class="mb-4 inline-flex items-center gap-2 rounded-full bg-sa-subtle px-3 py-1 text-xs font-medium text-sa-accent"
+	>
+		Svelte 5 · runes + attachments
 	</div>
-</header>
+	<h1 class="text-5xl font-bold tracking-tight text-sa-fg">svelte-aria</h1>
+	<p class="mt-4 max-w-2xl text-xl text-sa-fg-muted">
+		React Aria–level behaviour, Svelte-level DX. Accessible, headless-first components built on
+		composable interaction primitives.
+	</p>
 
-<main id="components" class="mx-auto max-w-4xl space-y-16 px-6 py-16">
-	<!-- Button -->
-	<section>
-		<h2 class="text-2xl font-semibold text-sa-fg">Button</h2>
-		<p class="mt-1 mb-6 text-sa-fg-muted">
-			Unified press handling across mouse, touch and keyboard. Try pressing
-			<kbd class="rounded border border-sa-border bg-sa-subtle px-1.5 text-xs">Enter</kbd> or
-			<kbd class="rounded border border-sa-border bg-sa-subtle px-1.5 text-xs">Space</kbd> while focused.
-		</p>
+	<div class="mt-8 flex flex-wrap gap-3">
+		<Button size="lg" onPress={() => (location.href = '/button')}>
+			Browse components
+			<ArrowRight class="size-4" />
+		</Button>
+		<Button size="lg" variant="outline" onPress={() => (location.href = '/interactions')}>
+			Interactions
+		</Button>
+	</div>
 
-		<div class="space-y-6 rounded-xl border border-sa-border bg-sa-field p-6">
-			<div class="flex flex-wrap items-center gap-3">
-				<Button variant="primary">Primary</Button>
-				<Button variant="secondary">Secondary</Button>
-				<Button variant="outline">Outline</Button>
-				<Button variant="ghost">Ghost</Button>
-				<Button variant="destructive">Destructive</Button>
-			</div>
+	<div class="mt-10 max-w-xl">
+		<CodeBlock code={install} lang="bash" filename="Terminal" />
+	</div>
 
-			<div class="flex flex-wrap items-center gap-3">
-				<Button size="sm">Small</Button>
-				<Button size="md">Medium</Button>
-				<Button size="lg">Large</Button>
-				<Button disabled>Disabled</Button>
-			</div>
-
-			<div class="flex flex-wrap items-center gap-3 border-t border-sa-border pt-6">
-				<Button onPress={() => clickCount++}>Pressed {clickCount} times</Button>
-				<Button variant="secondary" {loading} onPress={simulateAsync}>
-					{loading ? 'Saving…' : 'Save (async)'}
-				</Button>
-			</div>
-		</div>
-	</section>
-
-	<!-- Checkbox -->
-	<section>
-		<h2 class="text-2xl font-semibold text-sa-fg">Checkbox</h2>
-		<p class="mt-1 mb-6 text-sa-fg-muted">
-			Native input under the hood — real form submission and screen-reader support — with
-			indeterminate ("select all") state.
-		</p>
-
-		<div class="grid gap-6 rounded-xl border border-sa-border bg-sa-field p-6 sm:grid-cols-2">
-			<div class="space-y-3">
-				<Checkbox bind:checked={subscribed}>Subscribe to the newsletter</Checkbox>
-				<Checkbox defaultChecked>Remember me</Checkbox>
-				<Checkbox disabled>Disabled option</Checkbox>
-				<Checkbox disabled defaultChecked>Disabled + checked</Checkbox>
-			</div>
-
-			<div class="space-y-3">
-				<Checkbox
-					indeterminate={someChecked && !allChecked}
-					checked={allChecked}
-					onChange={toggleAll}
+	<div class="mt-16 grid gap-4 sm:grid-cols-2">
+		{#each features as feature (feature.title)}
+			{@const Icon = feature.icon}
+			<div
+				class="group rounded-sa-lg border border-sa-border p-5 transition-colors hover:border-sa-border-hover hover:bg-[var(--sa-highlight-hover)]"
+			>
+				<div
+					class="mb-3 grid size-10 place-items-center rounded-sa bg-sa-subtle text-sa-accent transition-transform duration-200 group-hover:scale-105"
 				>
-					<span class="font-medium">Notification channels</span>
-				</Checkbox>
-				<div class="ml-6 space-y-2 border-l border-sa-border pl-4">
-					{#each options as option (option)}
-						<Checkbox bind:checked={selected[option]}>{option}</Checkbox>
-					{/each}
+					<Icon class="size-5" />
 				</div>
+				<h3 class="font-semibold text-sa-fg">{feature.title}</h3>
+				<p class="mt-1 text-sm text-sa-fg-muted">{feature.body}</p>
 			</div>
-		</div>
-	</section>
-
-	<!-- TextField -->
-	<section>
-		<h2 class="text-2xl font-semibold text-sa-fg">TextField</h2>
-		<p class="mt-1 mb-6 text-sa-fg-muted">
-			Label, description and error messages wired with the right ARIA relationships
-			(<code class="text-sm">aria-describedby</code>, <code class="text-sm">aria-invalid</code>,
-			<code class="text-sm">role="alert"</code>).
-		</p>
-
-		<div class="grid gap-6 rounded-xl border border-sa-border bg-sa-field p-6 sm:grid-cols-2">
-			<TextField
-				label="Search"
-				placeholder="Search components…"
-				description="Filter by component name."
-			>
-				{#snippet prefix()}
-					<Search class="size-4" />
-				{/snippet}
-			</TextField>
-
-			<TextField
-				label="Email"
-				type="email"
-				required
-				placeholder="you@example.com"
-				bind:value={email}
-				errorMessage={emailError}
-			>
-				{#snippet prefix()}
-					<Mail class="size-4" />
-				{/snippet}
-			</TextField>
-
-			<TextField label="Password" type="password" placeholder="••••••••" />
-			<TextField label="Disabled" placeholder="Can't type here" disabled />
-		</div>
-	</section>
-
-	<!-- Error-handling pointer -->
-	<section class="rounded-xl border border-sa-border bg-sa-field p-6">
-		<h2 class="text-lg font-semibold text-sa-fg">Graceful errors</h2>
-		<p class="mt-1 text-sa-fg-muted">
-			Unknown routes and unexpected failures render a friendly page instead of a stack trace.
-		</p>
-		<div class="mt-4">
-			<Button variant="outline" onPress={() => (location.href = '/this-route-does-not-exist')}>
-				Trigger a 404
-			</Button>
-		</div>
-	</section>
-</main>
-
-<footer class="border-t border-sa-border bg-sa-field">
-	<div class="mx-auto max-w-4xl px-6 py-8 text-sm text-sa-fg-muted">
-		Built with Svelte 5 · Tailwind v4 · lucide icons
+		{/each}
 	</div>
-</footer>
+
+	<div class="mt-16">
+		<h2 class="mb-4 text-xl font-semibold tracking-tight text-sa-fg">Quick start</h2>
+		<CodeBlock code={usage} filename="App.svelte" />
+	</div>
+</div>

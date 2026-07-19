@@ -13,6 +13,7 @@
 export { default as Button } from './components/Button.svelte';
 export { default as Checkbox } from './components/Checkbox.svelte';
 export { default as TextField } from './components/TextField.svelte';
+export { default as Spinner } from './components/Spinner.svelte';
 
 // Primitives (attachments)
 export { createPress, type PressEvent, type PressOptions } from './attachments/press.svelte.js';

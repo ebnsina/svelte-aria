@@ -13,6 +13,7 @@
  */
 
 @import './theme.css';
+@import './components.css';
 
 @theme inline {
 	--color-sa-bg: var(--sa-background-color);

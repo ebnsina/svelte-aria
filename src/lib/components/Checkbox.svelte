@@ -1,22 +1,22 @@
 <!--
-  Checkbox — accessible checkbox with indeterminate support.
+  Checkbox — accessible checkbox with React Aria's styling.
 
-  Uses a real, visually-hidden <input type="checkbox"> so it works with native
-  form submission, screen readers, and browser autofill for free. The visible
-  box is decorative (aria-hidden) and driven by toggle state. Focus ring follows
-  keyboard-only focus via the focusVisible primitive.
+  A real, visually-hidden <input type="checkbox"> drives state (native form
+  submission + screen-reader support). The visible `.sa-indicator` and its
+  animated SVG checkmark are ported 1:1 from React Aria: the check draws in via
+  stroke-dashoffset, and the indeterminate state swaps to a filled rect.
+  Interaction state flows through data-* attributes on the indicator.
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { Check, Minus } from '@lucide/svelte';
 	import { createFocusVisible } from '../attachments/focus.svelte.js';
+	import { createPress } from '../attachments/press.svelte.js';
 	import { useId } from '../utils/id.js';
 	import { cn } from '../utils/cn.js';
 
 	interface CheckboxProps {
 		checked?: boolean;
 		defaultChecked?: boolean;
-		/** Visually the "mixed" state; also sets the native `indeterminate` flag. */
 		indeterminate?: boolean;
 		disabled?: boolean;
 		readOnly?: boolean;
@@ -44,10 +44,6 @@
 
 	const id = useId('checkbox');
 
-	// Controlled when a `checked` prop is provided (either one-way or via
-	// `bind:checked`); otherwise uncontrolled with internal state. See the
-	// exported `createToggleState` primitive for the standalone state machine.
-	// eslint-disable-next-line svelte/valid-compile -- defaultChecked is initial-only by design
 	// svelte-ignore state_referenced_locally
 	let internal = $state(defaultChecked ?? false);
 	const isControlled = $derived(checked !== undefined);
@@ -65,9 +61,14 @@
 			return disabled;
 		}
 	});
+	// Press is visual-only here (drives the indicator's press-scale); the native
+	// input handles the actual toggle.
+	const press = createPress({
+		get disabled() {
+			return disabled;
+		}
+	});
 
-	// Keep the native input's indeterminate flag in sync — it can't be set via
-	// an attribute, only the DOM property.
 	function syncIndeterminate(node: HTMLInputElement) {
 		$effect(() => {
 			node.indeterminate = indeterminate;
@@ -77,7 +78,6 @@
 	function onInputChange(e: Event) {
 		const target = e.currentTarget as HTMLInputElement;
 		if (readOnly) {
-			// Revert the native toggle; readOnly must not mutate state.
 			target.checked = isChecked;
 			return;
 		}
@@ -85,14 +85,7 @@
 	}
 </script>
 
-<label
-	for={id}
-	class={cn(
-		'group inline-flex cursor-pointer items-center gap-2 text-sm text-sa-fg',
-		disabled && 'cursor-not-allowed opacity-50',
-		className
-	)}
->
+<label for={id} class={cn('sa-Checkbox', className)} data-disabled={disabled || undefined}>
 	<input
 		{id}
 		type="checkbox"
@@ -110,19 +103,20 @@
 
 	<span
 		aria-hidden="true"
-		data-checked={isChecked || undefined}
+		class="sa-indicator"
+		data-selected={isChecked || undefined}
 		data-indeterminate={indeterminate || undefined}
-		class={cn(
-			'flex size-5 shrink-0 items-center justify-center rounded-sa-sm border border-sa-border bg-sa-field text-sa-accent-fg transition-colors',
-			(isChecked || indeterminate) && 'border-sa-accent bg-sa-accent',
-			focus.focusVisible && 'ring-2 ring-sa-focus ring-offset-2 ring-offset-sa-bg'
-		)}
+		data-disabled={disabled || undefined}
+		data-focus-visible={focus.focusVisible || undefined}
+		{@attach press.attachment}
 	>
-		{#if indeterminate}
-			<Minus class="size-3.5" strokeWidth={3} />
-		{:else if isChecked}
-			<Check class="size-3.5" strokeWidth={3} />
-		{/if}
+		<svg viewBox="0 0 18 18">
+			{#if indeterminate}
+				<rect x="1" y="7.5" width="16" height="3" />
+			{:else}
+				<polyline points="2 9 7 14 16 4" />
+			{/if}
+		</svg>
 	</span>
 
 	{#if children}

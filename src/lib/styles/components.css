@@ -1,0 +1,357 @@
+/**
+ * Component styling ported 1:1 from Adobe's React Aria Components starter
+ * (utilities.css `.button-base` / `.indicator` / `.inset`, plus Button.css,
+ * Checkbox.css, TextField.css). Reproduces React Aria's tactile treatment:
+ * layered box-shadows (border + specular highlight + inner gradient), a light
+ * tinted primary, `outline` focus rings, and press scaling. Namespaced --sa-*.
+ *
+ * Reference: https://react-aria.adobe.com/ (react-spectrum/starters/docs)
+ */
+
+@layer components {
+	/* ============================ Button ============================ */
+	.sa-Button {
+		--sa-button-color: var(--sa-tint);
+		--sa-button-background: oklch(from var(--sa-button-color) var(--sa-l-100) var(--sa-c-100) h);
+		--sa-button-gradient: oklch(from var(--sa-button-color) var(--sa-l-200) var(--sa-c-200) h);
+		--sa-button-border: oklch(from var(--sa-button-color) var(--sa-l-300) var(--sa-c-300) h);
+		--sa-button-highlight: rgb(255 255 255 / 0.8);
+		--sa-button-shadow: oklch(from var(--sa-button-color) var(--sa-l-400) var(--sa-c-400) h);
+		--sa-button-border-size: 1px;
+		--sa-button-text: oklch(from var(--sa-button-color) var(--sa-l-1400) var(--sa-c-1400) h);
+		--sa-button-gradient-size: 8px;
+
+		appearance: none;
+		border: none;
+		margin: 0;
+		border-radius: var(--sa-radius);
+		font-family: inherit;
+		font-weight: 500;
+		font-size: var(--sa-font-size);
+		height: var(--sa-spacing-8);
+		padding: 0 var(--sa-spacing-3);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--sa-spacing-1);
+		text-decoration: none;
+		cursor: pointer;
+		user-select: none;
+		-webkit-tap-highlight-color: transparent;
+
+		background: var(--sa-button-background);
+		color: var(--sa-button-text);
+		box-shadow:
+			inset 0 -1px 0 var(--sa-button-shadow),
+			inset 0 0 0 var(--sa-button-border-size) var(--sa-button-border),
+			inset 0px calc(var(--sa-button-border-size) + 1px) 0px var(--sa-button-highlight),
+			inset 0px calc(-1 * var(--sa-button-gradient-size)) var(--sa-button-gradient-size) -2px
+				var(--sa-button-gradient);
+		outline: none;
+		transition-property: background, color, scale, box-shadow;
+		transition-duration: 200ms;
+		will-change: scale;
+		forced-color-adjust: none;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.sa-Button {
+			--sa-button-shadow: oklch(from var(--sa-button-color) var(--sa-l-200) var(--sa-c-200) h);
+			--sa-button-highlight: rgb(255 255 255 / 0.15);
+			box-shadow:
+				inset 0 var(--sa-button-border-size) 0 var(--sa-button-highlight),
+				inset 0 calc(-1 * var(--sa-button-border-size)) 0 var(--sa-button-shadow),
+				inset 0 0 0 var(--sa-button-border-size) var(--sa-button-border),
+				inset 0 var(--sa-button-gradient-size) var(--sa-button-gradient-size) -2px
+					var(--sa-button-gradient);
+		}
+	}
+
+	.sa-Button > svg {
+		width: calc(var(--sa-spacing) * 4.5);
+		height: calc(var(--sa-spacing) * 4.5);
+	}
+
+	/* Icon-only buttons become circular */
+	.sa-Button:has(> svg:only-child) {
+		width: var(--sa-spacing-8);
+		flex-shrink: 0;
+		padding: 0;
+		border-radius: 9999px;
+	}
+
+	.sa-Button[data-pressed] {
+		scale: 0.95;
+		--sa-button-background: oklch(from var(--sa-button-color) var(--sa-l-200) var(--sa-c-200) h);
+	}
+
+	.sa-Button[data-focus-visible] {
+		outline: 2px solid var(--sa-focus-ring-color);
+		outline-offset: 2px;
+	}
+
+	/* Variants */
+	.sa-Button[data-variant='secondary'] {
+		--sa-button-color: var(--sa-gray);
+	}
+	.sa-Button[data-variant='destructive'] {
+		--sa-button-color: var(--sa-red);
+	}
+	.sa-Button[data-variant='outline'] {
+		--sa-button-background: none;
+		--sa-button-text: var(--sa-text-color);
+		box-shadow: inset 0 0 0 1px var(--sa-border-color);
+	}
+	.sa-Button[data-variant='outline'][data-hovered] {
+		box-shadow: inset 0 0 0 1px var(--sa-border-color-hover);
+		background: var(--sa-highlight-hover);
+	}
+	.sa-Button[data-variant='ghost'] {
+		--sa-button-background: none;
+		--sa-button-text: var(--sa-text-color);
+		box-shadow: 0 0 0 1px transparent;
+	}
+	.sa-Button[data-variant='ghost'][data-hovered],
+	.sa-Button[data-variant='ghost'][data-pressed] {
+		--sa-button-background: var(--sa-tint-200);
+		--sa-button-text: var(--sa-tint-1400);
+		box-shadow: 0 0 0 1px var(--sa-tint-200);
+	}
+
+	.sa-Button[data-disabled] {
+		box-shadow: none;
+		--sa-button-background: var(--sa-border-color-disabled);
+		--sa-button-text: var(--sa-text-color-disabled);
+		cursor: not-allowed;
+	}
+	.sa-Button[data-variant='outline'][data-disabled],
+	.sa-Button[data-variant='ghost'][data-disabled] {
+		--sa-button-background: none;
+	}
+
+	/* Sizes */
+	.sa-Button[data-size='sm'] {
+		height: var(--sa-spacing-7);
+		padding: 0 var(--sa-spacing-2);
+		font-size: var(--sa-font-size-sm);
+	}
+	.sa-Button[data-size='lg'] {
+		height: var(--sa-spacing-10);
+		padding: 0 var(--sa-spacing-4);
+		font-size: var(--sa-font-size-lg);
+	}
+
+	/* ==================== Checkbox indicator ==================== */
+	.sa-Checkbox {
+		--sa-checkmark-color: var(--sa-highlight-foreground);
+		display: inline-flex;
+		position: relative;
+		align-items: center;
+		gap: var(--sa-spacing-2);
+		font-size: var(--sa-font-size);
+		color: var(--sa-text-color);
+		cursor: pointer;
+		forced-color-adjust: none;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	.sa-indicator {
+		--sa-indicator-color: var(--sa-gray);
+		--sa-indicator-background: oklch(
+			from var(--sa-indicator-color) var(--sa-l-100) var(--sa-c-100) h
+		);
+		--sa-indicator-border: oklch(from var(--sa-indicator-color) var(--sa-l-800) var(--sa-c-800) h);
+
+		width: calc(var(--sa-spacing) * 4.5);
+		height: calc(var(--sa-spacing) * 4.5);
+		box-sizing: border-box;
+		border-radius: var(--sa-radius-sm);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		background: var(--sa-indicator-background);
+		box-shadow:
+			inset 0 0 0 1px var(--sa-indicator-border),
+			inset 0 2px 0 white,
+			inset 0 -4px 2px oklch(from var(--sa-indicator-color) 30% c h / 0.08);
+		transition: all 200ms;
+		will-change: scale;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.sa-indicator {
+			box-shadow:
+				inset 0 1px 0 rgb(255 255 255 / 0.4),
+				inset 0 4px 2px rgb(255 255 255 / 0.1),
+				inset 0 0 0 1px var(--sa-indicator-border);
+		}
+	}
+
+	.sa-indicator[data-pressed] {
+		scale: 0.9;
+	}
+
+	.sa-indicator[data-selected],
+	.sa-indicator[data-indeterminate] {
+		--sa-indicator-color: var(--sa-highlight-background);
+		--sa-indicator-background: var(--sa-indicator-color);
+		--sa-indicator-highlight: rgb(255 255 255 / 0.3);
+		--sa-indicator-shadow: oklch(from var(--sa-indicator-color) 45% c h);
+		--sa-indicator-border: var(--sa-indicator-background);
+		box-shadow:
+			inset 0 -1px 0 var(--sa-indicator-shadow),
+			inset 0 0 0 1px var(--sa-indicator-border),
+			inset 0 2px 0 var(--sa-indicator-highlight);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.sa-indicator[data-selected],
+		.sa-indicator[data-indeterminate] {
+			--sa-indicator-highlight: rgb(255 255 255 / 0.5);
+			box-shadow:
+				inset 0 1px 0 var(--sa-indicator-highlight),
+				inset 0 4px 2px rgb(255 255 255 / 0.12),
+				inset 0 0 0 1px var(--sa-indicator-border);
+		}
+	}
+
+	.sa-indicator[data-invalid] {
+		--sa-indicator-color: var(--sa-invalid-color);
+	}
+
+	.sa-indicator[data-focus-visible] {
+		outline: 2px solid var(--sa-focus-ring-color);
+		outline-offset: 2px;
+	}
+
+	.sa-indicator[data-disabled] {
+		background: var(--sa-field-background);
+		box-shadow: inset 0 0 0 1px var(--sa-border-color-disabled);
+	}
+
+	/* Animated checkmark (draws in via stroke-dashoffset) */
+	.sa-Checkbox svg {
+		width: calc(100% - var(--sa-spacing-2));
+		height: calc(100% - var(--sa-spacing-2));
+		fill: none;
+		stroke: var(--sa-checkmark-color);
+		stroke-width: 3px;
+		stroke-dasharray: 22px;
+		stroke-dashoffset: 66;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		transition: all 200ms;
+	}
+	.sa-indicator[data-selected] svg,
+	.sa-indicator[data-indeterminate] svg {
+		stroke-dashoffset: 44;
+	}
+	.sa-indicator[data-indeterminate] svg {
+		stroke: none;
+		fill: var(--sa-checkmark-color);
+	}
+
+	.sa-Checkbox[data-disabled] {
+		color: var(--sa-text-color-disabled);
+		--sa-checkmark-color: var(--sa-text-color-disabled);
+		cursor: not-allowed;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.sa-Checkbox svg,
+		.sa-indicator {
+			transition: none;
+		}
+	}
+
+	/* ==================== TextField (inset) ==================== */
+	.sa-Label {
+		display: block;
+		font-size: var(--sa-font-size);
+		font-weight: 500;
+		color: var(--sa-text-color);
+		margin-bottom: var(--sa-spacing-2);
+	}
+
+	.sa-Field {
+		--sa-inset-background: var(--sa-field-background);
+		--sa-inset-border: var(--sa-border-color);
+		--sa-inset-border-size: 1px;
+		--sa-inset-shadow-offset: 2px;
+		--sa-inset-shadow-size: 4px;
+
+		display: flex;
+		align-items: center;
+		gap: var(--sa-spacing-2);
+		padding: 0 var(--sa-spacing-3);
+		border-radius: var(--sa-radius);
+		background: var(--sa-inset-background);
+		box-shadow:
+			inset 0 0 0 var(--sa-inset-border-size) var(--sa-inset-border),
+			inset 0 var(--sa-inset-shadow-offset) var(--sa-inset-shadow-size) rgb(0 0 0 / 0.15),
+			0 1px 0 var(--sa-gray-50);
+		transition: box-shadow 200ms;
+		forced-color-adjust: none;
+		color: var(--sa-text-color-placeholder);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		.sa-Field {
+			--sa-inset-border: var(--sa-gray-200);
+			--sa-inset-shadow-size: 6px;
+			box-shadow:
+				inset 0 calc(-1 * var(--sa-inset-border-size)) 0 var(--sa-gray-400),
+				inset 0 0 0 var(--sa-inset-border-size) var(--sa-inset-border),
+				inset 0 1px var(--sa-inset-shadow-size) rgb(0 0 0);
+		}
+	}
+
+	.sa-Field[data-hovered] {
+		--sa-inset-border: var(--sa-border-color-hover);
+	}
+	.sa-Field[data-focus-visible] {
+		outline: 2px solid var(--sa-focus-ring-color);
+		outline-offset: -1px;
+	}
+	.sa-Field[data-invalid] {
+		--sa-inset-border: var(--sa-invalid-color);
+	}
+	.sa-Field[data-disabled] {
+		box-shadow: inset 0 0 0 1px var(--sa-border-color-disabled);
+		cursor: not-allowed;
+	}
+
+	.sa-Input {
+		flex: 1;
+		width: 100%;
+		min-height: var(--sa-spacing-8);
+		padding: 0;
+		margin: 0;
+		border: none;
+		background: transparent;
+		font-family: inherit;
+		font-size: var(--sa-font-size);
+		color: var(--sa-field-text-color);
+		outline: none;
+		-webkit-tap-highlight-color: transparent;
+	}
+	.sa-Input::placeholder {
+		color: var(--sa-text-color-placeholder);
+	}
+	.sa-Input:disabled {
+		color: var(--sa-text-color-disabled);
+		cursor: not-allowed;
+	}
+
+	.sa-Description {
+		font-size: var(--sa-font-size-sm);
+		color: var(--sa-text-color-placeholder);
+		margin-top: var(--sa-spacing-1);
+	}
+	.sa-FieldError {
+		font-size: var(--sa-font-size-sm);
+		color: var(--sa-invalid-color);
+		margin-top: var(--sa-spacing-1);
+	}
+}
