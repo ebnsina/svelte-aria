@@ -84,7 +84,7 @@
 				<Checkbox bind:checked={loading}>loading</Checkbox>
 			{/snippet}
 
-			<CodeBlock {code} filename="Button.svelte" />
+			<CodeBlock {code} filename="Button.svelte" flush />
 		</DemoCard>
 	</Section>
 

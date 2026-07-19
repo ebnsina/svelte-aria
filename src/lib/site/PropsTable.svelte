@@ -11,10 +11,10 @@
 	let { rows }: Props = $props();
 </script>
 
-<div class="overflow-x-auto rounded-sa-lg border border-sa-border">
+<div class="overflow-x-auto rounded-sa-lg bg-sa-field shadow-sa-sm">
 	<table class="w-full border-collapse text-left text-sm">
 		<thead>
-			<tr class="border-b border-sa-border text-xs tracking-wide text-sa-fg-muted uppercase">
+			<tr class="border-b border-sa-hairline text-xs tracking-wide text-sa-fg-muted uppercase">
 				<th class="px-4 py-3 font-medium">Prop</th>
 				<th class="px-4 py-3 font-medium">Type</th>
 				<th class="px-4 py-3 font-medium">Default</th>
@@ -23,7 +23,7 @@
 		</thead>
 		<tbody>
 			{#each rows as row (row.name)}
-				<tr class="border-b border-sa-border last:border-0 transition-colors hover:bg-[var(--sa-highlight-hover)]">
+				<tr class="border-b border-sa-hairline last:border-0 transition-colors hover:bg-[var(--sa-highlight-hover)]">
 					<td class="px-4 py-3 align-top">
 						<code class="font-mono text-sa-fg">{row.name}</code>
 					</td>

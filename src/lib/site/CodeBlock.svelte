@@ -7,8 +7,10 @@
 		lang?: string;
 		/** Optional filename/label shown in the header tab. */
 		filename?: string;
+		/** Flush: drop the card chrome (for embedding inside another surface). */
+		flush?: boolean;
 	}
-	let { code, lang = 'svelte', filename }: Props = $props();
+	let { code, lang = 'svelte', filename, flush = false }: Props = $props();
 
 	const html = $derived(highlight(code.trim()));
 
@@ -27,8 +29,12 @@
 	}
 </script>
 
-<div class="overflow-hidden rounded-sa-lg border border-sa-border bg-sa-field">
-	<div class="flex items-center border-b border-sa-border px-3">
+<div
+	class={flush
+		? 'overflow-hidden'
+		: 'overflow-hidden rounded-sa-lg bg-sa-field shadow-sa-sm'}
+>
+	<div class="flex items-center border-b border-sa-hairline px-3">
 		<span class="py-2 text-xs text-sa-fg-muted">{filename ?? lang}</span>
 		<button
 			type="button"

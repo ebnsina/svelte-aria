@@ -73,7 +73,7 @@
 				<Checkbox bind:checked={disabled}>disabled</Checkbox>
 			{/snippet}
 
-			<CodeBlock {code} filename="TextField.svelte" />
+			<CodeBlock {code} filename="TextField.svelte" flush />
 		</DemoCard>
 	</Section>
 

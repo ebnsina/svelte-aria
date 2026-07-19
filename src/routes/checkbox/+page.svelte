@@ -64,7 +64,7 @@
 				<Checkbox bind:checked={disabled}>disabled</Checkbox>
 			{/snippet}
 
-			<CodeBlock {code} filename="Checkbox.svelte" />
+			<CodeBlock {code} filename="Checkbox.svelte" flush />
 		</DemoCard>
 	</Section>
 

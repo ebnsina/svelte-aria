@@ -25,7 +25,7 @@
 	<div class="mx-auto flex max-w-[100rem]">
 		<!-- Desktop sidebar -->
 		<aside
-			class="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 overflow-y-auto border-r border-sa-border px-4 lg:block"
+			class="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 overflow-y-auto border-r border-sa-hairline px-4 lg:block"
 		>
 			<Sidebar />
 		</aside>
@@ -53,7 +53,7 @@
 		></button>
 		<div
 			transition:fly={{ x: -280, duration: 200 }}
-			class="absolute inset-y-0 left-0 w-72 overflow-y-auto border-r border-sa-border bg-sa-bg px-4 pt-4"
+			class="absolute inset-y-0 left-0 w-72 overflow-y-auto border-r border-sa-hairline bg-sa-bg px-4 pt-4"
 		>
 			<Sidebar onnavigate={() => (menuOpen = false)} />
 		</div>

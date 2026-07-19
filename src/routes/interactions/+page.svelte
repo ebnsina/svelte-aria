@@ -65,7 +65,7 @@
 				</div>
 			{/snippet}
 
-			<CodeBlock code={example} filename="Pressable.svelte" />
+			<CodeBlock code={example} filename="Pressable.svelte" flush />
 		</DemoCard>
 	</Section>
 

@@ -36,6 +36,7 @@
 		justify-content: center;
 		gap: var(--sa-spacing-1);
 		text-decoration: none;
+		white-space: nowrap;
 		cursor: pointer;
 		user-select: none;
 		-webkit-tap-highlight-color: transparent;
@@ -73,8 +74,9 @@
 		height: calc(var(--sa-spacing) * 4.5);
 	}
 
-	/* Icon-only buttons become circular */
-	.sa-Button:has(> svg:only-child) {
+	/* Explicitly icon-only buttons become circular (opt-in via data-icon-only,
+	   so a normal text+icon button is never misdetected as icon-only). */
+	.sa-Button[data-icon-only] {
 		width: var(--sa-spacing-8);
 		flex-shrink: 0;
 		padding: 0;

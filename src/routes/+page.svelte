@@ -66,7 +66,7 @@
 		{#each features as feature (feature.title)}
 			{@const Icon = feature.icon}
 			<div
-				class="group rounded-sa-lg border border-sa-border p-5 transition-colors hover:border-sa-border-hover hover:bg-[var(--sa-highlight-hover)]"
+				class="group rounded-sa-lg bg-sa-field p-5 shadow-sa-sm transition-shadow duration-200 hover:shadow-sa-md"
 			>
 				<div
 					class="mb-3 grid size-10 place-items-center rounded-sa bg-sa-subtle text-sa-accent transition-transform duration-200 group-hover:scale-105"

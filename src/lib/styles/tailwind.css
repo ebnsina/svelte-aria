@@ -35,4 +35,9 @@
 	--radius-sa-sm: var(--sa-radius-sm);
 	--radius-sa: var(--sa-radius);
 	--radius-sa-lg: var(--sa-radius-lg);
+
+	--shadow-sa-sm: var(--sa-shadow-sm);
+	--shadow-sa-md: var(--sa-shadow-md);
+
+	--color-sa-hairline: var(--sa-hairline);
 }

@@ -9,7 +9,7 @@
 </script>
 
 <header
-	class="sticky top-0 z-40 border-b border-sa-border bg-[color-mix(in_oklch,var(--sa-background-color),transparent_20%)] backdrop-blur-md"
+	class="sticky top-0 z-40 border-b border-sa-hairline bg-[color-mix(in_oklch,var(--sa-background-color),transparent_20%)] backdrop-blur-md"
 >
 	<div class="flex h-16 items-center gap-4 px-4 lg:px-6">
 		<!-- Mobile menu toggle -->

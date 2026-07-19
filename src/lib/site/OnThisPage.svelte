@@ -36,7 +36,7 @@
 
 <nav aria-label="On this page" class="flex flex-col gap-3 text-sm">
 	<p class="font-semibold text-sa-fg">On this page</p>
-	<ul class="flex flex-col gap-1 border-l border-sa-border">
+	<ul class="flex flex-col gap-1 border-l border-sa-hairline">
 		{#each headings as h (h.id)}
 			{@const active = activeId === h.id}
 			<li>
