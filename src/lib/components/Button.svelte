@@ -1,33 +1,69 @@
 <!--
-  Button — accessible button with React Aria's tactile styling.
+  Button — inline-Tailwind (shadcn-style) prototype.
 
-  Behaviour comes from the headless primitives (press/hover/focusVisible), which
-  set data-pressed / data-hovered / data-focus-visible. Visuals come from the
-  `.sa-Button` class ported 1:1 from React Aria (see styles/components.css).
-  When `loading`, the label is replaced by a spinner — matching React Aria's
-  isPending, which renders the ProgressCircle as the button's only child (the
-  `:has(> svg:only-child)` rule then makes it circular).
+  All styling lives right here as Tailwind utilities, keyed off the data-*
+  interaction state the primitives emit (data-pressed / data-hovered) — so
+  someone who copies this file via the CLI can read and edit every visual
+  decision in one place, without hunting through a shared CSS file.
+
+  Behaviour is unchanged: press/hover are the accessible primitives (touch-aware
+  hover, unified pointer+keyboard press); the focus ring comes from the global
+  :focus-visible rule; loading swaps the label for a centred spinner.
+
+  `buttonVariants` is exported (the cva/shadcn pattern) so you can style a link
+  or any element as a button: class={buttonVariants({ variant: 'outline' })}.
 -->
+<script lang="ts" module>
+	import { cn } from '../utils/cn.js';
+
+	export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';
+	export type ButtonSize = 'sm' | 'md' | 'lg';
+
+	const base =
+		'relative inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-sa ' +
+		'font-medium select-none outline-none transition-[background-color,border-color,transform] duration-150 ' +
+		'[&_svg]:size-4 [&_svg]:shrink-0 ' +
+		'data-[pressed]:scale-[0.97] motion-reduce:data-[pressed]:scale-100 ' +
+		'data-[disabled]:pointer-events-none data-[disabled]:opacity-50';
+
+	const variantClasses: Record<ButtonVariant, string> = {
+		primary: 'bg-sa-accent text-sa-accent-fg shadow-sm data-[hovered]:bg-sa-accent/90',
+		secondary: 'bg-sa-secondary text-sa-secondary-fg data-[hovered]:bg-sa-secondary/70',
+		outline:
+			'border border-sa-border bg-transparent text-sa-fg data-[hovered]:bg-sa-muted data-[hovered]:border-sa-border-hover',
+		ghost: 'bg-transparent text-sa-fg data-[hovered]:bg-sa-muted',
+		destructive: 'bg-sa-destructive text-white shadow-sm data-[hovered]:bg-sa-destructive/90'
+	};
+
+	const sizeClasses: Record<ButtonSize, string> = {
+		sm: 'h-7 gap-1 px-3 text-xs',
+		md: 'h-8 px-4 text-sm',
+		lg: 'h-10 px-6 text-base'
+	};
+
+	/** cva/shadcn-style class resolver — style any element as a button. */
+	export function buttonVariants(
+		opts: { variant?: ButtonVariant; size?: ButtonSize; class?: string } = {}
+	): string {
+		const { variant = 'primary', size = 'md', class: className } = opts;
+		return cn(base, variantClasses[variant], sizeClasses[size], className);
+	}
+</script>
+
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 	import { createPress, type PressEvent } from '../attachments/press.svelte.js';
 	import { createHover } from '../attachments/hover.svelte.js';
-	import { createFocusVisible } from '../attachments/focus.svelte.js';
 	import { combineAttachments } from '../utils/attachments.js';
-	import { cn } from '../utils/cn.js';
 	import Spinner from './Spinner.svelte';
 
-	type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';
-	type Size = 'sm' | 'md' | 'lg';
-
 	interface ButtonProps extends Omit<HTMLButtonAttributes, 'onclick'> {
-		variant?: Variant;
-		size?: Size;
+		variant?: ButtonVariant;
+		size?: ButtonSize;
 		disabled?: boolean;
 		/** Renders a spinner and blocks interaction (React Aria's isPending). */
 		loading?: boolean;
-		/** Normalized press handler (mouse + touch + keyboard). */
 		onPress?: (event: PressEvent) => void;
 		class?: string;
 		children: Snippet;
@@ -58,30 +94,21 @@
 			return isDisabled;
 		}
 	});
-	const focus = createFocusVisible();
-
-	const behaviour = combineAttachments(press.attachment, hover.attachment, focus.attachment);
+	const behaviour = combineAttachments(press.attachment, hover.attachment);
 </script>
 
 <button
 	{...rest}
 	{type}
 	disabled={isDisabled}
-	data-variant={variant}
-	data-size={size}
 	data-disabled={disabled || undefined}
 	aria-busy={loading || undefined}
-	class={cn('sa-Button', className)}
+	class={buttonVariants({ variant, size, class: className })}
 	{@attach behaviour}
 >
 	{#if loading}
-		<!--
-			Keep the button's rectangular shape and width: the label stays in the
-			layout but hidden (holds the width), and the spinner is centred over it.
-			Wrapping the spinner in a span also avoids the icon-only circular rule.
-		-->
-		<span class="sa-Button-spinner"><Spinner label="Loading" /></span>
-		<span class="sa-Button-labelHidden" aria-hidden="true">{@render children()}</span>
+		<span class="absolute inset-0 flex items-center justify-center"><Spinner label="Loading" /></span>
+		<span class="invisible inline-flex items-center gap-1.5">{@render children()}</span>
 	{:else}
 		{@render children()}
 	{/if}

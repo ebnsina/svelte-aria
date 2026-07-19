@@ -1,19 +1,15 @@
 <!--
-  TextField — labelled text input with description and error messaging.
+  TextField — inline-Tailwind (shadcn-style).
 
-  Styling (`.sa-Field` / `.sa-Input` / `.sa-Label`) is ported 1:1 from React
-  Aria's inset field treatment. Wires the ARIA relationships React Aria is
-  careful about:
-   - label ↔ input via `for`/`id`
-   - input ↔ description/error via `aria-describedby`
-   - `aria-invalid` + `role="alert"` on the error so it's announced
-  The value is bindable (`bind:value`) for idiomatic Svelte usage.
+  A native <input> is the accessible control; the wrapper carries the visuals
+  inline. Focus and hover are pure CSS off the input (`has-[:focus-visible]`,
+  native `hover:`), so no behaviour primitives are needed. ARIA wiring is kept:
+  label ↔ input (for/id), input ↔ description/error (aria-describedby),
+  aria-invalid + role="alert" on the error. Value is bindable.
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import { createFocusVisible } from '../attachments/focus.svelte.js';
-	import { createHover } from '../attachments/hover.svelte.js';
 	import { useId } from '../utils/id.js';
 	import { cn } from '../utils/cn.js';
 
@@ -24,9 +20,9 @@
 		errorMessage?: string;
 		value?: string;
 		class?: string;
-		/** Optional slot rendered inside the field, before the input (e.g. an icon). */
+		/** In-field content before the input (e.g. an icon). */
 		prefix?: Snippet;
-		/** Optional slot rendered inside the field, after the input. */
+		/** In-field content after the input. */
 		suffix?: Snippet;
 	}
 
@@ -49,45 +45,37 @@
 	const errorId = `${id}-error`;
 
 	const invalid = $derived(Boolean(errorMessage));
-
 	const describedBy = $derived(
 		[description ? descriptionId : null, errorMessage ? errorId : null]
 			.filter(Boolean)
 			.join(' ') || undefined
 	);
-
-	const focus = createFocusVisible({
-		get disabled() {
-			return Boolean(disabled);
-		}
-	});
-	const hover = createHover({
-		get disabled() {
-			return Boolean(disabled);
-		}
-	});
 </script>
 
-<div class={cn('flex flex-col', className)}>
+<div class={cn('flex flex-col gap-1.5', className)}>
 	{#if label}
-		<label for={id} class="sa-Label">
+		<label for={id} class="text-sm font-medium text-sa-fg">
 			{label}
 			{#if required}
-				<span style="color: var(--sa-invalid-color)" aria-hidden="true">&nbsp;*</span>
+				<span class="text-sa-invalid" aria-hidden="true">&nbsp;*</span>
 			{/if}
 		</label>
 	{/if}
 
 	<div
-		class="sa-Field"
 		data-invalid={invalid || undefined}
-		data-disabled={disabled || undefined}
-		data-hovered={hover.hovered || undefined}
-		data-focus-visible={focus.focusVisible || undefined}
-		{@attach hover.attachment}
+		class={cn(
+			'flex items-center gap-2 rounded-sa border border-sa-gray-300 bg-sa-field px-3',
+			'transition-[border-color,box-shadow] duration-150',
+			'hover:border-sa-border',
+			'has-[:focus-visible]:[outline:2px_solid_var(--sa-focus-ring-color)] has-[:focus-visible]:outline-offset-2',
+			'has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-55',
+			'data-[invalid]:border-sa-invalid',
+			'data-[invalid]:has-[:focus-visible]:[outline-color:var(--sa-invalid-color)]'
+		)}
 	>
 		{#if prefix}
-			<span class="flex shrink-0 items-center">{@render prefix()}</span>
+			<span class="flex shrink-0 items-center text-sa-fg-muted">{@render prefix()}</span>
 		{/if}
 
 		<input
@@ -97,22 +85,21 @@
 			{disabled}
 			{required}
 			bind:value
-			class="sa-Input"
 			aria-invalid={invalid || undefined}
 			aria-describedby={describedBy}
-			{@attach focus.attachment}
+			class="h-9 w-full bg-transparent text-sm text-sa-fg outline-none placeholder:text-sa-fg-muted disabled:cursor-not-allowed"
 		/>
 
 		{#if suffix}
-			<span class="flex shrink-0 items-center">{@render suffix()}</span>
+			<span class="flex shrink-0 items-center text-sa-fg-muted">{@render suffix()}</span>
 		{/if}
 	</div>
 
 	{#if description && !errorMessage}
-		<p id={descriptionId} class="sa-Description">{description}</p>
+		<p id={descriptionId} class="text-xs text-sa-fg-muted">{description}</p>
 	{/if}
 
 	{#if errorMessage}
-		<p id={errorId} role="alert" class="sa-FieldError">{errorMessage}</p>
+		<p id={errorId} role="alert" class="text-xs text-sa-invalid">{errorMessage}</p>
 	{/if}
 </div>

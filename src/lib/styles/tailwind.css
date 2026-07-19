@@ -13,7 +13,6 @@
  */
 
 @import './theme.css';
-@import './components.css';
 
 /* Make Tailwind's `dark:` variant follow the explicit theme attribute rather
    than the OS media query. */
@@ -55,6 +54,12 @@
 	--color-sa-invalid: var(--sa-invalid-color);
 	--color-sa-invalid-bg: var(--sa-highlight-background-invalid);
 	--color-sa-focus: var(--sa-focus-ring-color);
+
+	/* Solid, theme-consistent semantic fills for inline component styling */
+	--color-sa-secondary: var(--sa-gray-200);
+	--color-sa-secondary-fg: var(--sa-text-color);
+	--color-sa-destructive: oklch(from var(--sa-red) 55% c h);
+	--color-sa-muted: var(--sa-highlight-hover);
 
 	--radius-sa-sm: var(--sa-radius-sm);
 	--radius-sa: var(--sa-radius);

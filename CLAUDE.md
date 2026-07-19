@@ -36,14 +36,24 @@ press · hover · focusVisible   toggle           Button/Checkbox/TextField/Spin
   (`{@attach}`), Svelte 5.29+. They attach listeners and set `data-*`. Compose
   with `combineAttachments`.
 - `src/lib/state/*.svelte.ts` — framework-only rune state machines (no DOM).
-- `src/lib/components/*.svelte` — accessible components. Behaviour from
-  primitives; visuals from the ported CSS classes.
+- `src/lib/components/*.svelte` — accessible components, **inline-Tailwind
+  (shadcn-style)**: all styling lives in the `.svelte` file as Tailwind
+  utilities so a copied component is self-contained and editable (ready for the
+  planned CLI/registry). No shared component CSS. Variant/size maps + an
+  exported `xVariants()` (cva pattern). Styling is driven by:
+  - reactive runes (checked state) and `data-*` from primitives (`data-[pressed]`,
+    `data-[hovered]`), and
+  - native/CSS variants where the element is natively accessible:
+    `peer-*`/`peer-focus-visible` (checkbox off its hidden input),
+    `has-[:focus-visible]`/`hover:` (text field). Native controls (checkbox,
+    text field) need **no** behaviour primitives; only custom pressables (Button)
+    use them.
 - `src/lib/styles/` — the design system:
   - `theme.css` — tokens (OKLCH, re-tintable). **Framework-agnostic.**
-  - `components.css` — component classes (`.sa-Button`, `.sa-indicator`,
-    `.sa-Field`…) ported 1:1 from React Aria's utilities.
-  - `tailwind.css` — the consumer preset: imports the two above + `@theme`
-    mapping tokens to utilities + `dark:` variant remap.
+  - `tailwind.css` — the consumer preset: imports `theme.css` + `@theme`
+    mapping tokens to utilities + `dark:` variant remap + the global
+    `:focus-visible` rule. (No `components.css` — styling is inline per the
+    shadcn model.)
 - `src/lib/site/` — **docs-only** chrome (Sidebar, Topbar, CodeBlock, pickers…).
   Excluded from the published package (`files: !dist/site`). Not part of the API.
 
