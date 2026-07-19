@@ -48,17 +48,6 @@
 		></div>
 	</div>
 
-	<div
-		class="mb-5 inline-flex items-center gap-2 rounded-full bg-sa-field py-1 pr-3 pl-2 text-xs font-medium text-sa-fg-muted shadow-sa-sm ring-1 ring-sa-hairline"
-	>
-		<span class="relative flex size-2">
-			<span
-				class="absolute inline-flex size-full animate-ping rounded-full bg-sa-accent opacity-60"
-			></span>
-			<span class="relative inline-flex size-2 rounded-full bg-sa-accent"></span>
-		</span>
-		Svelte 5 · runes + attachments
-	</div>
 	<h1 class="text-5xl font-semibold tracking-tight sm:text-6xl">
 		<span class="text-sa-fg">Svelte</span> <span class="text-sa-accent">ARIA</span>
 	</h1>
