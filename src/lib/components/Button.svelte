@@ -27,12 +27,12 @@
 		'data-[disabled]:pointer-events-none data-[disabled]:opacity-50';
 
 	const variantClasses: Record<ButtonVariant, string> = {
-		primary: 'bg-sa-accent text-sa-accent-fg shadow-sm data-[hovered]:bg-sa-accent/90',
+		primary: 'bg-sa-accent text-sa-accent-fg data-[hovered]:bg-sa-accent/90',
 		secondary: 'bg-sa-secondary text-sa-secondary-fg data-[hovered]:bg-sa-secondary/70',
 		outline:
 			'border border-sa-border bg-transparent text-sa-fg data-[hovered]:bg-sa-muted data-[hovered]:border-sa-border-hover',
 		ghost: 'bg-transparent text-sa-fg data-[hovered]:bg-sa-muted',
-		destructive: 'bg-sa-destructive text-white shadow-sm data-[hovered]:bg-sa-destructive/90'
+		destructive: 'bg-sa-destructive text-white data-[hovered]:bg-sa-destructive/90'
 	};
 
 	const sizeClasses: Record<ButtonSize, string> = {
