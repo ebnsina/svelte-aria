@@ -21,6 +21,7 @@
 		--sa-button-text: oklch(from var(--sa-button-color) var(--sa-l-1400) var(--sa-c-1400) h);
 		--sa-button-gradient-size: 8px;
 
+		position: relative;
 		appearance: none;
 		border: none;
 		margin: 0;
@@ -78,6 +79,21 @@
 		flex-shrink: 0;
 		padding: 0;
 		border-radius: 9999px;
+	}
+
+	/* Pending state: spinner centred over the (hidden) label, button keeps shape */
+	.sa-Button-spinner {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.sa-Button-labelHidden {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--sa-spacing-1);
+		visibility: hidden;
 	}
 
 	.sa-Button[data-pressed] {

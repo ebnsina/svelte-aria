@@ -75,7 +75,13 @@
 	{@attach behaviour}
 >
 	{#if loading}
-		<Spinner label="Loading" />
+		<!--
+			Keep the button's rectangular shape and width: the label stays in the
+			layout but hidden (holds the width), and the spinner is centred over it.
+			Wrapping the spinner in a span also avoids the icon-only circular rule.
+		-->
+		<span class="sa-Button-spinner"><Spinner label="Loading" /></span>
+		<span class="sa-Button-labelHidden" aria-hidden="true">{@render children()}</span>
 	{:else}
 		{@render children()}
 	{/if}
