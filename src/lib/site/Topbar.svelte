@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { Search, Menu, X, Sparkles, Sun, Moon, Monitor } from '@lucide/svelte';
+	import { Search, Menu, X, Sun, Moon, Monitor } from '@lucide/svelte';
 	import { theme } from './theme.svelte.js';
 	import AccentPicker from './AccentPicker.svelte';
+	import Logo from './Logo.svelte';
 
 	const show = 'scale-100 rotate-0 opacity-100';
 	const hide = 'scale-0 -rotate-90 opacity-0';
@@ -28,11 +29,8 @@
 			{#if menuOpen}<X class="size-5" />{:else}<Menu class="size-5" />{/if}
 		</button>
 
-		<a href="/" class="flex items-center gap-2 font-semibold tracking-tight">
-			<span class="grid size-7 place-items-center rounded-sa-sm bg-sa-accent text-sa-accent-fg">
-				<Sparkles class="size-4" />
-			</span>
-			<span>svelte-aria</span>
+		<a href="/" class="rounded-sa-sm" aria-label="Svelte ARIA — home">
+			<Logo />
 		</a>
 
 		<!-- Search (decorative for now) -->

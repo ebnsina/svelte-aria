@@ -59,7 +59,9 @@
 		</span>
 		Svelte 5 · runes + attachments
 	</div>
-	<h1 class="text-5xl font-semibold tracking-tight text-sa-fg sm:text-6xl">svelte-aria</h1>
+	<h1 class="text-5xl font-semibold tracking-tight sm:text-6xl">
+		<span class="text-sa-fg">Svelte</span> <span class="text-sa-accent">ARIA</span>
+	</h1>
 	<p class="mt-5 max-w-2xl text-lg text-sa-fg-muted sm:text-xl">
 		React Aria–level behaviour, Svelte-level DX. Accessible, headless-first components built on
 		composable interaction primitives.
