@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Search, Menu, X, Sparkles, Sun, Moon, Monitor } from '@lucide/svelte';
 	import { theme } from './theme.svelte.js';
+	import AccentPicker from './AccentPicker.svelte';
 
 	const show = 'scale-100 rotate-0 opacity-100';
 	const hide = 'scale-0 -rotate-90 opacity-0';
@@ -51,6 +52,7 @@
 		</div>
 
 		<nav class="ml-auto flex items-center gap-1 text-sm">
+			<AccentPicker />
 			<button
 				type="button"
 				onclick={() => theme.cycle()}

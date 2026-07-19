@@ -19,6 +19,12 @@
 								: 'light'
 							: pref;
 					document.documentElement.dataset.theme = theme;
+
+					// Seed accent (tint) too, so it doesn't flash indigo first.
+					var accent = localStorage.getItem('sa-accent');
+					if (accent && /^[a-z]+$/.test(accent)) {
+						document.documentElement.style.setProperty('--sa-tint', 'var(--sa-' + accent + ')');
+					}
 				} catch (e) {
 					document.documentElement.dataset.theme = 'light';
 				}
