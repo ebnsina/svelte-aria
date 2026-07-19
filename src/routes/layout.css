@@ -33,3 +33,20 @@ pre,
 kbd {
 	font-family: var(--font-mono);
 }
+
+/* Smooth crossfade during a theme toggle (added briefly by the theme controller,
+   so it doesn't interfere with press/hover transitions the rest of the time). */
+html.sa-theme-anim,
+html.sa-theme-anim * {
+	transition:
+		background-color 220ms ease,
+		border-color 220ms ease,
+		color 160ms ease,
+		box-shadow 220ms ease !important;
+}
+@media (prefers-reduced-motion: reduce) {
+	html.sa-theme-anim,
+	html.sa-theme-anim * {
+		transition: none !important;
+	}
+}

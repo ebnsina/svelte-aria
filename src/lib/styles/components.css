@@ -56,17 +56,15 @@
 		forced-color-adjust: none;
 	}
 
-	@media (prefers-color-scheme: dark) {
-		.sa-Button {
-			--sa-button-shadow: oklch(from var(--sa-button-color) var(--sa-l-200) var(--sa-c-200) h);
-			--sa-button-highlight: rgb(255 255 255 / 0.15);
-			box-shadow:
-				inset 0 var(--sa-button-border-size) 0 var(--sa-button-highlight),
-				inset 0 calc(-1 * var(--sa-button-border-size)) 0 var(--sa-button-shadow),
-				inset 0 0 0 var(--sa-button-border-size) var(--sa-button-border),
-				inset 0 var(--sa-button-gradient-size) var(--sa-button-gradient-size) -2px
-					var(--sa-button-gradient);
-		}
+	:root[data-theme='dark'] .sa-Button {
+		--sa-button-shadow: oklch(from var(--sa-button-color) var(--sa-l-200) var(--sa-c-200) h);
+		--sa-button-highlight: rgb(255 255 255 / 0.15);
+		box-shadow:
+			inset 0 var(--sa-button-border-size) 0 var(--sa-button-highlight),
+			inset 0 calc(-1 * var(--sa-button-border-size)) 0 var(--sa-button-shadow),
+			inset 0 0 0 var(--sa-button-border-size) var(--sa-button-border),
+			inset 0 var(--sa-button-gradient-size) var(--sa-button-gradient-size) -2px
+				var(--sa-button-gradient);
 	}
 
 	.sa-Button > svg {
@@ -197,13 +195,11 @@
 		will-change: scale;
 	}
 
-	@media (prefers-color-scheme: dark) {
-		.sa-indicator {
-			box-shadow:
-				inset 0 1px 0 rgb(255 255 255 / 0.4),
-				inset 0 4px 2px rgb(255 255 255 / 0.1),
-				inset 0 0 0 1px var(--sa-indicator-border);
-		}
+	:root[data-theme='dark'] .sa-indicator {
+		box-shadow:
+			inset 0 1px 0 rgb(255 255 255 / 0.4),
+			inset 0 4px 2px rgb(255 255 255 / 0.1),
+			inset 0 0 0 1px var(--sa-indicator-border);
 	}
 
 	.sa-indicator[data-pressed] {
@@ -223,15 +219,13 @@
 			inset 0 2px 0 var(--sa-indicator-highlight);
 	}
 
-	@media (prefers-color-scheme: dark) {
-		.sa-indicator[data-selected],
-		.sa-indicator[data-indeterminate] {
-			--sa-indicator-highlight: rgb(255 255 255 / 0.5);
-			box-shadow:
-				inset 0 1px 0 var(--sa-indicator-highlight),
-				inset 0 4px 2px rgb(255 255 255 / 0.12),
-				inset 0 0 0 1px var(--sa-indicator-border);
-		}
+	:root[data-theme='dark'] .sa-indicator[data-selected],
+	:root[data-theme='dark'] .sa-indicator[data-indeterminate] {
+		--sa-indicator-highlight: rgb(255 255 255 / 0.5);
+		box-shadow:
+			inset 0 1px 0 var(--sa-indicator-highlight),
+			inset 0 4px 2px rgb(255 255 255 / 0.12),
+			inset 0 0 0 1px var(--sa-indicator-border);
 	}
 
 	.sa-indicator[data-invalid] {
@@ -314,15 +308,13 @@
 		color: var(--sa-text-color-placeholder);
 	}
 
-	@media (prefers-color-scheme: dark) {
-		.sa-Field {
-			--sa-inset-border: var(--sa-gray-200);
-			--sa-inset-shadow-size: 6px;
-			box-shadow:
-				inset 0 calc(-1 * var(--sa-inset-border-size)) 0 var(--sa-gray-400),
-				inset 0 0 0 var(--sa-inset-border-size) var(--sa-inset-border),
-				inset 0 1px var(--sa-inset-shadow-size) rgb(0 0 0);
-		}
+	:root[data-theme='dark'] .sa-Field {
+		--sa-inset-border: var(--sa-gray-200);
+		--sa-inset-shadow-size: 6px;
+		box-shadow:
+			inset 0 calc(-1 * var(--sa-inset-border-size)) 0 var(--sa-gray-400),
+			inset 0 0 0 var(--sa-inset-border-size) var(--sa-inset-border),
+			inset 0 1px var(--sa-inset-shadow-size) rgb(0 0 0);
 	}
 
 	.sa-Field[data-hovered] {

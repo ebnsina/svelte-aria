@@ -5,6 +5,20 @@
 		<link rel="icon" href="%sveltekit.assets%/favicon.svg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="text-scale" content="scale" />
+		<script>
+			// Seed the theme before first paint to avoid a flash. Uses the saved
+			// choice, else the OS preference. The toggle updates data-theme + storage.
+			(function () {
+				try {
+					var saved = localStorage.getItem('sa-theme');
+					var theme =
+						saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+					document.documentElement.dataset.theme = theme;
+				} catch (e) {
+					document.documentElement.dataset.theme = 'light';
+				}
+			})();
+		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

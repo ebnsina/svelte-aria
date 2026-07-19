@@ -63,35 +63,35 @@
 </div>
 
 <style>
+	/* Light syntax colours (base) */
 	.code-hl :global(.tok-comment) {
 		color: var(--sa-text-color-disabled);
 		font-style: italic;
 	}
 	.code-hl :global(.tok-string) {
-		color: #7ee787;
+		color: #0a7f3f;
 	}
 	.code-hl :global(.tok-keyword) {
-		color: #ff7b72;
+		color: #cf222e;
 	}
 	.code-hl :global(.tok-type) {
-		color: #79c0ff;
+		color: #0550ae;
 	}
 	.code-hl :global(.tok-number) {
-		color: #d2a8ff;
+		color: #8250df;
 	}
 
-	@media (prefers-color-scheme: light) {
-		.code-hl :global(.tok-string) {
-			color: #0a7f3f;
-		}
-		.code-hl :global(.tok-keyword) {
-			color: #cf222e;
-		}
-		.code-hl :global(.tok-type) {
-			color: #0550ae;
-		}
-		.code-hl :global(.tok-number) {
-			color: #8250df;
-		}
+	/* Dark syntax colours, driven by the explicit theme attribute */
+	:global(html[data-theme='dark']) .code-hl :global(.tok-string) {
+		color: #7ee787;
+	}
+	:global(html[data-theme='dark']) .code-hl :global(.tok-keyword) {
+		color: #ff7b72;
+	}
+	:global(html[data-theme='dark']) .code-hl :global(.tok-type) {
+		color: #79c0ff;
+	}
+	:global(html[data-theme='dark']) .code-hl :global(.tok-number) {
+		color: #d2a8ff;
 	}
 </style>

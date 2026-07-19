@@ -15,6 +15,10 @@
 @import './theme.css';
 @import './components.css';
 
+/* Make Tailwind's `dark:` variant follow the explicit theme attribute rather
+   than the OS media query. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
 @theme inline {
 	--color-sa-bg: var(--sa-background-color);
 	--color-sa-fg: var(--sa-text-color);

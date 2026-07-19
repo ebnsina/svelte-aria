@@ -39,8 +39,32 @@ Tailwind entry CSS:
 
 This brings in svelte-aria's **design tokens and palette, ported from React
 Aria** — an OKLCH-based, re-tintable colour system (default tint: indigo) with
-a neutral gray scale, semantic tokens, and automatic **dark mode** + Windows
-high-contrast support. Re-theme every component by overriding one variable:
+a cool-slate neutral scale, semantic tokens, and Windows high-contrast support.
+
+### Light / dark themes
+
+Themes are explicit, driven by a `data-theme` attribute on `<html>`:
+
+```html
+<html data-theme="light">
+  <!-- or data-theme="dark" -->
+</html>
+```
+
+Seed it before first paint (avoids a flash) and let users toggle it:
+
+```html
+<script>
+  var t = localStorage.getItem('theme')
+    || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.dataset.theme = t;
+</script>
+```
+
+The light theme uses a soft off-white background; dark uses a soft blue-charcoal
+(not pure black) — both tuned to be easy on the eyes.
+
+Re-theme every component by overriding one variable:
 
 ```css
 :root {

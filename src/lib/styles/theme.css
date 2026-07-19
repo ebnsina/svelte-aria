@@ -16,7 +16,9 @@
 :root {
 	--sa-tint: var(--sa-indigo);
 
-	--sa-gray: oklch(0.5 0 0);
+	/* Neutral carries a faint cool (blue-slate) undertone — softer on the eyes
+	   than a pure gray, and reads well in both themes. */
+	--sa-gray: oklch(0.5 0.012 256);
 	--sa-red: oklch(0.6 0.181447 27.0726);
 	--sa-orange: oklch(0.7 0.150492 54);
 	--sa-yellow: oklch(0.8 0.128516 73.8032);
@@ -65,9 +67,11 @@
 	--sa-gray-1600: oklch(from var(--sa-gray) var(--sa-l-1600) c h);
 }
 
-/* Light mode: lightness/chroma steps */
+/* Light theme (default). Soft off-white background reduces glare vs pure white;
+   card surfaces stay white so they lift gently off the page. */
 :root {
-	--sa-background-color: #f8f8f8;
+	color-scheme: light;
+	--sa-background-color: #f6f7f9;
 	--sa-gray-50: #ffffff;
 
 	--sa-l-100: 98.1187%;
@@ -117,39 +121,41 @@
 	--sa-hairline: rgb(0 0 0 / 0.06);
 }
 
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-	:root {
-		--sa-background-color: #1b1b1b;
-		--sa-gray-50: oklch(22% 0 0);
+/* Dark theme. Explicit — driven by [data-theme='dark'] on <html> (seeded before
+   paint by the inline script in app.html, from the saved choice or OS default),
+   so the toggle controls it regardless of OS setting. A soft blue-charcoal
+   background (not pure black) and off-white text are gentler on the eyes. */
+:root[data-theme='dark'] {
+	color-scheme: dark;
+	--sa-background-color: #15171c;
+	--sa-gray-50: oklch(21.5% 0.012 256);
 
-		--sa-l-100: 29.6725%;
-		--sa-l-200: 35.3616%;
-		--sa-l-300: 41.0821%;
-		--sa-l-400: 46.9058%;
-		--sa-l-500: 51.9076%;
-		--sa-l-600: 57.9699%;
-		--sa-l-700: 56.1347%;
-		--sa-l-800: 59.2866%;
-		--sa-l-900: 62.3039%;
-		--sa-l-1000: 67.0121%;
-		--sa-l-1100: 72.3297%;
-		--sa-l-1200: 79.1773%;
-		--sa-l-1300: 85.1751%;
-		--sa-l-1400: 91.1434%;
-		--sa-l-1500: 95.2045%;
-		--sa-l-1600: 100%;
+	--sa-l-100: 29.6725%;
+	--sa-l-200: 35.3616%;
+	--sa-l-300: 41.0821%;
+	--sa-l-400: 46.9058%;
+	--sa-l-500: 51.9076%;
+	--sa-l-600: 57.9699%;
+	--sa-l-700: 56.1347%;
+	--sa-l-800: 59.2866%;
+	--sa-l-900: 62.3039%;
+	--sa-l-1000: 67.0121%;
+	--sa-l-1100: 72.3297%;
+	--sa-l-1200: 79.1773%;
+	--sa-l-1300: 85.1751%;
+	--sa-l-1400: 91.1434%;
+	--sa-l-1500: 95.2045%;
+	--sa-l-1600: 100%;
 
-		--sa-highlight-hover: rgb(255 255 255 / 0.1);
-		--sa-highlight-pressed: rgb(255 255 255 / 0.2);
-		--sa-overlay-background: var(--sa-gray-100);
-		--sa-overlay-border: rgb(255 255 255 / 0.2);
-		--sa-popover-shadow: 0 8px 20px rgb(0 0 0 / 0.5);
+	--sa-highlight-hover: rgb(255 255 255 / 0.08);
+	--sa-highlight-pressed: rgb(255 255 255 / 0.16);
+	--sa-overlay-background: var(--sa-gray-100);
+	--sa-overlay-border: rgb(255 255 255 / 0.2);
+	--sa-popover-shadow: 0 8px 20px rgb(0 0 0 / 0.5);
 
-		--sa-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 3px rgb(0 0 0 / 0.5);
-		--sa-shadow-md: 0 2px 6px rgb(0 0 0 / 0.4), 0 10px 30px rgb(0 0 0 / 0.5);
-		--sa-hairline: rgb(255 255 255 / 0.08);
-	}
+	--sa-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 3px rgb(0 0 0 / 0.5);
+	--sa-shadow-md: 0 2px 6px rgb(0 0 0 / 0.4), 0 10px 30px rgb(0 0 0 / 0.5);
+	--sa-hairline: rgb(255 255 255 / 0.08);
 }
 
 /* Semantic tokens */
