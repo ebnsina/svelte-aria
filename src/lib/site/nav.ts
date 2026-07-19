@@ -20,6 +20,7 @@ export const nav: NavSection[] = [
 		items: [
 			{ title: 'Button', href: '/button' },
 			{ title: 'Checkbox', href: '/checkbox' },
+			{ title: 'Dialog', href: '/dialog' },
 			{ title: 'RadioGroup', href: '/radio-group' },
 			{ title: 'TextField', href: '/text-field' }
 		]
