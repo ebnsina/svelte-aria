@@ -19,6 +19,26 @@
    than the OS media query. */
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
+/**
+ * Global focus ring — the single source of truth for keyboard focus.
+ *
+ * Applies the accent ring (offset by 2px) to every natively-focusable element,
+ * so bare inputs, textareas, selects, buttons, links, and any custom
+ * [tabindex] control all get the consistent ring for free. Wrapped in `:where()`
+ * (zero specificity) so it's a default you can override, and scoped to
+ * `:focus-visible` so it only shows for keyboard/AT users, never on mouse click.
+ *
+ * Components that move the ring onto a proxy element (e.g. the checkbox's hidden
+ * input → visible indicator) opt out via `outline: none` on the real control
+ * and re-draw the ring on the visual element in components.css.
+ */
+@layer base {
+	:where(a[href], button, input, select, textarea, summary, [tabindex]):focus-visible {
+		outline: 2px solid var(--sa-focus-ring-color);
+		outline-offset: 2px;
+	}
+}
+
 @theme inline {
 	--color-sa-bg: var(--sa-background-color);
 	--color-sa-fg: var(--sa-text-color);

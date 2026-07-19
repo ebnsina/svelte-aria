@@ -8,12 +8,20 @@
  */
 
 @layer components {
-	/* Shared focus ring: accent-coloured, offset — same for every control. */
-	.sa-Button[data-focus-visible],
+	/* Focus ring for controls that move focus onto a proxy element: the ring is
+	   drawn on the visible part (checkbox indicator, text-field wrapper) while
+	   the real focus target is a hidden/child input. Elements that focus
+	   themselves (button, native input/select/textarea/link) get the ring from
+	   the global `:focus-visible` rule in tailwind.css instead. */
 	.sa-indicator[data-focus-visible],
 	.sa-Field[data-focus-visible] {
 		outline: 2px solid var(--sa-focus-ring-color);
 		outline-offset: 2px;
+	}
+	/* The checkbox's real input is visually hidden; keep its native ring off so
+	   only the indicator shows one. */
+	.sa-Checkbox input {
+		outline: none;
 	}
 
 	/* ============================ Button ============================ */

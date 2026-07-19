@@ -66,9 +66,14 @@ press · hover · focusVisible   toggle           Button/Checkbox/TextField/Spin
   `--sa-radius-sm` 6px (`rounded-sa-sm`), `--sa-radius-lg` 10px
   (`rounded-sa-lg`). Circular only for opt-in icon buttons (`rounded-full`).
   Don't introduce raw `rounded-md/lg/xl/2xl`.
-- **Focus:** `outline: 2px solid var(--sa-focus-ring-color)` with
-  `outline-offset: 2px` (inset `-1px` for recessed fields). Same for every
-  focusable control, library and docs. No Tailwind `ring-*` for focus.
+- **Focus:** one global rule in `styles/tailwind.css` (`@layer base`,
+  `:where(...):focus-visible`) draws the accent ring (`outline: 2px`, offset
+  `2px`) on **every** focusable element — inputs, textareas, selects, buttons,
+  links, `[tabindex]`. Don't add per-element focus styles. The only exceptions
+  are controls that move focus to a proxy element (checkbox indicator,
+  text-field wrapper): those set `outline: none` on the real target and re-draw
+  the ring on the visible part via `data-focus-visible` in `components.css`.
+  Never use Tailwind `ring-*`/`focus-visible:*` for focus.
 - **Elevation:** docs surfaces (cards/code/tables) use soft shadows
   (`--sa-shadow-sm/md`) + a `--sa-hairline` ring, not heavy borders; structural
   dividers use `--sa-hairline`.
