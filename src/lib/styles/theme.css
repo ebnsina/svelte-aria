@@ -185,9 +185,9 @@
 	--sa-font-size: 0.875rem; /* 14px */
 	--sa-font-size-sm: 0.75rem; /* 12px */
 	--sa-font-size-lg: 1rem; /* 16px */
-	--sa-radius: 8px;
-	--sa-radius-sm: 6px;
-	--sa-radius-lg: 10px;
+	--sa-radius: 12px; /* base — rounded-xl */
+	--sa-radius-sm: 8px;
+	--sa-radius-lg: 16px;
 
 	/* Spacing scale (4px step), matching React Aria */
 	--sa-spacing: 0.25rem;
