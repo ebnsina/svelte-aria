@@ -33,7 +33,7 @@
 							href={item.href}
 							aria-current={active ? 'page' : undefined}
 							onclick={onnavigate}
-							class="block rounded-md px-3 py-1.5 transition-colors duration-150
+							class="block rounded-sa-sm px-3 py-1.5 transition-colors duration-150
 								{active
 								? 'font-medium text-sa-fg'
 								: 'text-sa-fg-muted hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg'}"

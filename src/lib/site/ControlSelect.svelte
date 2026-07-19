@@ -14,7 +14,7 @@
 	<div class="relative">
 		<select
 			bind:value
-			class="w-full appearance-none rounded-sa border border-sa-border bg-sa-field py-2 pr-9 pl-3 text-sm text-sa-fg outline-none transition-colors hover:border-sa-border-hover focus-visible:border-sa-focus focus-visible:ring-2 focus-visible:ring-sa-focus/30"
+			class="w-full appearance-none rounded-sa border border-sa-border bg-sa-field py-2 pr-9 pl-3 text-sm text-sa-fg outline-none transition-colors hover:border-sa-border-hover focus-visible:[outline:2px_solid_var(--sa-focus-ring-color)] focus-visible:outline-offset-2"
 		>
 			{#each options as opt (opt)}
 				<option value={opt}>{opt}</option>

@@ -25,7 +25,7 @@
 <main class="grid min-h-screen place-items-center bg-sa-bg px-6">
 	<div class="w-full max-w-md text-center">
 		<div
-			class="mx-auto mb-6 grid size-16 place-items-center rounded-2xl {is404
+			class="mx-auto mb-6 grid size-16 place-items-center rounded-sa-lg {is404
 				? 'bg-sa-subtle text-sa-fg-muted'
 				: 'text-sa-accent-fg bg-sa-invalid-bg'}"
 		>

@@ -34,9 +34,9 @@
 		aria-expanded={open}
 		aria-label="Accent color: {accent.name}"
 		title="Accent color"
-		class="flex h-9 items-center gap-2 rounded-md px-2 text-sm text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
+		class="flex h-9 items-center gap-2 rounded-sa-sm px-2 text-sm text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
 	>
-		<span class="size-4 rounded-full ring-1 ring-black/10" style={swatch(accent.token)}></span>
+		<span class="size-4 rounded-full ring-1 ring-sa-hairline" style={swatch(accent.token)}></span>
 		<ChevronDown class="size-3.5 {open ? 'rotate-180' : ''} transition-transform" />
 	</button>
 
@@ -57,10 +57,10 @@
 						accent.set(a.token);
 						open = false;
 					}}
-					class="flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-left text-sm transition-colors hover:bg-[var(--sa-highlight-hover)]
+					class="flex w-full items-center gap-2.5 rounded-sa-sm px-2.5 py-1.5 text-left text-sm transition-colors hover:bg-[var(--sa-highlight-hover)]
 						{active ? 'font-medium text-sa-fg' : 'text-sa-fg-muted'}"
 				>
-					<span class="size-3.5 rounded-full ring-1 ring-black/10" style={swatch(a.token)}></span>
+					<span class="size-3.5 rounded-full ring-1 ring-sa-hairline" style={swatch(a.token)}></span>
 					<span class="flex-1">{a.name}</span>
 					{#if active}
 						<Check class="size-4 text-sa-accent" />

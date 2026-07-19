@@ -40,7 +40,7 @@
 			type="button"
 			onclick={copy}
 			aria-label={copied ? 'Copied' : 'Copy code'}
-			class="ml-auto grid size-8 place-items-center rounded-md text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
+			class="ml-auto grid size-8 place-items-center rounded-sa-sm text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
 		>
 			<!-- Icon cross-fades between copy and check -->
 			<span class="relative grid size-4 place-items-center">

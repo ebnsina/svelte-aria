@@ -23,13 +23,13 @@
 			onclick={ontoggle}
 			aria-label={menuOpen ? 'Close menu' : 'Open menu'}
 			aria-expanded={menuOpen}
-			class="grid size-9 place-items-center rounded-md text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg lg:hidden"
+			class="grid size-9 place-items-center rounded-sa-sm text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg lg:hidden"
 		>
 			{#if menuOpen}<X class="size-5" />{:else}<Menu class="size-5" />{/if}
 		</button>
 
 		<a href="/" class="flex items-center gap-2 font-semibold tracking-tight">
-			<span class="grid size-7 place-items-center rounded-md bg-sa-accent text-sa-accent-fg">
+			<span class="grid size-7 place-items-center rounded-sa-sm bg-sa-accent text-sa-accent-fg">
 				<Sparkles class="size-4" />
 			</span>
 			<span>svelte-aria</span>
@@ -39,7 +39,7 @@
 		<div class="ml-2 hidden max-w-md flex-1 md:block">
 			<button
 				type="button"
-				class="group flex w-full items-center gap-2 rounded-lg border border-sa-border bg-sa-field px-3 py-2 text-sm text-sa-fg-muted transition-colors hover:border-sa-border-hover"
+				class="group flex w-full items-center gap-2 rounded-sa border border-sa-border bg-sa-field px-3 py-2 text-sm text-sa-fg-muted transition-colors hover:border-sa-border-hover"
 			>
 				<Search class="size-4" />
 				<span>Search components</span>
@@ -58,7 +58,7 @@
 				onclick={() => theme.cycle()}
 				aria-label="Theme: {theme.preference} (click to change)"
 				title="Theme: {theme.preference}"
-				class="grid size-9 place-items-center rounded-md text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
+				class="grid size-9 place-items-center rounded-sa-sm text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
 			>
 				<span class="relative grid size-5 place-items-center">
 					<Sun
@@ -83,13 +83,13 @@
 			</button>
 			<a
 				href="/"
-				class="rounded-md px-3 py-2 text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
+				class="rounded-sa-sm px-3 py-2 text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
 			>
 				Docs
 			</a>
 			<a
 				href="https://github.com/ebnsina/svelte-aria"
-				class="rounded-md px-3 py-2 text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
+				class="rounded-sa-sm px-3 py-2 text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
 			>
 				GitHub
 			</a>
