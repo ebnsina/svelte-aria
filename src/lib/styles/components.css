@@ -169,7 +169,9 @@
 		width: calc(var(--sa-spacing) * 4.5);
 		height: calc(var(--sa-spacing) * 4.5);
 		box-sizing: border-box;
-		border-radius: var(--sa-radius-sm);
+		/* Intentionally small & fixed (not the shared radius scale): on an 18px
+		   box a large radius reads as a radio button. Keep it a soft square. */
+		border-radius: 5px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
