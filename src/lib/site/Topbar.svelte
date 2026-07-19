@@ -1,6 +1,9 @@
 <script lang="ts">
-	import { Search, Menu, X, Sparkles, Sun, Moon } from '@lucide/svelte';
+	import { Search, Menu, X, Sparkles, Sun, Moon, Monitor } from '@lucide/svelte';
 	import { theme } from './theme.svelte.js';
+
+	const show = 'scale-100 rotate-0 opacity-100';
+	const hide = 'scale-0 -rotate-90 opacity-0';
 
 	interface Props {
 		menuOpen?: boolean;
@@ -50,23 +53,29 @@
 		<nav class="ml-auto flex items-center gap-1 text-sm">
 			<button
 				type="button"
-				onclick={() => theme.toggle()}
-				aria-label="Toggle theme"
-				title="Toggle theme"
+				onclick={() => theme.cycle()}
+				aria-label="Theme: {theme.preference} (click to change)"
+				title="Theme: {theme.preference}"
 				class="grid size-9 place-items-center rounded-md text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
 			>
 				<span class="relative grid size-5 place-items-center">
 					<Sun
-						class="col-start-1 row-start-1 size-5 transition-all duration-200 {theme.value ===
-						'dark'
-							? 'scale-100 rotate-0 opacity-100'
-							: '-rotate-90 scale-0 opacity-0'}"
+						class="col-start-1 row-start-1 size-5 transition-all duration-200 {theme.preference ===
+						'light'
+							? show
+							: hide}"
 					/>
 					<Moon
-						class="col-start-1 row-start-1 size-5 transition-all duration-200 {theme.value ===
+						class="col-start-1 row-start-1 size-5 transition-all duration-200 {theme.preference ===
 						'dark'
-							? 'rotate-90 scale-0 opacity-0'
-							: 'scale-100 rotate-0 opacity-100'}"
+							? show
+							: hide}"
+					/>
+					<Monitor
+						class="col-start-1 row-start-1 size-5 transition-all duration-200 {theme.preference ===
+						'system'
+							? show
+							: hide}"
 					/>
 				</span>
 			</button>

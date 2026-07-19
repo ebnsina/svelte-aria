@@ -11,8 +11,13 @@
 			(function () {
 				try {
 					var saved = localStorage.getItem('sa-theme');
+					var pref = saved === 'light' || saved === 'dark' ? saved : 'system';
 					var theme =
-						saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+						pref === 'system'
+							? matchMedia('(prefers-color-scheme: dark)').matches
+								? 'dark'
+								: 'light'
+							: pref;
 					document.documentElement.dataset.theme = theme;
 				} catch (e) {
 					document.documentElement.dataset.theme = 'light';
