@@ -20,7 +20,9 @@
 		--sa-btn-bg-pressed: var(--sa-highlight-background-pressed);
 		--sa-btn-text: var(--sa-highlight-foreground);
 		--sa-btn-ring: oklch(from var(--sa-tint) 46% c h);
-		--sa-btn-highlight: rgb(255 255 255 / 0.2);
+		--sa-btn-highlight: rgb(255 255 255 / 0.25); /* top specular */
+		--sa-btn-lowlight: rgb(0 0 0 / 0.32); /* bottom inner shadow */
+		--sa-btn-elevation: 0 1px 2px rgb(0 0 0 / 0.22), 0 4px 8px -2px rgb(0 0 0 / 0.16);
 
 		position: relative;
 		appearance: none;
@@ -44,9 +46,13 @@
 
 		background: var(--sa-btn-bg);
 		color: var(--sa-btn-text);
+		/* Crispy tactile stack: outer elevation, crisp edge, bright top specular,
+		   and a soft inner shadow toward the bottom for a glossy, raised look. */
 		box-shadow:
+			var(--sa-btn-elevation),
 			inset 0 0 0 1px var(--sa-btn-ring),
-			inset 0 1px 0 var(--sa-btn-highlight);
+			inset 0 1px 0 var(--sa-btn-highlight),
+			inset 0 -7px 8px -7px var(--sa-btn-lowlight);
 		outline: none;
 		transition-property: background, color, scale, box-shadow;
 		transition-duration: 150ms;
@@ -85,10 +91,15 @@
 
 	.sa-Button[data-hovered] {
 		background: var(--sa-btn-bg-hover);
+		--sa-btn-elevation: 0 1px 2px rgb(0 0 0 / 0.24), 0 6px 14px -3px rgb(0 0 0 / 0.22);
 	}
 	.sa-Button[data-pressed] {
 		scale: 0.97;
 		background: var(--sa-btn-bg-pressed);
+		/* Presses into the surface: collapse the elevation, dim the highlight. */
+		--sa-btn-elevation: 0 1px 1px rgb(0 0 0 / 0.2);
+		--sa-btn-highlight: rgb(255 255 255 / 0.1);
+		--sa-btn-lowlight: rgb(0 0 0 / 0.4);
 	}
 	.sa-Button[data-focus-visible] {
 		outline: 2px solid var(--sa-focus-ring-color);
@@ -109,26 +120,33 @@
 		--sa-btn-bg-pressed: var(--sa-gray-300);
 		--sa-btn-text: var(--sa-text-color);
 		--sa-btn-ring: var(--sa-hairline);
-		--sa-btn-highlight: transparent;
+		--sa-btn-highlight: rgb(255 255 255 / 0.5);
+		--sa-btn-lowlight: rgb(0 0 0 / 0.1);
 	}
-	.sa-Button[data-variant='outline'] {
-		--sa-btn-bg: transparent;
-		--sa-btn-bg-hover: var(--sa-highlight-hover);
-		--sa-btn-bg-pressed: var(--sa-highlight-hover);
-		--sa-btn-text: var(--sa-text-color);
-		--sa-btn-ring: var(--sa-border-color);
-		--sa-btn-highlight: transparent;
-	}
-	.sa-Button[data-variant='outline'][data-hovered] {
-		--sa-btn-ring: var(--sa-border-color-hover);
-	}
+
+	/* Flat variants: no elevation or gloss. */
+	.sa-Button[data-variant='outline'],
 	.sa-Button[data-variant='ghost'] {
 		--sa-btn-bg: transparent;
 		--sa-btn-bg-hover: var(--sa-highlight-hover);
 		--sa-btn-bg-pressed: var(--sa-highlight-hover);
 		--sa-btn-text: var(--sa-text-color);
-		--sa-btn-ring: transparent;
 		--sa-btn-highlight: transparent;
+		--sa-btn-lowlight: transparent;
+		--sa-btn-elevation: 0 0 #0000;
+	}
+	.sa-Button[data-variant='outline'] {
+		--sa-btn-ring: var(--sa-border-color);
+	}
+	.sa-Button[data-variant='outline'][data-hovered] {
+		--sa-btn-ring: var(--sa-border-color-hover);
+		--sa-btn-elevation: 0 0 #0000;
+	}
+	.sa-Button[data-variant='ghost'] {
+		--sa-btn-ring: transparent;
+	}
+	.sa-Button[data-variant='ghost'][data-hovered] {
+		--sa-btn-elevation: 0 0 #0000;
 	}
 
 	.sa-Button[data-disabled] {
@@ -138,6 +156,8 @@
 		--sa-btn-text: var(--sa-text-color-disabled);
 		--sa-btn-ring: transparent;
 		--sa-btn-highlight: transparent;
+		--sa-btn-lowlight: transparent;
+		--sa-btn-elevation: 0 0 #0000;
 	}
 	.sa-Button[data-variant='outline'][data-disabled],
 	.sa-Button[data-variant='ghost'][data-disabled] {
