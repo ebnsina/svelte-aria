@@ -69,13 +69,15 @@ press · hover · focusVisible   toggle           Button/Checkbox/TextField/Spin
 - **Focus:** `outline: 2px solid var(--sa-focus-ring-color)` with
   `outline-offset: 2px` (inset `-1px` for recessed fields). Same for every
   focusable control, library and docs. No Tailwind `ring-*` for focus.
-- **Elevation:** raised surfaces use soft shadows (`--sa-shadow-sm/md`), not
-  1px borders; structural dividers use `--sa-hairline`.
-- **Tactile controls:** filled buttons and the checkbox indicator share one
-  "crispy" treatment — outer elevation + inset top specular + crisp edge + inner
-  bottom shadow. Recessed controls (text fields) use the inset treatment. Keep
-  raised-vs-inset consistent across the set.
+- **Elevation:** docs surfaces (cards/code/tables) use soft shadows
+  (`--sa-shadow-sm/md`) + a `--sa-hairline` ring, not heavy borders; structural
+  dividers use `--sa-hairline`.
+- **Components are modern / clean / minimal** (shadcn/Radix-ish), NOT
+  skeuomorphic. Flat surfaces, solid accent fills, **light 1px borders**
+  (`--sa-gray-300`) on inputs/checkbox, no gloss/specular/inset treatments.
+  Keep every control on this same flat system.
 - **Hover surfaces:** `var(--sa-highlight-hover)`.
+- **Disabled:** `opacity: 0.5` + `cursor: not-allowed` (don't recolour).
 
 ## Commits & repo hygiene
 

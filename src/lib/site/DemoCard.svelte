@@ -12,7 +12,7 @@
 	let { preview, controls, children }: Props = $props();
 </script>
 
-<div class="not-prose overflow-hidden rounded-sa-lg bg-sa-field shadow-sa-sm">
+<div class="not-prose overflow-hidden rounded-sa-lg bg-sa-field shadow-sa-sm ring-1 ring-sa-hairline">
 	<div class="grid gap-6 bg-sa-bg p-8 md:grid-cols-[1fr_auto] md:gap-10">
 		<div class="grid min-h-40 place-items-center">
 			{@render preview()}

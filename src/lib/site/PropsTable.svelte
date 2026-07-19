@@ -11,7 +11,7 @@
 	let { rows }: Props = $props();
 </script>
 
-<div class="overflow-x-auto rounded-sa-lg bg-sa-field shadow-sa-sm">
+<div class="overflow-x-auto rounded-sa-lg bg-sa-field shadow-sa-sm ring-1 ring-sa-hairline">
 	<table class="w-full border-collapse text-left text-sm">
 		<thead>
 			<tr class="border-b border-sa-hairline text-xs tracking-wide text-sa-fg-muted uppercase">

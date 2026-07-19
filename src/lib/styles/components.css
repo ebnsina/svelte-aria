@@ -1,33 +1,34 @@
 /**
- * Component styling ported 1:1 from Adobe's React Aria Components starter
- * (utilities.css `.button-base` / `.indicator` / `.inset`, plus Button.css,
- * Checkbox.css, TextField.css). Reproduces React Aria's tactile treatment:
- * layered box-shadows (border + specular highlight + inner gradient), a light
- * tinted primary, `outline` focus rings, and press scaling. Namespaced --sa-*.
+ * Component styling — modern, clean, minimal.
  *
- * Reference: https://react-aria.adobe.com/ (react-spectrum/starters/docs)
+ * Flat surfaces, light borders, solid accent fills, and a consistent focus ring
+ * (`ring` in the accent colour, offset by 2px) across every control. Behaviour
+ * still comes from the headless primitives via data-* attributes; this file only
+ * owns the visuals. Namespaced --sa-*; theme-consistent in light and dark.
  */
 
 @layer components {
+	/* Shared focus ring: accent-coloured, offset — same for every control. */
+	.sa-Button[data-focus-visible],
+	.sa-indicator[data-focus-visible],
+	.sa-Field[data-focus-visible] {
+		outline: 2px solid var(--sa-focus-ring-color);
+		outline-offset: 2px;
+	}
+
 	/* ============================ Button ============================ */
-	/* Solid, theme-consistent buttons. Filled variants (primary, destructive)
-	   pin their colour to a fixed accent lightness so they look the same in
-	   light and dark, with a subtle inset ring + top specular for a tactile
-	   feel. Neutral/transparent variants adapt to the surface. */
 	.sa-Button {
 		--sa-btn-bg: var(--sa-highlight-background);
-		--sa-btn-bg-hover: oklch(from var(--sa-tint) 51% c h);
+		--sa-btn-bg-hover: oklch(from var(--sa-tint) 50% c h);
 		--sa-btn-bg-pressed: var(--sa-highlight-background-pressed);
 		--sa-btn-text: var(--sa-highlight-foreground);
-		--sa-btn-ring: oklch(from var(--sa-tint) 46% c h);
-		--sa-btn-highlight: rgb(255 255 255 / 0.25); /* top specular */
-		--sa-btn-lowlight: rgb(0 0 0 / 0.32); /* bottom inner shadow */
-		--sa-btn-elevation: 0 1px 2px rgb(0 0 0 / 0.22), 0 4px 8px -2px rgb(0 0 0 / 0.16);
+		--sa-btn-border: transparent;
+		--sa-btn-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
 
 		position: relative;
 		appearance: none;
-		border: none;
 		margin: 0;
+		border: 1px solid var(--sa-btn-border);
 		border-radius: var(--sa-radius);
 		font-family: inherit;
 		font-weight: 500;
@@ -46,15 +47,9 @@
 
 		background: var(--sa-btn-bg);
 		color: var(--sa-btn-text);
-		/* Crispy tactile stack: outer elevation, crisp edge, bright top specular,
-		   and a soft inner shadow toward the bottom for a glossy, raised look. */
-		box-shadow:
-			var(--sa-btn-elevation),
-			inset 0 0 0 1px var(--sa-btn-ring),
-			inset 0 1px 0 var(--sa-btn-highlight),
-			inset 0 -7px 8px -7px var(--sa-btn-lowlight);
+		box-shadow: var(--sa-btn-shadow);
 		outline: none;
-		transition-property: background, color, scale, box-shadow;
+		transition-property: background, border-color, color, scale, box-shadow;
 		transition-duration: 150ms;
 		will-change: scale;
 		forced-color-adjust: none;
@@ -65,8 +60,7 @@
 		height: calc(var(--sa-spacing) * 4.5);
 	}
 
-	/* Explicitly icon-only buttons become circular (opt-in via data-icon-only,
-	   so a normal text+icon button is never misdetected as icon-only). */
+	/* Explicitly icon-only buttons become circular (opt-in via data-icon-only). */
 	.sa-Button[data-icon-only] {
 		width: var(--sa-spacing-8);
 		flex-shrink: 0;
@@ -74,7 +68,7 @@
 		border-radius: 9999px;
 	}
 
-	/* Pending state: spinner centred over the (hidden) label, button keeps shape */
+	/* Pending: spinner centred over the (hidden) label; button keeps its shape. */
 	.sa-Button-spinner {
 		position: absolute;
 		inset: 0;
@@ -91,77 +85,50 @@
 
 	.sa-Button[data-hovered] {
 		background: var(--sa-btn-bg-hover);
-		--sa-btn-elevation: 0 1px 2px rgb(0 0 0 / 0.24), 0 6px 14px -3px rgb(0 0 0 / 0.22);
 	}
 	.sa-Button[data-pressed] {
 		scale: 0.97;
 		background: var(--sa-btn-bg-pressed);
-		/* Presses into the surface: collapse the elevation, dim the highlight. */
-		--sa-btn-elevation: 0 1px 1px rgb(0 0 0 / 0.2);
-		--sa-btn-highlight: rgb(255 255 255 / 0.1);
-		--sa-btn-lowlight: rgb(0 0 0 / 0.4);
-	}
-	.sa-Button[data-focus-visible] {
-		outline: 2px solid var(--sa-focus-ring-color);
-		outline-offset: 2px;
 	}
 
 	/* Variants */
 	.sa-Button[data-variant='destructive'] {
 		--sa-btn-bg: oklch(from var(--sa-red) 55% c h);
-		--sa-btn-bg-hover: oklch(from var(--sa-red) 51% c h);
-		--sa-btn-bg-pressed: oklch(from var(--sa-red) 47% c h);
+		--sa-btn-bg-hover: oklch(from var(--sa-red) 50% c h);
+		--sa-btn-bg-pressed: oklch(from var(--sa-red) 46% c h);
 		--sa-btn-text: #fff;
-		--sa-btn-ring: oklch(from var(--sa-red) 46% c h);
 	}
 	.sa-Button[data-variant='secondary'] {
 		--sa-btn-bg: var(--sa-gray-200);
 		--sa-btn-bg-hover: var(--sa-gray-300);
 		--sa-btn-bg-pressed: var(--sa-gray-300);
 		--sa-btn-text: var(--sa-text-color);
-		--sa-btn-ring: var(--sa-hairline);
-		--sa-btn-highlight: rgb(255 255 255 / 0.5);
-		--sa-btn-lowlight: rgb(0 0 0 / 0.1);
+		--sa-btn-border: var(--sa-gray-300);
 	}
-
-	/* Flat variants: no elevation or gloss. */
-	.sa-Button[data-variant='outline'],
+	.sa-Button[data-variant='outline'] {
+		--sa-btn-bg: transparent;
+		--sa-btn-bg-hover: var(--sa-highlight-hover);
+		--sa-btn-bg-pressed: var(--sa-highlight-hover);
+		--sa-btn-text: var(--sa-text-color);
+		--sa-btn-border: var(--sa-border-color);
+		--sa-btn-shadow: none;
+	}
+	.sa-Button[data-variant='outline'][data-hovered] {
+		--sa-btn-border: var(--sa-border-color-hover);
+	}
 	.sa-Button[data-variant='ghost'] {
 		--sa-btn-bg: transparent;
 		--sa-btn-bg-hover: var(--sa-highlight-hover);
 		--sa-btn-bg-pressed: var(--sa-highlight-hover);
 		--sa-btn-text: var(--sa-text-color);
-		--sa-btn-highlight: transparent;
-		--sa-btn-lowlight: transparent;
-		--sa-btn-elevation: 0 0 #0000;
-	}
-	.sa-Button[data-variant='outline'] {
-		--sa-btn-ring: var(--sa-border-color);
-	}
-	.sa-Button[data-variant='outline'][data-hovered] {
-		--sa-btn-ring: var(--sa-border-color-hover);
-		--sa-btn-elevation: 0 0 #0000;
-	}
-	.sa-Button[data-variant='ghost'] {
-		--sa-btn-ring: transparent;
-	}
-	.sa-Button[data-variant='ghost'][data-hovered] {
-		--sa-btn-elevation: 0 0 #0000;
+		--sa-btn-border: transparent;
+		--sa-btn-shadow: none;
 	}
 
 	.sa-Button[data-disabled] {
 		cursor: not-allowed;
-		--sa-btn-bg: var(--sa-gray-200);
-		--sa-btn-bg-hover: var(--sa-gray-200);
-		--sa-btn-text: var(--sa-text-color-disabled);
-		--sa-btn-ring: transparent;
-		--sa-btn-highlight: transparent;
-		--sa-btn-lowlight: transparent;
-		--sa-btn-elevation: 0 0 #0000;
-	}
-	.sa-Button[data-variant='outline'][data-disabled],
-	.sa-Button[data-variant='ghost'][data-disabled] {
-		--sa-btn-bg: transparent;
+		opacity: 0.5;
+		box-shadow: none;
 	}
 
 	/* Sizes */
@@ -176,7 +143,7 @@
 		font-size: var(--sa-font-size-lg);
 	}
 
-	/* ==================== Checkbox indicator ==================== */
+	/* ============================ Checkbox ============================ */
 	.sa-Checkbox {
 		--sa-checkmark-color: var(--sa-highlight-foreground);
 		display: inline-flex;
@@ -191,12 +158,6 @@
 	}
 
 	.sa-indicator {
-		--sa-indicator-color: var(--sa-gray);
-		--sa-indicator-background: oklch(
-			from var(--sa-indicator-color) var(--sa-l-100) var(--sa-c-100) h
-		);
-		--sa-indicator-border: oklch(from var(--sa-indicator-color) var(--sa-l-800) var(--sa-c-800) h);
-
 		width: calc(var(--sa-spacing) * 4.5);
 		height: calc(var(--sa-spacing) * 4.5);
 		box-sizing: border-box;
@@ -205,60 +166,28 @@
 		align-items: center;
 		justify-content: center;
 		flex-shrink: 0;
-		background: var(--sa-indicator-background);
-		box-shadow:
-			inset 0 0 0 1px var(--sa-indicator-border),
-			inset 0 2px 0 white,
-			inset 0 -4px 2px oklch(from var(--sa-indicator-color) 30% c h / 0.08);
-		transition: all 200ms;
+		background: var(--sa-field-background);
+		border: 1px solid var(--sa-gray-300);
+		transition:
+			background 150ms,
+			border-color 150ms,
+			scale 100ms;
 		will-change: scale;
 	}
 
-	:root[data-theme='dark'] .sa-indicator {
-		box-shadow:
-			inset 0 1px 0 rgb(255 255 255 / 0.4),
-			inset 0 4px 2px rgb(255 255 255 / 0.1),
-			inset 0 0 0 1px var(--sa-indicator-border);
-	}
-
 	.sa-indicator[data-pressed] {
-		scale: 0.9;
+		scale: 0.92;
 	}
-
 	.sa-indicator[data-selected],
 	.sa-indicator[data-indeterminate] {
-		--sa-indicator-color: var(--sa-highlight-background);
-		--sa-indicator-background: var(--sa-indicator-color);
-		--sa-indicator-highlight: rgb(255 255 255 / 0.3);
-		--sa-indicator-shadow: oklch(from var(--sa-indicator-color) 45% c h);
-		--sa-indicator-border: var(--sa-indicator-background);
-		box-shadow:
-			inset 0 -1px 0 var(--sa-indicator-shadow),
-			inset 0 0 0 1px var(--sa-indicator-border),
-			inset 0 2px 0 var(--sa-indicator-highlight);
+		background: var(--sa-highlight-background);
+		border-color: var(--sa-highlight-background);
 	}
-
-	:root[data-theme='dark'] .sa-indicator[data-selected],
-	:root[data-theme='dark'] .sa-indicator[data-indeterminate] {
-		--sa-indicator-highlight: rgb(255 255 255 / 0.5);
-		box-shadow:
-			inset 0 1px 0 var(--sa-indicator-highlight),
-			inset 0 4px 2px rgb(255 255 255 / 0.12),
-			inset 0 0 0 1px var(--sa-indicator-border);
-	}
-
 	.sa-indicator[data-invalid] {
-		--sa-indicator-color: var(--sa-invalid-color);
+		border-color: var(--sa-invalid-color);
 	}
-
-	.sa-indicator[data-focus-visible] {
-		outline: 2px solid var(--sa-focus-ring-color);
-		outline-offset: 2px;
-	}
-
-	.sa-indicator[data-disabled] {
-		background: var(--sa-field-background);
-		box-shadow: inset 0 0 0 1px var(--sa-border-color-disabled);
+	.sa-indicator[data-invalid][data-selected] {
+		background: var(--sa-invalid-color);
 	}
 
 	/* Animated checkmark (draws in via stroke-dashoffset) */
@@ -284,9 +213,8 @@
 	}
 
 	.sa-Checkbox[data-disabled] {
-		color: var(--sa-text-color-disabled);
-		--sa-checkmark-color: var(--sa-text-color-disabled);
 		cursor: not-allowed;
+		opacity: 0.5;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
@@ -296,7 +224,7 @@
 		}
 	}
 
-	/* ==================== TextField (inset) ==================== */
+	/* ============================ TextField ============================ */
 	.sa-Label {
 		display: block;
 		font-size: var(--sa-font-size);
@@ -305,56 +233,40 @@
 		margin-bottom: var(--sa-spacing-2);
 	}
 
+	/* Clean, flat field: light border at rest, accent ring on focus. */
 	.sa-Field {
-		--sa-inset-background: var(--sa-field-background);
-		--sa-inset-border: var(--sa-border-color);
-		--sa-inset-border-size: 1px;
-		--sa-inset-shadow-offset: 2px;
-		--sa-inset-shadow-size: 4px;
-
 		display: flex;
 		align-items: center;
 		gap: var(--sa-spacing-2);
 		padding: 0 var(--sa-spacing-3);
 		border-radius: var(--sa-radius);
-		background: var(--sa-inset-background);
-		box-shadow:
-			inset 0 0 0 var(--sa-inset-border-size) var(--sa-inset-border),
-			inset 0 var(--sa-inset-shadow-offset) var(--sa-inset-shadow-size) rgb(0 0 0 / 0.15),
-			0 1px 0 var(--sa-gray-50);
-		transition: box-shadow 200ms;
+		background: var(--sa-field-background);
+		border: 1px solid var(--sa-gray-300);
+		transition:
+			border-color 150ms,
+			box-shadow 150ms;
 		forced-color-adjust: none;
 		color: var(--sa-text-color-placeholder);
 	}
 
-	:root[data-theme='dark'] .sa-Field {
-		--sa-inset-border: var(--sa-gray-200);
-		--sa-inset-shadow-size: 6px;
-		box-shadow:
-			inset 0 calc(-1 * var(--sa-inset-border-size)) 0 var(--sa-gray-400),
-			inset 0 0 0 var(--sa-inset-border-size) var(--sa-inset-border),
-			inset 0 1px var(--sa-inset-shadow-size) rgb(0 0 0);
-	}
-
 	.sa-Field[data-hovered] {
-		--sa-inset-border: var(--sa-border-color-hover);
-	}
-	.sa-Field[data-focus-visible] {
-		outline: 2px solid var(--sa-focus-ring-color);
-		outline-offset: -1px;
+		border-color: var(--sa-border-color);
 	}
 	.sa-Field[data-invalid] {
-		--sa-inset-border: var(--sa-invalid-color);
+		border-color: var(--sa-invalid-color);
+	}
+	.sa-Field[data-invalid][data-focus-visible] {
+		outline-color: var(--sa-invalid-color);
 	}
 	.sa-Field[data-disabled] {
-		box-shadow: inset 0 0 0 1px var(--sa-border-color-disabled);
 		cursor: not-allowed;
+		opacity: 0.55;
 	}
 
 	.sa-Input {
 		flex: 1;
 		width: 100%;
-		min-height: var(--sa-spacing-8);
+		min-height: calc(var(--sa-spacing-8) - 2px);
 		padding: 0;
 		margin: 0;
 		border: none;
@@ -369,7 +281,6 @@
 		color: var(--sa-text-color-placeholder);
 	}
 	.sa-Input:disabled {
-		color: var(--sa-text-color-disabled);
 		cursor: not-allowed;
 	}
 

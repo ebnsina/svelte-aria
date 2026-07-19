@@ -36,14 +36,31 @@
 	];
 </script>
 
-<div class="mx-auto w-full max-w-4xl px-4 py-16 lg:px-8">
+<div class="relative mx-auto w-full max-w-4xl px-4 py-20 lg:px-8">
+	<!-- Decorative accent glow behind the hero -->
 	<div
-		class="mb-4 inline-flex items-center gap-2 rounded-full bg-sa-subtle px-3 py-1 text-xs font-medium text-sa-accent"
+		aria-hidden="true"
+		class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80 overflow-hidden"
 	>
+		<div
+			class="absolute top-[-30%] left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full opacity-60 blur-3xl"
+			style="background: radial-gradient(closest-side, oklch(from var(--sa-tint) 60% c h / 0.28), transparent)"
+		></div>
+	</div>
+
+	<div
+		class="mb-5 inline-flex items-center gap-2 rounded-full bg-sa-field py-1 pr-3 pl-2 text-xs font-medium text-sa-fg-muted shadow-sa-sm ring-1 ring-sa-hairline"
+	>
+		<span class="relative flex size-2">
+			<span
+				class="absolute inline-flex size-full animate-ping rounded-full bg-sa-accent opacity-60"
+			></span>
+			<span class="relative inline-flex size-2 rounded-full bg-sa-accent"></span>
+		</span>
 		Svelte 5 · runes + attachments
 	</div>
-	<h1 class="text-5xl font-bold tracking-tight text-sa-fg">svelte-aria</h1>
-	<p class="mt-4 max-w-2xl text-xl text-sa-fg-muted">
+	<h1 class="text-5xl font-semibold tracking-tight text-sa-fg sm:text-6xl">svelte-aria</h1>
+	<p class="mt-5 max-w-2xl text-lg text-sa-fg-muted sm:text-xl">
 		React Aria–level behaviour, Svelte-level DX. Accessible, headless-first components built on
 		composable interaction primitives.
 	</p>
@@ -62,19 +79,19 @@
 		<CodeBlock code={install} lang="bash" filename="Terminal" />
 	</div>
 
-	<div class="mt-16 grid gap-4 sm:grid-cols-2">
+	<div class="mt-20 grid gap-4 sm:grid-cols-2">
 		{#each features as feature (feature.title)}
 			{@const Icon = feature.icon}
 			<div
-				class="group rounded-sa-lg bg-sa-field p-5 shadow-sa-sm transition-shadow duration-200 hover:shadow-sa-md"
+				class="group relative rounded-sa-lg bg-sa-field p-6 shadow-sa-sm ring-1 ring-sa-hairline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sa-md motion-reduce:hover:translate-y-0"
 			>
 				<div
-					class="mb-3 grid size-10 place-items-center rounded-sa bg-sa-subtle text-sa-accent transition-transform duration-200 group-hover:scale-105"
+					class="mb-4 grid size-11 place-items-center rounded-sa bg-sa-subtle text-sa-accent transition-transform duration-200 group-hover:scale-105"
 				>
 					<Icon class="size-5" />
 				</div>
-				<h3 class="font-semibold text-sa-fg">{feature.title}</h3>
-				<p class="mt-1 text-sm text-sa-fg-muted">{feature.body}</p>
+				<h3 class="text-[0.95rem] font-semibold text-sa-fg">{feature.title}</h3>
+				<p class="mt-1.5 text-sm leading-relaxed text-sa-fg-muted">{feature.body}</p>
 			</div>
 		{/each}
 	</div>

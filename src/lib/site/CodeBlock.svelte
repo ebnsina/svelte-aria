@@ -32,7 +32,7 @@
 <div
 	class={flush
 		? 'overflow-hidden'
-		: 'overflow-hidden rounded-sa-lg bg-sa-field shadow-sa-sm'}
+		: 'overflow-hidden rounded-sa-lg bg-sa-field shadow-sa-sm ring-1 ring-sa-hairline'}
 >
 	<div class="flex items-center border-b border-sa-hairline px-3">
 		<span class="py-2 text-xs text-sa-fg-muted">{filename ?? lang}</span>

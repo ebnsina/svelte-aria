@@ -25,13 +25,35 @@ body {
 	background-color: var(--sa-background-color);
 	color: var(--sa-text-color);
 	font-synthesis-weight: none;
+	font-optical-sizing: auto;
 	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+	/* Subtly tighter default tracking reads more modern than the browser default. */
+	letter-spacing: -0.006em;
+}
+
+/* Headings: tighter tracking + balanced wrapping for a crisp, modern hierarchy. */
+h1,
+h2,
+h3 {
+	letter-spacing: -0.021em;
+	text-wrap: balance;
+}
+
+p {
+	text-wrap: pretty;
 }
 
 code,
 pre,
 kbd {
 	font-family: var(--font-mono);
+	font-feature-settings: 'ss01';
+}
+
+::selection {
+	background: oklch(from var(--sa-tint) 55% c h / 0.28);
 }
 
 /* Smooth crossfade during a theme toggle (added briefly by the theme controller,
