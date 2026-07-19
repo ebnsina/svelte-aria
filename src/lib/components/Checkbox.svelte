@@ -88,7 +88,7 @@
 <label
 	for={id}
 	class={cn(
-		'group inline-flex cursor-pointer items-center gap-2 text-sm text-slate-900',
+		'group inline-flex cursor-pointer items-center gap-2 text-sm text-sa-fg',
 		disabled && 'cursor-not-allowed opacity-50',
 		className
 	)}
@@ -113,9 +113,9 @@
 		data-checked={isChecked || undefined}
 		data-indeterminate={indeterminate || undefined}
 		class={cn(
-			'flex size-5 shrink-0 items-center justify-center rounded border border-slate-300 bg-white text-white transition-colors',
-			(isChecked || indeterminate) && 'border-sky-600 bg-sky-600',
-			focus.focusVisible && 'ring-2 ring-sky-500 ring-offset-2'
+			'flex size-5 shrink-0 items-center justify-center rounded-sa-sm border border-sa-border bg-sa-field text-sa-accent-fg transition-colors',
+			(isChecked || indeterminate) && 'border-sa-accent bg-sa-accent',
+			focus.focusVisible && 'ring-2 ring-sa-focus ring-offset-2 ring-offset-sa-bg'
 		)}
 	>
 		{#if indeterminate}

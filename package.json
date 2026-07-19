@@ -32,7 +32,9 @@
 		".": {
 			"types": "./dist/index.d.ts",
 			"svelte": "./dist/index.js"
-		}
+		},
+		"./styles/theme.css": "./dist/styles/theme.css",
+		"./styles/tailwind.css": "./dist/styles/tailwind.css"
 	},
 	"peerDependencies": {
 		"svelte": "^5.0.0"

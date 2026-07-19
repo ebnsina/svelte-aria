@@ -61,25 +61,27 @@
 	const behaviour = combineAttachments(press.attachment, hover.attachment, focus.attachment);
 
 	const base =
-		'relative inline-flex items-center justify-center gap-2 rounded-lg font-medium ' +
+		'relative inline-flex items-center justify-center gap-2 rounded-sa font-medium ' +
 		'select-none transition-colors outline-none ' +
-		'data-[focus-visible]:ring-2 data-[focus-visible]:ring-offset-2 data-[focus-visible]:ring-sky-500 ' +
+		'data-[focus-visible]:ring-2 data-[focus-visible]:ring-offset-2 ' +
+		'data-[focus-visible]:ring-sa-focus data-[focus-visible]:ring-offset-sa-bg ' +
 		'disabled:cursor-not-allowed disabled:opacity-50 ' +
 		'data-[pressed]:scale-[0.98] motion-reduce:data-[pressed]:scale-100';
 
 	const variants: Record<Variant, string> = {
-		primary: 'bg-sky-600 text-white data-[hovered]:bg-sky-700',
-		secondary: 'bg-slate-200 text-slate-900 data-[hovered]:bg-slate-300',
+		primary: 'bg-sa-accent text-sa-accent-fg data-[pressed]:bg-sa-accent-pressed',
+		secondary:
+			'bg-sa-subtle text-sa-fg data-[hovered]:brightness-95 data-[pressed]:bg-sa-subtle-pressed',
 		outline:
-			'border border-slate-300 bg-transparent text-slate-900 data-[hovered]:bg-slate-100',
-		ghost: 'bg-transparent text-slate-900 data-[hovered]:bg-slate-100',
-		destructive: 'bg-red-600 text-white data-[hovered]:bg-red-700'
+			'border border-sa-border bg-transparent text-sa-fg data-[hovered]:border-sa-border-hover data-[hovered]:bg-[var(--sa-highlight-hover)]',
+		ghost: 'bg-transparent text-sa-fg data-[hovered]:bg-[var(--sa-highlight-hover)]',
+		destructive: 'bg-sa-invalid-bg text-white data-[pressed]:brightness-90'
 	};
 
 	const sizes: Record<Size, string> = {
-		sm: 'h-8 px-3 text-sm',
-		md: 'h-10 px-4 text-sm',
-		lg: 'h-12 px-6 text-base'
+		sm: 'h-8 px-3 text-xs',
+		md: 'h-9 px-4 text-sm',
+		lg: 'h-11 px-6 text-base'
 	};
 </script>
 

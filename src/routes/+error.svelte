@@ -22,12 +22,12 @@
 	<title>{title} · svelte-aria</title>
 </svelte:head>
 
-<main class="grid min-h-screen place-items-center bg-slate-50 px-6">
+<main class="grid min-h-screen place-items-center bg-sa-bg px-6">
 	<div class="w-full max-w-md text-center">
 		<div
 			class="mx-auto mb-6 grid size-16 place-items-center rounded-2xl {is404
-				? 'bg-slate-200 text-slate-600'
-				: 'bg-red-100 text-red-600'}"
+				? 'bg-sa-subtle text-sa-fg-muted'
+				: 'text-sa-accent-fg bg-sa-invalid-bg'}"
 		>
 			{#if is404}
 				<MapPinOff class="size-8" />
@@ -36,11 +36,11 @@
 			{/if}
 		</div>
 
-		<p class="mb-1 text-sm font-semibold tracking-wide text-slate-400 uppercase">
+		<p class="mb-1 text-sm font-semibold tracking-wide text-sa-fg-muted uppercase">
 			Error {status}
 		</p>
-		<h1 class="mb-2 text-2xl font-bold text-slate-900">{title}</h1>
-		<p class="mb-8 text-slate-600">{message}</p>
+		<h1 class="mb-2 text-2xl font-bold text-sa-fg">{title}</h1>
+		<p class="mb-8 text-sa-fg-muted">{message}</p>
 
 		<div class="flex justify-center gap-3">
 			<Button variant="outline" onPress={() => location.reload()}>

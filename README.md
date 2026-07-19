@@ -29,7 +29,27 @@ npm install svelte-aria
 ```
 
 Requires **Svelte 5**. The styled components use Tailwind CSS v4 utilities —
-make sure Tailwind is set up in your app.
+make sure Tailwind is set up in your app, then import the theme once in your
+Tailwind entry CSS:
+
+```css
+@import 'tailwindcss';
+@import 'svelte-aria/styles/tailwind.css';
+```
+
+This brings in svelte-aria's **design tokens and palette, ported from React
+Aria** — an OKLCH-based, re-tintable colour system (default tint: indigo) with
+a neutral gray scale, semantic tokens, and automatic **dark mode** + Windows
+high-contrast support. Re-theme every component by overriding one variable:
+
+```css
+:root {
+	--sa-tint: var(--sa-blue); /* or --sa-green, --sa-pink, or any custom color */
+}
+```
+
+Not using Tailwind yet? Import just the tokens — `svelte-aria/styles/theme.css`
+— a vanilla-CSS kit that consumes them is planned.
 
 ## Usage
 

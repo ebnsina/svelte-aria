@@ -1,0 +1,202 @@
+/**
+ * svelte-aria design tokens.
+ *
+ * Ported from Adobe's React Aria Components starter theme so svelte-aria shares
+ * React Aria's exact palette and token model: an OKLCH-based, re-tintable colour
+ * system (default tint = indigo), a neutral gray scale, semantic tokens, plus
+ * dark-mode and Windows high-contrast support.
+ *
+ * All custom properties are namespaced `--sa-*` to avoid collisions in consumer
+ * apps. Change `--sa-tint` to re-theme every component at once.
+ *
+ * Reference: https://react-aria.adobe.com/  (react-spectrum/starters/docs)
+ */
+
+/* Base hues (lightness channel is only a chroma multiplier — see scales) */
+:root {
+	--sa-tint: var(--sa-indigo);
+
+	--sa-gray: oklch(0.5 0 0);
+	--sa-red: oklch(0.6 0.181447 27.0726);
+	--sa-orange: oklch(0.7 0.150492 54);
+	--sa-yellow: oklch(0.8 0.128516 73.8032);
+	--sa-turquoise: oklch(0.5 0.081146 205.114);
+	--sa-cyan: oklch(0.4 0.142107 243.926);
+	--sa-green: oklch(0.5 0.121276 155.372);
+	--sa-blue: oklch(0.5 0.22049 266.315);
+	--sa-indigo: oklch(1 0.25049 284.23);
+	--sa-purple: oklch(0.7 0.223324 302);
+	--sa-pink: oklch(0.6 0.177717 347.813);
+
+	/* Tint scale */
+	--sa-tint-100: oklch(from var(--sa-tint) var(--sa-l-100) var(--sa-c-100) h);
+	--sa-tint-200: oklch(from var(--sa-tint) var(--sa-l-200) var(--sa-c-200) h);
+	--sa-tint-300: oklch(from var(--sa-tint) var(--sa-l-300) var(--sa-c-300) h);
+	--sa-tint-400: oklch(from var(--sa-tint) var(--sa-l-400) var(--sa-c-400) h);
+	--sa-tint-500: oklch(from var(--sa-tint) var(--sa-l-500) var(--sa-c-500) h);
+	--sa-tint-600: oklch(from var(--sa-tint) var(--sa-l-600) var(--sa-c-600) h);
+	--sa-tint-700: oklch(from var(--sa-tint) var(--sa-l-700) var(--sa-c-700) h);
+	--sa-tint-800: oklch(from var(--sa-tint) var(--sa-l-800) var(--sa-c-800) h);
+	--sa-tint-900: oklch(from var(--sa-tint) var(--sa-l-900) var(--sa-c-900) h);
+	--sa-tint-1000: oklch(from var(--sa-tint) var(--sa-l-1000) var(--sa-c-1000) h);
+	--sa-tint-1100: oklch(from var(--sa-tint) var(--sa-l-1100) var(--sa-c-1100) h);
+	--sa-tint-1200: oklch(from var(--sa-tint) var(--sa-l-1200) var(--sa-c-1200) h);
+	--sa-tint-1300: oklch(from var(--sa-tint) var(--sa-l-1300) var(--sa-c-1300) h);
+	--sa-tint-1400: oklch(from var(--sa-tint) var(--sa-l-1400) var(--sa-c-1400) h);
+	--sa-tint-1500: oklch(from var(--sa-tint) var(--sa-l-1500) var(--sa-c-1500) h);
+	--sa-tint-1600: oklch(from var(--sa-tint) var(--sa-l-1600) var(--sa-c-1600) h);
+
+	/* Gray scale */
+	--sa-gray-100: oklch(from var(--sa-gray) var(--sa-l-100) c h);
+	--sa-gray-200: oklch(from var(--sa-gray) var(--sa-l-200) c h);
+	--sa-gray-300: oklch(from var(--sa-gray) var(--sa-l-300) c h);
+	--sa-gray-400: oklch(from var(--sa-gray) var(--sa-l-400) c h);
+	--sa-gray-500: oklch(from var(--sa-gray) var(--sa-l-500) c h);
+	--sa-gray-600: oklch(from var(--sa-gray) var(--sa-l-600) c h);
+	--sa-gray-700: oklch(from var(--sa-gray) var(--sa-l-700) c h);
+	--sa-gray-800: oklch(from var(--sa-gray) var(--sa-l-800) c h);
+	--sa-gray-900: oklch(from var(--sa-gray) var(--sa-l-900) c h);
+	--sa-gray-1000: oklch(from var(--sa-gray) var(--sa-l-1000) c h);
+	--sa-gray-1100: oklch(from var(--sa-gray) var(--sa-l-1100) c h);
+	--sa-gray-1200: oklch(from var(--sa-gray) var(--sa-l-1200) c h);
+	--sa-gray-1300: oklch(from var(--sa-gray) var(--sa-l-1300) c h);
+	--sa-gray-1400: oklch(from var(--sa-gray) var(--sa-l-1400) c h);
+	--sa-gray-1500: oklch(from var(--sa-gray) var(--sa-l-1500) c h);
+	--sa-gray-1600: oklch(from var(--sa-gray) var(--sa-l-1600) c h);
+}
+
+/* Light mode: lightness/chroma steps */
+:root {
+	--sa-background-color: #f8f8f8;
+	--sa-gray-50: #ffffff;
+
+	--sa-l-100: 98.1187%;
+	--sa-l-200: 95.2045%;
+	--sa-l-300: 91.1434%;
+	--sa-l-400: 85.1751%;
+	--sa-l-500: 79.1773%;
+	--sa-l-600: 72.3297%;
+	--sa-l-700: 67.0121%;
+	--sa-l-800: 62.3039%;
+	--sa-l-900: 57.9699%;
+	--sa-l-1000: 51.9076%;
+	--sa-l-1100: 46.9058%;
+	--sa-l-1200: 41.0821%;
+	--sa-l-1300: 35.3616%;
+	--sa-l-1400: 29.6725%;
+	--sa-l-1500: 24.5366%;
+	--sa-l-1600: 16.6959%;
+
+	/* Lower chroma at low lightness levels */
+	--sa-c-100: calc(l * c * 0.5);
+	--sa-c-200: calc(l * c * 0.6);
+	--sa-c-300: calc(l * c * 0.7);
+	--sa-c-400: calc(l * c * 0.8);
+	--sa-c-500: calc(l * c * 0.9);
+	--sa-c-600: c;
+	--sa-c-700: c;
+	--sa-c-800: c;
+	--sa-c-900: c;
+	--sa-c-1000: c;
+	--sa-c-1100: c;
+	--sa-c-1200: c;
+	--sa-c-1300: c;
+	--sa-c-1400: c;
+	--sa-c-1500: c;
+	--sa-c-1600: c;
+
+	--sa-highlight-hover: rgb(0 0 0 / 0.07);
+	--sa-highlight-pressed: rgb(0 0 0 / 0.15);
+	--sa-overlay-background: var(--sa-gray-50);
+	--sa-overlay-border: rgb(0 0 0 / 0.06);
+	--sa-popover-shadow: 0 8px 20px rgb(0 0 0 / 0.12);
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--sa-background-color: #1b1b1b;
+		--sa-gray-50: oklch(22% 0 0);
+
+		--sa-l-100: 29.6725%;
+		--sa-l-200: 35.3616%;
+		--sa-l-300: 41.0821%;
+		--sa-l-400: 46.9058%;
+		--sa-l-500: 51.9076%;
+		--sa-l-600: 57.9699%;
+		--sa-l-700: 56.1347%;
+		--sa-l-800: 59.2866%;
+		--sa-l-900: 62.3039%;
+		--sa-l-1000: 67.0121%;
+		--sa-l-1100: 72.3297%;
+		--sa-l-1200: 79.1773%;
+		--sa-l-1300: 85.1751%;
+		--sa-l-1400: 91.1434%;
+		--sa-l-1500: 95.2045%;
+		--sa-l-1600: 100%;
+
+		--sa-highlight-hover: rgb(255 255 255 / 0.1);
+		--sa-highlight-pressed: rgb(255 255 255 / 0.2);
+		--sa-overlay-background: var(--sa-gray-100);
+		--sa-overlay-border: rgb(255 255 255 / 0.2);
+		--sa-popover-shadow: 0 8px 20px rgb(0 0 0 / 0.5);
+	}
+}
+
+/* Semantic tokens */
+:root {
+	--sa-focus-ring-color: var(--sa-tint-1000);
+	--sa-text-color: var(--sa-gray-1200);
+	--sa-text-color-hover: var(--sa-gray-1300);
+	--sa-text-color-disabled: var(--sa-gray-600);
+	--sa-text-color-placeholder: var(--sa-gray-1000);
+	--sa-link-color: var(--sa-tint-1200);
+	--sa-border-color: var(--sa-gray-400);
+	--sa-border-color-hover: var(--sa-gray-500);
+	--sa-border-color-disabled: var(--sa-gray-300);
+	--sa-field-text-color: var(--sa-gray-1400);
+	--sa-field-background: var(--sa-gray-50);
+	--sa-button-background: var(--sa-tint-100);
+	--sa-button-background-pressed: var(--sa-tint-200);
+
+	/* Same across light/dark to preserve contrast with the foreground */
+	--sa-highlight-background: oklch(from var(--sa-tint) 55% c h);
+	--sa-highlight-background-pressed: oklch(from var(--sa-tint) 50% c h);
+	--sa-highlight-background-invalid: oklch(from var(--sa-red) var(--sa-l-900) c h);
+	--sa-highlight-foreground: white;
+	--sa-invalid-color: oklch(from var(--sa-red) var(--sa-l-1000) c h);
+
+	/* Typography & radius scale */
+	--sa-font-size: 0.875rem; /* 14px */
+	--sa-font-size-sm: 0.75rem; /* 12px */
+	--sa-font-size-lg: 1rem; /* 16px */
+	--sa-radius: 8px;
+	--sa-radius-sm: 6px;
+	--sa-radius-lg: 10px;
+}
+
+/* Windows high-contrast mode */
+@media (forced-colors: active) {
+	:root {
+		--sa-background-color: Canvas;
+		--sa-focus-ring-color: Highlight;
+		--sa-text-color: ButtonText;
+		--sa-text-color-hover: ButtonText;
+		--sa-text-color-disabled: GrayText;
+		--sa-text-color-placeholder: ButtonText;
+		--sa-border-color: ButtonBorder;
+		--sa-border-color-hover: ButtonBorder;
+		--sa-border-color-disabled: GrayText;
+		--sa-field-background: Field;
+		--sa-field-text-color: FieldText;
+		--sa-overlay-background: Canvas;
+		--sa-overlay-border: ButtonBorder;
+		--sa-button-background: ButtonFace;
+		--sa-button-background-pressed: ButtonFace;
+		--sa-highlight-background: Highlight;
+		--sa-highlight-background-pressed: Highlight;
+		--sa-highlight-background-invalid: LinkText;
+		--sa-highlight-foreground: HighlightText;
+		--sa-invalid-color: LinkText;
+	}
+}

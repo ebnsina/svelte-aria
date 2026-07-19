@@ -64,26 +64,26 @@
 
 <div class={cn('flex flex-col gap-1.5', className)}>
 	{#if label}
-		<label for={id} class="text-sm font-medium text-slate-900">
+		<label for={id} class="text-sm font-medium text-sa-fg">
 			{label}
 			{#if required}
-				<span class="text-red-600" aria-hidden="true">*</span>
+				<span class="text-sa-invalid" aria-hidden="true">*</span>
 			{/if}
 		</label>
 	{/if}
 
 	<div
 		class={cn(
-			'flex items-center gap-2 rounded-lg border bg-white px-3 transition-colors',
-			'border-slate-300',
-			invalid && 'border-red-500',
-			focus.focusVisible && !invalid && 'border-sky-500 ring-2 ring-sky-500/30',
-			focus.focusVisible && invalid && 'ring-2 ring-red-500/30',
-			disabled && 'cursor-not-allowed bg-slate-50 opacity-60'
+			'flex items-center gap-2 rounded-sa border bg-sa-field px-3 transition-colors',
+			'border-sa-border',
+			invalid && 'border-sa-invalid',
+			focus.focusVisible && !invalid && 'border-sa-focus ring-2 ring-sa-focus/30',
+			focus.focusVisible && invalid && 'ring-2 ring-sa-invalid/30',
+			disabled && 'cursor-not-allowed opacity-60'
 		)}
 	>
 		{#if prefix}
-			<span class="text-slate-400">{@render prefix()}</span>
+			<span class="text-sa-fg-muted">{@render prefix()}</span>
 		{/if}
 
 		<input
@@ -95,20 +95,20 @@
 			bind:value
 			aria-invalid={invalid || undefined}
 			aria-describedby={describedBy}
-			class="h-10 w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed"
+			class="h-10 w-full bg-transparent text-sm text-sa-fg outline-none placeholder:text-sa-fg-muted disabled:cursor-not-allowed"
 			{@attach focus.attachment}
 		/>
 
 		{#if suffix}
-			<span class="text-slate-400">{@render suffix()}</span>
+			<span class="text-sa-fg-muted">{@render suffix()}</span>
 		{/if}
 	</div>
 
 	{#if description && !errorMessage}
-		<p id={descriptionId} class="text-xs text-slate-500">{description}</p>
+		<p id={descriptionId} class="text-xs text-sa-fg-muted">{description}</p>
 	{/if}
 
 	{#if errorMessage}
-		<p id={errorId} role="alert" class="text-xs text-red-600">{errorMessage}</p>
+		<p id={errorId} role="alert" class="text-xs text-sa-invalid">{errorMessage}</p>
 	{/if}
 </div>

@@ -1,2 +1,10 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
+
+/* svelte-aria design tokens + semantic utilities (React Aria palette) */
+@import '../lib/styles/tailwind.css';
+
+body {
+	background-color: var(--sa-background-color);
+	color: var(--sa-text-color);
+}

@@ -1,0 +1,37 @@
+/**
+ * svelte-aria Tailwind preset.
+ *
+ * Import this once in your app's Tailwind entry (after `@import 'tailwindcss'`)
+ * to get both the React Aria design tokens and the semantic colour/radius
+ * utilities the components rely on:
+ *
+ *   @import 'tailwindcss';
+ *   @import 'svelte-aria/styles/tailwind.css';
+ *
+ * `@theme inline` emits `var(--sa-*)` directly, so dark-mode and high-contrast
+ * token overrides flow through the generated utilities automatically.
+ */
+
+@import './theme.css';
+
+@theme inline {
+	--color-sa-bg: var(--sa-background-color);
+	--color-sa-fg: var(--sa-text-color);
+	--color-sa-fg-muted: var(--sa-text-color-placeholder);
+	--color-sa-fg-disabled: var(--sa-text-color-disabled);
+	--color-sa-field: var(--sa-field-background);
+	--color-sa-border: var(--sa-border-color);
+	--color-sa-border-hover: var(--sa-border-color-hover);
+	--color-sa-accent: var(--sa-highlight-background);
+	--color-sa-accent-pressed: var(--sa-highlight-background-pressed);
+	--color-sa-accent-fg: var(--sa-highlight-foreground);
+	--color-sa-subtle: var(--sa-button-background);
+	--color-sa-subtle-pressed: var(--sa-button-background-pressed);
+	--color-sa-invalid: var(--sa-invalid-color);
+	--color-sa-invalid-bg: var(--sa-highlight-background-invalid);
+	--color-sa-focus: var(--sa-focus-ring-color);
+
+	--radius-sa-sm: var(--sa-radius-sm);
+	--radius-sa: var(--sa-radius);
+	--radius-sa-lg: var(--sa-radius-lg);
+}
