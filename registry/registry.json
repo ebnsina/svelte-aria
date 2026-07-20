@@ -1,0 +1,137 @@
+{
+	"$schema": "./schema.ts",
+	"name": "svelte-aria",
+	"homepage": "https://github.com/ebnsina/svelte-aria",
+	"base": ["theme", "cn"],
+	"items": [
+		{
+			"name": "theme",
+			"type": "registry:style",
+			"description": "Design tokens (OKLCH, re-tintable) + Tailwind preset: semantic utilities, dark-mode variant, and the global :focus-visible ring. Applied by `init`.",
+			"devDependencies": ["tailwindcss", "@tailwindcss/vite"],
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/styles/theme.css", "target": "{lib}/styles/theme.css", "type": "registry:style" },
+				{ "path": "src/lib/styles/tailwind.css", "target": "{lib}/styles/svelte-aria.css", "type": "registry:style" }
+			],
+			"css": { "imports": ["{lib}/styles/svelte-aria.css"] },
+			"docs": "Import `{lib}/styles/svelte-aria.css` right after `@import 'tailwindcss';` in your app CSS. Re-theme by overriding `--sa-tint`."
+		},
+
+		{
+			"name": "cn",
+			"type": "registry:lib",
+			"description": "Class-name merge with Tailwind conflict resolution.",
+			"dependencies": ["clsx", "tailwind-merge"],
+			"files": [{ "path": "src/lib/utils/cn.ts", "target": "{utils}/cn.ts", "type": "registry:lib" }]
+		},
+		{
+			"name": "id",
+			"type": "registry:lib",
+			"description": "Stable unique-id generator for ARIA relationships.",
+			"files": [{ "path": "src/lib/utils/id.ts", "target": "{lib}/id.ts", "type": "registry:lib" }]
+		},
+		{
+			"name": "attachment-utils",
+			"type": "registry:lib",
+			"description": "combineAttachments + setDataAttr — compose attachments and toggle data-* state.",
+			"files": [{ "path": "src/lib/utils/attachments.ts", "target": "{lib}/attachments/utils.ts", "type": "registry:lib" }]
+		},
+
+		{
+			"name": "press",
+			"type": "registry:primitive",
+			"description": "Unified press across mouse/touch/keyboard/virtual (usePress-equivalent).",
+			"registryDependencies": ["attachment-utils"],
+			"files": [{ "path": "src/lib/attachments/press.svelte.ts", "target": "{lib}/attachments/press.svelte.ts", "type": "registry:primitive" }]
+		},
+		{
+			"name": "hover",
+			"type": "registry:primitive",
+			"description": "Mouse/pen hover that ignores touch.",
+			"registryDependencies": ["attachment-utils"],
+			"files": [{ "path": "src/lib/attachments/hover.svelte.ts", "target": "{lib}/attachments/hover.svelte.ts", "type": "registry:primitive" }]
+		},
+		{
+			"name": "focus",
+			"type": "registry:primitive",
+			"description": "Keyboard-only focus tracking (focus-visible), via global input-modality.",
+			"registryDependencies": ["attachment-utils"],
+			"files": [{ "path": "src/lib/attachments/focus.svelte.ts", "target": "{lib}/attachments/focus.svelte.ts", "type": "registry:primitive" }]
+		},
+		{
+			"name": "focus-scope",
+			"type": "registry:primitive",
+			"description": "Trap Tab focus in an element and restore it on teardown (modals).",
+			"files": [{ "path": "src/lib/attachments/focus-scope.ts", "target": "{lib}/attachments/focus-scope.ts", "type": "registry:primitive" }]
+		},
+		{
+			"name": "portal",
+			"type": "registry:primitive",
+			"description": "Move an element to document.body so overlays aren't clipped.",
+			"files": [{ "path": "src/lib/attachments/portal.ts", "target": "{lib}/attachments/portal.ts", "type": "registry:primitive" }]
+		},
+
+		{
+			"name": "toggle",
+			"type": "registry:state",
+			"description": "Controlled/uncontrolled boolean state machine (Switch/toggle buttons).",
+			"files": [{ "path": "src/lib/state/toggle.svelte.ts", "target": "{lib}/state/toggle.svelte.ts", "type": "registry:state" }]
+		},
+
+		{
+			"name": "spinner",
+			"type": "registry:ui",
+			"description": "Indeterminate progress circle (ProgressCircle port).",
+			"files": [{ "path": "src/lib/components/Spinner.svelte", "target": "{ui}/spinner.svelte", "type": "registry:ui" }]
+		},
+		{
+			"name": "button",
+			"type": "registry:ui",
+			"description": "Accessible button; unified press, variants, spinner loading. Exports buttonVariants.",
+			"registryDependencies": ["cn", "press", "hover", "attachment-utils", "spinner"],
+			"files": [{ "path": "src/lib/components/Button.svelte", "target": "{ui}/button.svelte", "type": "registry:ui" }]
+		},
+		{
+			"name": "checkbox",
+			"type": "registry:ui",
+			"description": "Native checkbox with indeterminate + animated check.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn", "id"],
+			"files": [{ "path": "src/lib/components/Checkbox.svelte", "target": "{ui}/checkbox.svelte", "type": "registry:ui" }]
+		},
+		{
+			"name": "text-field",
+			"type": "registry:ui",
+			"description": "Labelled input with description, validation, and ARIA wiring.",
+			"registryDependencies": ["cn", "id"],
+			"files": [{ "path": "src/lib/components/TextField.svelte", "target": "{ui}/text-field.svelte", "type": "registry:ui" }]
+		},
+		{
+			"name": "radio-group",
+			"type": "registry:ui",
+			"description": "Radio group with shared context; native keyboard navigation.",
+			"registryDependencies": ["cn", "id"],
+			"files": [
+				{ "path": "src/lib/components/RadioGroup.svelte", "target": "{ui}/radio-group.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/Radio.svelte", "target": "{ui}/radio.svelte", "type": "registry:ui" }
+			]
+		},
+		{
+			"name": "dialog",
+			"type": "registry:ui",
+			"description": "Modal dialog: portal, focus trap + restore, scroll lock, dismiss.",
+			"registryDependencies": ["cn", "id", "portal", "focus-scope", "button"],
+			"files": [
+				{ "path": "src/lib/components/Dialog.svelte", "target": "{ui}/dialog.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/DialogTrigger.svelte", "target": "{ui}/dialog-trigger.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/DialogContent.svelte", "target": "{ui}/dialog-content.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/DialogHeader.svelte", "target": "{ui}/dialog-header.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/DialogTitle.svelte", "target": "{ui}/dialog-title.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/DialogDescription.svelte", "target": "{ui}/dialog-description.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/DialogFooter.svelte", "target": "{ui}/dialog-footer.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/DialogClose.svelte", "target": "{ui}/dialog-close.svelte", "type": "registry:ui" }
+			]
+		}
+	]
+}

@@ -56,6 +56,12 @@ press · hover · focusVisible   toggle           Button/Checkbox/TextField/Spin
     shadcn model.)
 - `src/lib/site/` — **docs-only** chrome (Sidebar, Topbar, CodeBlock, pickers…).
   Excluded from the published package (`files: !dist/site`). Not part of the API.
+- `registry/` — the **CLI registry** (committed, public): `schema.ts` (manifest
+  types), `registry.json` (every installable item + dependency graph), and
+  `README.md` (the design: item types, aliases, import-rewriting, init/add
+  flows). The shadcn-style distribution model — the CLI copies components into a
+  user's project. Keep `registry.json` in sync when adding components: a new
+  component is a `registry:ui` item with its `files` + `registryDependencies`.
 
 ## Design tokens & theming
 
