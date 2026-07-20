@@ -7,9 +7,13 @@
  */
 
 export type Placement = 'top' | 'bottom' | 'left' | 'right';
+/** Cross-axis alignment relative to the anchor (start/center/end of its edge). */
+export type Align = 'start' | 'center' | 'end';
 
 export interface PositionOptions {
 	placement?: Placement;
+	/** Where to align along the anchor's edge. Defaults to center. */
+	align?: Align;
 	/** Gap between anchor and floating element, in px. */
 	offset?: number;
 	/** Minimum distance from the viewport edge, in px. */
@@ -30,6 +34,7 @@ export function computePosition(
 ): Position {
 	const offset = opts.offset ?? 8;
 	const padding = opts.padding ?? 8;
+	const align = opts.align ?? 'center';
 	let placement = opts.placement ?? 'top';
 
 	const a = anchor.getBoundingClientRect();
@@ -43,13 +48,17 @@ export function computePosition(
 	else if (placement === 'left' && a.left - f.width - offset < padding) placement = 'right';
 	else if (placement === 'right' && a.right + f.width + offset > vw - padding) placement = 'left';
 
+	// Cross-axis alignment: start = leading edge, end = trailing edge, else centered.
+	const alignAxis = (start: number, size: number, fSize: number) =>
+		align === 'start' ? start : align === 'end' ? start + size - fSize : start + size / 2 - fSize / 2;
+
 	let x: number;
 	let y: number;
 	if (placement === 'top' || placement === 'bottom') {
-		x = a.left + a.width / 2 - f.width / 2;
+		x = alignAxis(a.left, a.width, f.width);
 		y = placement === 'top' ? a.top - f.height - offset : a.bottom + offset;
 	} else {
-		y = a.top + a.height / 2 - f.height / 2;
+		y = alignAxis(a.top, a.height, f.height);
 		x = placement === 'left' ? a.left - f.width - offset : a.right + offset;
 	}
 

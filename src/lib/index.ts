@@ -45,6 +45,11 @@ export { default as Collapsible } from './components/Collapsible.svelte';
 export { default as CollapsibleTrigger } from './components/CollapsibleTrigger.svelte';
 export { default as CollapsibleContent } from './components/CollapsibleContent.svelte';
 
+// HoverCard (compound)
+export { default as HoverCard } from './components/HoverCard.svelte';
+export { default as HoverCardTrigger } from './components/HoverCardTrigger.svelte';
+export { default as HoverCardContent } from './components/HoverCardContent.svelte';
+
 // Popover (compound)
 export { default as Popover } from './components/Popover.svelte';
 export { default as PopoverTrigger } from './components/PopoverTrigger.svelte';
@@ -121,7 +126,7 @@ export { createHover, type HoverOptions } from './attachments/hover.svelte.js';
 export { createFocusVisible, type FocusOptions } from './attachments/focus.svelte.js';
 export { createFocusScope } from './attachments/focus-scope.js';
 export { portal } from './attachments/portal.js';
-export { computePosition, type Placement } from './utils/position.js';
+export { computePosition, type Placement, type Align } from './utils/position.js';
 
 // State machines
 export { createToggleState, type ToggleStateOptions } from './state/toggle.svelte.js';

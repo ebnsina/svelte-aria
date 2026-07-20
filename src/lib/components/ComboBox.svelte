@@ -17,7 +17,7 @@
   allowsCustomValue to accept text that doesn't match an option.
 -->
 <script lang="ts" module>
-	import type { Placement } from '../utils/position.js';
+	import type { Placement, Align } from '../utils/position.js';
 
 	export interface ComboBoxOption {
 		value: string;
@@ -32,6 +32,7 @@
 		readonly activeValue: string | undefined;
 		readonly disabled: boolean;
 		readonly placement: Placement;
+		readonly align: Align;
 		readonly anchor: HTMLElement | null;
 		readonly options: ComboBoxOption[];
 		readonly filtered: ComboBoxOption[];
@@ -70,6 +71,7 @@
 		open?: boolean;
 		onOpenChange?: (open: boolean) => void;
 		placement?: Placement;
+		align?: Align;
 		disabled?: boolean;
 		allowsCustomValue?: boolean;
 		name?: string;
@@ -84,6 +86,7 @@
 		open = $bindable(),
 		onOpenChange,
 		placement = 'bottom',
+		align = 'start',
 		disabled = false,
 		allowsCustomValue = false,
 		name,
@@ -200,6 +203,9 @@
 		},
 		get placement() {
 			return placement;
+		},
+		get align() {
+			return align;
 		},
 		get anchor() {
 			return anchor;

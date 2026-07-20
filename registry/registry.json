@@ -373,6 +373,17 @@
 			]
 		},
 		{
+			"name": "hover-card",
+			"type": "registry:ui",
+			"description": "Rich preview card shown on hover/focus; portaled, positioned, hoverable, non-modal.",
+			"registryDependencies": ["cn", "id", "portal", "position"],
+			"files": [
+				{ "path": "src/lib/components/HoverCard.svelte", "target": "{ui}/hover-card.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/HoverCardTrigger.svelte", "target": "{ui}/hover-card-trigger.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/HoverCardContent.svelte", "target": "{ui}/hover-card-content.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "dialog",
 			"type": "registry:ui",
 			"description": "Modal dialog: portal, focus trap + restore, scroll lock, dismiss.",

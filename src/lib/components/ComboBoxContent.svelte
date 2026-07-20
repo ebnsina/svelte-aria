@@ -43,7 +43,11 @@
 		if (!combo.open || !listboxEl || !combo.anchor) return;
 		const update = () => {
 			minWidth = combo.anchor!.getBoundingClientRect().width;
-			const p = computePosition(combo.anchor!, listboxEl!, { placement: combo.placement, offset: 6 });
+			const p = computePosition(combo.anchor!, listboxEl!, {
+				placement: combo.placement,
+				align: combo.align,
+				offset: 6
+			});
 			x = p.x;
 			y = p.y;
 			resolvedPlacement = p.placement;

@@ -39,7 +39,11 @@
 	$effect(() => {
 		if (!popover.open || !contentEl || !popover.anchor) return;
 		const update = () => {
-			const p = computePosition(popover.anchor!, contentEl!, { placement: popover.placement, offset: 8 });
+			const p = computePosition(popover.anchor!, contentEl!, {
+				placement: popover.placement,
+				align: popover.align,
+				offset: 8
+			});
 			x = p.x;
 			y = p.y;
 			resolvedPlacement = p.placement;

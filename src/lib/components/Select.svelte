@@ -15,7 +15,7 @@
   Controlled (value / bind:value) and uncontrolled (defaultValue).
 -->
 <script lang="ts" module>
-	import type { Placement } from '../utils/position.js';
+	import type { Placement, Align } from '../utils/position.js';
 
 	export interface SelectOption {
 		value: string;
@@ -30,6 +30,7 @@
 		readonly disabled: boolean;
 		readonly placeholder: string;
 		readonly placement: Placement;
+		readonly align: Align;
 		readonly anchor: HTMLElement | null;
 		readonly options: SelectOption[];
 		readonly selectedLabel: string | undefined;
@@ -63,6 +64,7 @@
 		onOpenChange?: (open: boolean) => void;
 		placeholder?: string;
 		placement?: Placement;
+		align?: Align;
 		disabled?: boolean;
 		/** Emits a hidden input so the value posts with a form. */
 		name?: string;
@@ -78,6 +80,7 @@
 		onOpenChange,
 		placeholder = 'Select…',
 		placement = 'bottom',
+		align = 'start',
 		disabled = false,
 		name,
 		children
@@ -131,6 +134,9 @@
 		},
 		get placement() {
 			return placement;
+		},
+		get align() {
+			return align;
 		},
 		get anchor() {
 			return anchor;

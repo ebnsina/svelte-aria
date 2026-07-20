@@ -44,7 +44,11 @@
 		if (!select.open || !listboxEl || !select.anchor) return;
 		const update = () => {
 			minWidth = select.anchor!.getBoundingClientRect().width;
-			const p = computePosition(select.anchor!, listboxEl!, { placement: select.placement, offset: 6 });
+			const p = computePosition(select.anchor!, listboxEl!, {
+				placement: select.placement,
+				align: select.align,
+				offset: 6
+			});
 			x = p.x;
 			y = p.y;
 			resolvedPlacement = p.placement;

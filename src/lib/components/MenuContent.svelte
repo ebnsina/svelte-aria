@@ -55,11 +55,12 @@
 	$effect(() => {
 		if (!menu.open || !menuEl || !menu.anchor) return;
 		const update = () => {
-			const a = menu.anchor!.getBoundingClientRect();
-			const p = computePosition(menu.anchor!, menuEl!, { placement: menu.placement, offset: 6 });
-			const pad = 8;
-			const vw = document.documentElement.clientWidth;
-			x = Math.max(pad, Math.min(a.left, vw - menuEl!.offsetWidth - pad));
+			const p = computePosition(menu.anchor!, menuEl!, {
+				placement: menu.placement,
+				align: menu.align,
+				offset: 6
+			});
+			x = p.x;
 			y = p.y;
 			resolvedPlacement = p.placement;
 			placed = true;

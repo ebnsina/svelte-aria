@@ -13,12 +13,13 @@
   Controlled (open / bind:open) and uncontrolled (defaultOpen).
 -->
 <script lang="ts" module>
-	import type { Placement } from '../utils/position.js';
+	import type { Placement, Align } from '../utils/position.js';
 
 	export interface MenuContext {
 		readonly open: boolean;
 		readonly anchor: HTMLElement | null;
 		readonly placement: Placement;
+		readonly align: Align;
 		readonly pendingFocus: 'first' | 'last';
 		triggerId: string;
 		menuId: string;
@@ -42,6 +43,7 @@
 		defaultOpen?: boolean;
 		onOpenChange?: (open: boolean) => void;
 		placement?: Placement;
+		align?: Align;
 		children: Snippet;
 	}
 
@@ -50,6 +52,7 @@
 		defaultOpen = false,
 		onOpenChange,
 		placement = 'bottom',
+		align = 'start',
 		children
 	}: MenuProps = $props();
 
@@ -78,6 +81,9 @@
 		},
 		get placement() {
 			return placement;
+		},
+		get align() {
+			return align;
 		},
 		get pendingFocus() {
 			return pendingFocus;

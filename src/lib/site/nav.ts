@@ -34,6 +34,7 @@ export const nav: NavSection[] = [
 			{ title: 'DatePicker', href: '/date-picker' },
 			{ title: 'DateRangePicker', href: '/date-range-picker' },
 			{ title: 'Dialog', href: '/dialog' },
+			{ title: 'HoverCard', href: '/hover-card' },
 			{ title: 'Menu', href: '/menu' },
 			{ title: 'NumberField', href: '/number-field' },
 			{ title: 'Pagination', href: '/pagination' },

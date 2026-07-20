@@ -7,11 +7,12 @@
   Controlled (open / bind:open) and uncontrolled (defaultOpen).
 -->
 <script lang="ts" module>
-	import type { Placement } from '../utils/position.js';
+	import type { Placement, Align } from '../utils/position.js';
 
 	export interface PopoverContext {
 		readonly open: boolean;
 		readonly placement: Placement;
+		readonly align: Align;
 		readonly anchor: HTMLElement | null;
 		triggerId: string;
 		contentId: string;
@@ -33,6 +34,7 @@
 		defaultOpen?: boolean;
 		onOpenChange?: (open: boolean) => void;
 		placement?: Placement;
+		align?: Align;
 		children: Snippet;
 	}
 
@@ -41,6 +43,7 @@
 		defaultOpen = false,
 		onOpenChange,
 		placement = 'bottom',
+		align = 'center',
 		children
 	}: PopoverProps = $props();
 
@@ -65,6 +68,9 @@
 		},
 		get placement() {
 			return placement;
+		},
+		get align() {
+			return align;
 		},
 		get anchor() {
 			return anchor;
