@@ -29,6 +29,7 @@ export const nav: NavSection[] = [
 			{ title: 'Calendar', href: '/calendar' },
 			{ title: 'Checkbox', href: '/checkbox' },
 			{ title: 'ComboBox', href: '/combobox' },
+			{ title: 'Command', href: '/command' },
 			{ title: 'DatePicker', href: '/date-picker' },
 			{ title: 'DateRangePicker', href: '/date-range-picker' },
 			{ title: 'Dialog', href: '/dialog' },

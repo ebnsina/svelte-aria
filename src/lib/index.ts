@@ -52,6 +52,16 @@ export { default as MenuContent } from './components/MenuContent.svelte';
 export { default as MenuItem } from './components/MenuItem.svelte';
 export { default as MenuSeparator } from './components/MenuSeparator.svelte';
 
+// Command palette (compound)
+export { default as Command } from './components/Command.svelte';
+export { default as CommandDialog } from './components/CommandDialog.svelte';
+export { default as CommandInput } from './components/CommandInput.svelte';
+export { default as CommandList } from './components/CommandList.svelte';
+export { default as CommandGroup } from './components/CommandGroup.svelte';
+export { default as CommandItem } from './components/CommandItem.svelte';
+export { default as CommandEmpty } from './components/CommandEmpty.svelte';
+export { default as CommandSeparator } from './components/CommandSeparator.svelte';
+
 // ComboBox (compound)
 export { default as ComboBox } from './components/ComboBox.svelte';
 export { default as ComboBoxInput } from './components/ComboBoxInput.svelte';

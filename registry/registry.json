@@ -282,6 +282,23 @@
 			]
 		},
 		{
+			"name": "command",
+			"type": "registry:ui",
+			"description": "Command palette (⌘K): searchable, groupable command menu with virtual focus + a modal.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn", "id", "portal", "focus-scope"],
+			"files": [
+				{ "path": "src/lib/components/Command.svelte", "target": "{ui}/command.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/CommandDialog.svelte", "target": "{ui}/command-dialog.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/CommandInput.svelte", "target": "{ui}/command-input.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/CommandList.svelte", "target": "{ui}/command-list.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/CommandGroup.svelte", "target": "{ui}/command-group.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/CommandItem.svelte", "target": "{ui}/command-item.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/CommandEmpty.svelte", "target": "{ui}/command-empty.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/CommandSeparator.svelte", "target": "{ui}/command-separator.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "combobox",
 			"type": "registry:ui",
 			"description": "Editable input + filtered listbox (list autocomplete); virtual focus, keyboard, ARIA combobox.",
