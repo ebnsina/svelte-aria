@@ -174,7 +174,7 @@
 		data-invalid={invalid || undefined}
 		data-disabled={disabled || undefined}
 		class={cn(
-			'flex items-stretch rounded-sa border border-sa-gray-200 bg-sa-field',
+			'flex items-stretch overflow-hidden rounded-sa border border-sa-gray-200 bg-sa-field',
 			'transition-[border-color] duration-150 hover:border-sa-gray-300',
 			'has-[:focus-visible]:[outline:2px_solid_var(--sa-focus-ring-color)] has-[:focus-visible]:outline-offset-2',
 			'data-[invalid]:border-sa-invalid data-[invalid]:has-[:focus-visible]:[outline-color:var(--sa-invalid-color)]',

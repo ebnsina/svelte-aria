@@ -119,6 +119,28 @@
 			"files": [{ "path": "src/lib/components/Avatar.svelte", "target": "{ui}/avatar.svelte", "type": "registry:ui" }]
 		},
 		{
+			"name": "badge",
+			"type": "registry:ui",
+			"description": "Small status/label pill with variants. Exports badgeVariants.",
+			"registryDependencies": ["cn"],
+			"files": [{ "path": "src/lib/components/Badge.svelte", "target": "{ui}/badge.svelte", "type": "registry:ui" }]
+		},
+		{
+			"name": "separator",
+			"type": "registry:ui",
+			"description": "Thin divider; decorative (role=none) or semantic (role=separator).",
+			"registryDependencies": ["cn"],
+			"files": [{ "path": "src/lib/components/Separator.svelte", "target": "{ui}/separator.svelte", "type": "registry:ui" }]
+		},
+		{
+			"name": "pagination",
+			"type": "registry:ui",
+			"description": "Page navigation with ellipses, prev/next, and aria-current; nav landmark.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn"],
+			"files": [{ "path": "src/lib/components/Pagination.svelte", "target": "{ui}/pagination.svelte", "type": "registry:ui" }]
+		},
+		{
 			"name": "breadcrumb",
 			"type": "registry:ui",
 			"description": "Navigation trail: nav + ordered list of links with aria-current on the current page.",
