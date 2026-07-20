@@ -218,6 +218,15 @@
 						{@const isFocused = sameDay(day, focused)}
 						{@const outside = day.getMonth() !== focused.getMonth()}
 						{@const isToday = sameDay(day, today)}
+						<!-- Explicit priority (selected > today > outside) so a day that is
+						     both selected and today keeps the readable accent-fg text. -->
+						{@const dayState = isSel
+							? 'bg-sa-accent text-sa-accent-fg font-medium hover:bg-sa-accent'
+							: isToday
+								? 'font-semibold text-sa-accent hover:bg-[var(--sa-highlight-hover)]'
+								: outside
+									? 'text-sa-fg-muted hover:bg-[var(--sa-highlight-hover)]'
+									: 'hover:bg-[var(--sa-highlight-hover)]'}
 						<td role="gridcell" aria-selected={isSel} class="p-0">
 							<button
 								type="button"
@@ -232,11 +241,8 @@
 								onclick={() => select(day)}
 								class={cn(
 									'grid size-9 place-items-center rounded-sa-sm text-sm tabular-nums',
-									'hover:bg-[var(--sa-highlight-hover)]',
 									'disabled:pointer-events-none disabled:opacity-40',
-									'data-[outside]:text-sa-fg-muted',
-									'data-[today]:font-semibold data-[today]:text-sa-accent',
-									'data-[selected]:bg-sa-accent data-[selected]:text-sa-accent-fg data-[selected]:font-medium data-[selected]:hover:bg-sa-accent'
+									dayState
 								)}
 							>
 								{day.getDate()}

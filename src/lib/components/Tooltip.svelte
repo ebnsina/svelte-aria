@@ -161,7 +161,7 @@
 		onpointerleave={() => scheduleHide()}
 		class={cn(
 			'fixed z-50 max-w-xs rounded-sa-sm bg-sa-fg px-2.5 py-1.5 text-xs font-medium text-sa-bg shadow-sa-md',
-			'transition-opacity duration-100 ease-out motion-reduce:transition-none',
+			'transition-opacity duration-150 ease-sa-out motion-reduce:transition-none',
 			placed ? 'opacity-100' : 'opacity-0',
 			className
 		)}

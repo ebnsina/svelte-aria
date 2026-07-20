@@ -197,6 +197,22 @@
 			]
 		},
 		{
+			"name": "table",
+			"type": "registry:ui",
+			"description": "Semantic table primitives with sortable headers (aria-sort) — the base for data grids.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/Table.svelte", "target": "{ui}/table.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/TableHeader.svelte", "target": "{ui}/table-header.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/TableBody.svelte", "target": "{ui}/table-body.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/TableRow.svelte", "target": "{ui}/table-row.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/TableHead.svelte", "target": "{ui}/table-head.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/TableCell.svelte", "target": "{ui}/table-cell.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/TableCaption.svelte", "target": "{ui}/table-caption.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "tabs",
 			"type": "registry:ui",
 			"description": "Tabbed interface with roving-tabindex keyboard navigation.",

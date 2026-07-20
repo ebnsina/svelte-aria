@@ -21,7 +21,7 @@
 
 	const base =
 		'relative inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-sa ' +
-		'font-medium select-none outline-none transition-[background-color,border-color,transform] duration-150 ' +
+		'font-medium select-none outline-none transition-[background-color,border-color,transform] duration-150 ease-sa-out ' +
 		'[&_svg]:size-4 [&_svg]:shrink-0 ' +
 		'data-[pressed]:scale-[0.97] motion-reduce:data-[pressed]:scale-100 ' +
 		'data-[disabled]:opacity-50 aria-disabled:pointer-events-none';

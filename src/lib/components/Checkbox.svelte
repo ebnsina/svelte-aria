@@ -24,6 +24,9 @@
 		value?: string;
 		onChange?: (checked: boolean) => void;
 		class?: string;
+		/** Accessible name when the checkbox has no visible children. */
+		'aria-label'?: string;
+		'aria-labelledby'?: string;
 		children?: Snippet;
 	}
 
@@ -38,6 +41,8 @@
 		value,
 		onChange,
 		class: className,
+		'aria-label': ariaLabel,
+		'aria-labelledby': ariaLabelledby,
 		children
 	}: CheckboxProps = $props();
 
@@ -91,6 +96,8 @@
 		{disabled}
 		checked={isChecked}
 		aria-readonly={readOnly || undefined}
+		aria-label={ariaLabel}
+		aria-labelledby={ariaLabelledby}
 		onchange={onInputChange}
 		{@attach syncIndeterminate}
 	/>

@@ -82,7 +82,7 @@
 		style="left: {x}px; top: {y}px"
 		class={cn(
 			'fixed z-50 w-72 origin-top rounded-sa-lg bg-sa-field p-4 shadow-sa-md ring-1 ring-sa-hairline outline-none',
-			'transition-[opacity,transform] duration-150 ease-out motion-reduce:transition-none',
+			'transition-[opacity,transform] duration-[180ms] ease-sa-out motion-reduce:transition-none',
 			placed ? 'scale-100 opacity-100' : 'scale-95 opacity-0',
 			className
 		)}

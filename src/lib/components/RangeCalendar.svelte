@@ -277,11 +277,14 @@
 								onpointerenter={() => (hovered = day)}
 								class={cn(
 									'grid size-9 place-items-center rounded-sa-sm text-sm tabular-nums',
-									'hover:bg-[var(--sa-highlight-hover)]',
 									'disabled:pointer-events-none disabled:opacity-40',
-									'data-[outside]:text-sa-fg-muted',
-									'data-[today]:font-semibold data-[today]:text-sa-accent',
-									'data-[endpoint]:bg-sa-accent data-[endpoint]:text-sa-accent-fg data-[endpoint]:font-medium data-[endpoint]:hover:bg-sa-accent'
+									isEndpoint
+										? 'bg-sa-accent text-sa-accent-fg font-medium hover:bg-sa-accent'
+										: isToday
+											? 'font-semibold text-sa-accent hover:bg-[var(--sa-highlight-hover)]'
+											: outside
+												? 'text-sa-fg-muted hover:bg-[var(--sa-highlight-hover)]'
+												: 'hover:bg-[var(--sa-highlight-hover)]'
 								)}
 							>
 								{day.getDate()}

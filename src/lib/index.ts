@@ -65,6 +65,15 @@ export { default as SelectContent } from './components/SelectContent.svelte';
 export { default as SelectItem } from './components/SelectItem.svelte';
 
 // Tabs (compound)
+// Table
+export { default as Table } from './components/Table.svelte';
+export { default as TableHeader } from './components/TableHeader.svelte';
+export { default as TableBody } from './components/TableBody.svelte';
+export { default as TableRow } from './components/TableRow.svelte';
+export { default as TableHead } from './components/TableHead.svelte';
+export { default as TableCell } from './components/TableCell.svelte';
+export { default as TableCaption } from './components/TableCaption.svelte';
+
 export { default as Tabs } from './components/Tabs.svelte';
 export { default as TabList } from './components/TabList.svelte';
 export { default as Tab } from './components/Tab.svelte';
