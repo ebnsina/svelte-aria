@@ -66,7 +66,11 @@
 	{@attach portal()}
 	role="region"
 	aria-label="Notifications"
-	class={cn('pointer-events-none fixed z-[60] flex w-full max-w-sm flex-col gap-2 p-4', stackClass[position])}
+	class={cn(
+		'pointer-events-none fixed z-[60] flex w-full max-w-sm gap-2 p-4',
+		fromTop ? 'flex-col-reverse' : 'flex-col',
+		stackClass[position]
+	)}
 >
 	{#each toaster.items as t (t.id)}
 		{@const Icon = icons[t.type]}

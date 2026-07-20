@@ -5,7 +5,7 @@
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { getContext } from 'svelte';
+	import { getContext, untrack } from 'svelte';
 	import { TABS_KEY, type TabsContext } from './Tabs.svelte';
 	import { cn } from '../utils/cn.js';
 
@@ -22,10 +22,14 @@
 	const vertical = $derived(tabs.orientation === 'vertical');
 
 	// Register so Tabs can fall back to the first enabled tab when nothing is
-	// selected (keeps exactly one tab in the tab order).
+	// selected (keeps exactly one tab in the tab order). Track value/disabled but
+	// untrack the register call — it reads AND writes the shared registry, so
+	// tracking it would make this effect re-run forever.
 	$effect(() => {
-		tabs.register(value, disabled);
-		return () => tabs.unregister(value);
+		const v = value;
+		const d = disabled;
+		untrack(() => tabs.register(v, d));
+		return () => untrack(() => tabs.unregister(v));
 	});
 </script>
 
