@@ -229,6 +229,14 @@
 			]
 		},
 		{
+			"name": "number-field",
+			"type": "registry:ui",
+			"description": "Numeric input with stepper buttons; role=spinbutton, keyboard step/page/min/max, Intl formatting.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn", "id"],
+			"files": [{ "path": "src/lib/components/NumberField.svelte", "target": "{ui}/number-field.svelte", "type": "registry:ui" }]
+		},
+		{
 			"name": "radio-group",
 			"type": "registry:ui",
 			"description": "Radio group with shared context; native keyboard navigation.",
