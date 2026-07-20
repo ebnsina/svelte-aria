@@ -20,6 +20,8 @@ export { default as Switch } from './components/Switch.svelte';
 export { default as Slider } from './components/Slider.svelte';
 export { default as Calendar } from './components/Calendar.svelte';
 export { default as DatePicker } from './components/DatePicker.svelte';
+export { default as RangeCalendar, type DateRange } from './components/RangeCalendar.svelte';
+export { default as DateRangePicker } from './components/DateRangePicker.svelte';
 export { default as Tooltip } from './components/Tooltip.svelte';
 export { default as Spinner } from './components/Spinner.svelte';
 export { default as Progress } from './components/Progress.svelte';

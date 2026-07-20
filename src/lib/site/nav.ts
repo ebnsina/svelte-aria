@@ -30,6 +30,7 @@ export const nav: NavSection[] = [
 			{ title: 'Checkbox', href: '/checkbox' },
 			{ title: 'ComboBox', href: '/combobox' },
 			{ title: 'DatePicker', href: '/date-picker' },
+			{ title: 'DateRangePicker', href: '/date-range-picker' },
 			{ title: 'Dialog', href: '/dialog' },
 			{ title: 'Menu', href: '/menu' },
 			{ title: 'NumberField', href: '/number-field' },

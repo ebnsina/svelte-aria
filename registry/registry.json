@@ -309,6 +309,17 @@
 			"files": [{ "path": "src/lib/components/DatePicker.svelte", "target": "{ui}/date-picker.svelte", "type": "registry:ui" }]
 		},
 		{
+			"name": "date-range-picker",
+			"type": "registry:ui",
+			"description": "A field that opens a range calendar in a popover; composes popover + range calendar.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn", "id", "popover"],
+			"files": [
+				{ "path": "src/lib/components/RangeCalendar.svelte", "target": "{ui}/range-calendar.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/DateRangePicker.svelte", "target": "{ui}/date-range-picker.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "dialog",
 			"type": "registry:ui",
 			"description": "Modal dialog: portal, focus trap + restore, scroll lock, dismiss.",
