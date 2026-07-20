@@ -164,6 +164,19 @@
 			]
 		},
 		{
+			"name": "combobox",
+			"type": "registry:ui",
+			"description": "Editable input + filtered listbox (list autocomplete); virtual focus, keyboard, ARIA combobox.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn", "id", "portal", "position"],
+			"files": [
+				{ "path": "src/lib/components/ComboBox.svelte", "target": "{ui}/combobox.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/ComboBoxInput.svelte", "target": "{ui}/combobox-input.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/ComboBoxContent.svelte", "target": "{ui}/combobox-content.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/ComboBoxItem.svelte", "target": "{ui}/combobox-item.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "select",
 			"type": "registry:ui",
 			"description": "Collapsible listbox: portaled, positioned, keyboard + typeahead, single selection.",

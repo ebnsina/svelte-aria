@@ -24,6 +24,7 @@ export const nav: NavSection[] = [
 			{ title: 'Accordion', href: '/accordion' },
 			{ title: 'Button', href: '/button' },
 			{ title: 'Checkbox', href: '/checkbox' },
+			{ title: 'ComboBox', href: '/combobox' },
 			{ title: 'Dialog', href: '/dialog' },
 			{ title: 'Popover', href: '/popover' },
 			{ title: 'RadioGroup', href: '/radio-group' },
