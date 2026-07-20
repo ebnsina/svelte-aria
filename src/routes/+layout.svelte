@@ -11,6 +11,8 @@
 	const { children } = $props();
 
 	let menuOpen = $state(false);
+	// The landing page is full-width, without the docs sidebar.
+	const isHome = $derived(page.url.pathname === '/');
 
 	// Close the mobile drawer whenever the route changes.
 	$effect(() => {
@@ -23,12 +25,14 @@
 	<Topbar {menuOpen} ontoggle={() => (menuOpen = !menuOpen)} />
 
 	<div class="mx-auto flex max-w-[100rem]">
-		<!-- Desktop sidebar -->
-		<aside
-			class="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 overflow-y-auto border-r border-sa-hairline px-4 lg:block"
-		>
-			<Sidebar />
-		</aside>
+		<!-- Desktop sidebar (hidden on the landing page) -->
+		{#if !isHome}
+			<aside
+				class="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 overflow-y-auto border-r border-sa-hairline px-4 lg:block"
+			>
+				<Sidebar />
+			</aside>
+		{/if}
 
 		<!-- Main content, animated on navigation -->
 		<main class="min-w-0 flex-1">
