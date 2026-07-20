@@ -22,7 +22,8 @@
 		? 'grid-rows-[1fr]'
 		: 'grid-rows-[0fr]'}"
 >
-	<div class="overflow-hidden">
+	<!-- inert while collapsed so its content isn't focusable / read by AT. -->
+	<div class="overflow-hidden" inert={!item.open}>
 		<div class={cn('pb-4', className)}>
 			{@render children()}
 		</div>

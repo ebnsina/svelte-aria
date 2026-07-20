@@ -299,6 +299,17 @@
 			]
 		},
 		{
+			"name": "collapsible",
+			"type": "registry:ui",
+			"description": "A single show/hide disclosure with an animated region (aria-expanded/controls).",
+			"registryDependencies": ["cn", "id"],
+			"files": [
+				{ "path": "src/lib/components/Collapsible.svelte", "target": "{ui}/collapsible.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/CollapsibleTrigger.svelte", "target": "{ui}/collapsible-trigger.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/CollapsibleContent.svelte", "target": "{ui}/collapsible-content.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "combobox",
 			"type": "registry:ui",
 			"description": "Editable input + filtered listbox (list autocomplete); virtual focus, keyboard, ARIA combobox.",

@@ -40,6 +40,11 @@ export { default as AccordionItem } from './components/AccordionItem.svelte';
 export { default as AccordionTrigger } from './components/AccordionTrigger.svelte';
 export { default as AccordionContent } from './components/AccordionContent.svelte';
 
+// Collapsible (compound)
+export { default as Collapsible } from './components/Collapsible.svelte';
+export { default as CollapsibleTrigger } from './components/CollapsibleTrigger.svelte';
+export { default as CollapsibleContent } from './components/CollapsibleContent.svelte';
+
 // Popover (compound)
 export { default as Popover } from './components/Popover.svelte';
 export { default as PopoverTrigger } from './components/PopoverTrigger.svelte';
