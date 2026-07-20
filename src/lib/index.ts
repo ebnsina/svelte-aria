@@ -19,6 +19,7 @@ export { default as Switch } from './components/Switch.svelte';
 export { default as Slider } from './components/Slider.svelte';
 export { default as Tooltip } from './components/Tooltip.svelte';
 export { default as Spinner } from './components/Spinner.svelte';
+export { default as Toaster } from './components/Toaster.svelte';
 
 // Accordion (compound)
 export { default as Accordion } from './components/Accordion.svelte';
@@ -76,6 +77,14 @@ export { computePosition, type Placement } from './utils/position.js';
 
 // State machines
 export { createToggleState, type ToggleStateOptions } from './state/toggle.svelte.js';
+export {
+	toast,
+	toaster,
+	type ToastType,
+	type ToastOptions,
+	type ToastItem,
+	type ToastAction
+} from './state/toast.svelte.js';
 
 // Utilities
 export { useId } from './utils/id.js';

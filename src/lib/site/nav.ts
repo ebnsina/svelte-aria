@@ -34,6 +34,7 @@ export const nav: NavSection[] = [
 			{ title: 'Switch', href: '/switch' },
 			{ title: 'Tabs', href: '/tabs' },
 			{ title: 'TextField', href: '/text-field' },
+			{ title: 'Toast', href: '/toast' },
 			{ title: 'Tooltip', href: '/tooltip' }
 		]
 	},

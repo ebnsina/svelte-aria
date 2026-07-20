@@ -134,6 +134,17 @@
 			"files": [{ "path": "src/lib/components/Switch.svelte", "target": "{ui}/switch.svelte", "type": "registry:ui" }]
 		},
 		{
+			"name": "toast",
+			"type": "registry:ui",
+			"description": "Toast notifications: an imperative store + a live-region Toaster with pausable auto-dismiss.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn", "portal"],
+			"files": [
+				{ "path": "src/lib/state/toast.svelte.ts", "target": "{lib}/state/toast.svelte.ts", "type": "registry:state" },
+				{ "path": "src/lib/components/Toaster.svelte", "target": "{ui}/toaster.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "tabs",
 			"type": "registry:ui",
 			"description": "Tabbed interface with roving-tabindex keyboard navigation.",
