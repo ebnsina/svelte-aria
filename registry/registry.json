@@ -37,6 +37,12 @@
 			"description": "combineAttachments + setDataAttr — compose attachments and toggle data-* state.",
 			"files": [{ "path": "src/lib/utils/attachments.ts", "target": "{lib}/attachments/utils.ts", "type": "registry:lib" }]
 		},
+		{
+			"name": "position",
+			"type": "registry:lib",
+			"description": "computePosition — place a floating element with viewport flip + clamp.",
+			"files": [{ "path": "src/lib/utils/position.ts", "target": "{lib}/position.ts", "type": "registry:lib" }]
+		},
 
 		{
 			"name": "press",
@@ -138,6 +144,13 @@
 			"description": "Labelled input with description, validation, and ARIA wiring.",
 			"registryDependencies": ["cn", "id"],
 			"files": [{ "path": "src/lib/components/TextField.svelte", "target": "{ui}/text-field.svelte", "type": "registry:ui" }]
+		},
+		{
+			"name": "tooltip",
+			"type": "registry:ui",
+			"description": "Hint on hover / keyboard focus; portaled, positioned with flip.",
+			"registryDependencies": ["cn", "id", "portal", "position"],
+			"files": [{ "path": "src/lib/components/Tooltip.svelte", "target": "{ui}/tooltip.svelte", "type": "registry:ui" }]
 		},
 		{
 			"name": "radio-group",

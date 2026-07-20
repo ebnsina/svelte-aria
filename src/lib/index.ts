@@ -16,6 +16,7 @@ export { default as TextField } from './components/TextField.svelte';
 export { default as RadioGroup } from './components/RadioGroup.svelte';
 export { default as Radio } from './components/Radio.svelte';
 export { default as Switch } from './components/Switch.svelte';
+export { default as Tooltip } from './components/Tooltip.svelte';
 export { default as Spinner } from './components/Spinner.svelte';
 
 // Accordion (compound)
@@ -46,6 +47,7 @@ export { createHover, type HoverOptions } from './attachments/hover.svelte.js';
 export { createFocusVisible, type FocusOptions } from './attachments/focus.svelte.js';
 export { createFocusScope } from './attachments/focus-scope.js';
 export { portal } from './attachments/portal.js';
+export { computePosition, type Placement } from './utils/position.js';
 
 // State machines
 export { createToggleState, type ToggleStateOptions } from './state/toggle.svelte.js';

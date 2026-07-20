@@ -28,7 +28,8 @@ export const nav: NavSection[] = [
 			{ title: 'RadioGroup', href: '/radio-group' },
 			{ title: 'Switch', href: '/switch' },
 			{ title: 'Tabs', href: '/tabs' },
-			{ title: 'TextField', href: '/text-field' }
+			{ title: 'TextField', href: '/text-field' },
+			{ title: 'Tooltip', href: '/tooltip' }
 		]
 	},
 	{
