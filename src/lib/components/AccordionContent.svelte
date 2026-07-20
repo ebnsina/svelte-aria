@@ -18,7 +18,7 @@
 	id={item.contentId}
 	role="region"
 	aria-labelledby={item.triggerId}
-	class="grid text-sm text-sa-fg-muted transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none {item.open
+	class="grid text-sm text-sa-fg-muted transition-[grid-template-rows] duration-200 ease-sa-in-out motion-reduce:transition-none {item.open
 		? 'grid-rows-[1fr]'
 		: 'grid-rows-[0fr]'}"
 >

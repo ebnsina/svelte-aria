@@ -9,7 +9,15 @@
 	import { getContext } from 'svelte';
 	import { POPOVER_KEY, type PopoverContext } from './Popover.svelte';
 	import { portal } from '../attachments/portal.js';
-	import { computePosition } from '../utils/position.js';
+	import { computePosition, type Placement } from '../utils/position.js';
+
+	// Scale from the trigger: origin is opposite the side the panel sits on.
+	const ORIGIN: Record<Placement, string> = {
+		top: 'origin-bottom',
+		bottom: 'origin-top',
+		left: 'origin-right',
+		right: 'origin-left'
+	};
 	import { cn } from '../utils/cn.js';
 
 	let { class: className, children }: { class?: string; children: Snippet } = $props();
@@ -24,6 +32,7 @@
 	let x = $state(0);
 	let y = $state(0);
 	let placed = $state(false);
+	let resolvedPlacement = $state<Placement>('bottom');
 
 	// Position while open; reposition on scroll / resize. `placed` gates both the
 	// pre-position frame and the enter transition.
@@ -33,6 +42,7 @@
 			const p = computePosition(popover.anchor!, contentEl!, { placement: popover.placement, offset: 8 });
 			x = p.x;
 			y = p.y;
+			resolvedPlacement = p.placement;
 			placed = true;
 		};
 		update();
@@ -81,7 +91,8 @@
 		tabindex="-1"
 		style="left: {x}px; top: {y}px"
 		class={cn(
-			'fixed z-50 w-72 origin-top rounded-sa-lg bg-sa-field p-4 shadow-sa-md ring-1 ring-sa-hairline outline-none',
+			'fixed z-50 w-72 rounded-sa-lg bg-sa-field p-4 shadow-sa-md ring-1 ring-sa-hairline outline-none',
+			ORIGIN[resolvedPlacement],
 			'transition-[opacity,transform] duration-[180ms] ease-sa-out motion-reduce:transition-none',
 			placed ? 'scale-100 opacity-100' : 'scale-95 opacity-0',
 			className

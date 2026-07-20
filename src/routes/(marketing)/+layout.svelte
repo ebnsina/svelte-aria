@@ -9,7 +9,7 @@
 	const { children } = $props();
 
 	const show = 'scale-100 rotate-0 opacity-100';
-	const hide = 'scale-0 -rotate-90 opacity-0';
+	const hide = 'scale-90 -rotate-90 opacity-0';
 </script>
 
 <div class="sa-marketing min-h-screen bg-sa-bg">
@@ -47,9 +47,9 @@
 					class="ml-1 grid size-9 place-items-center rounded-sa-sm text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
 				>
 					<span class="relative grid size-5 place-items-center">
-						<Sun class="col-start-1 row-start-1 size-5 transition-all duration-200 {theme.preference === 'light' ? show : hide}" />
-						<Moon class="col-start-1 row-start-1 size-5 transition-all duration-200 {theme.preference === 'dark' ? show : hide}" />
-						<Monitor class="col-start-1 row-start-1 size-5 transition-all duration-200 {theme.preference === 'system' ? show : hide}" />
+						<Sun class="col-start-1 row-start-1 size-5 transition-[transform,opacity] duration-200 {theme.preference === 'light' ? show : hide}" />
+						<Moon class="col-start-1 row-start-1 size-5 transition-[transform,opacity] duration-200 {theme.preference === 'dark' ? show : hide}" />
+						<Monitor class="col-start-1 row-start-1 size-5 transition-[transform,opacity] duration-200 {theme.preference === 'system' ? show : hide}" />
 					</span>
 				</button>
 			</nav>

@@ -82,7 +82,7 @@
 
 <style>
 	.sa-progress-indeterminate {
-		animation: sa-progress 1.4s ease-in-out infinite;
+		animation: sa-progress 1.4s linear infinite;
 	}
 	@keyframes sa-progress {
 		0% {

@@ -5,7 +5,7 @@
 	import Logo from './Logo.svelte';
 
 	const show = 'scale-100 rotate-0 opacity-100';
-	const hide = 'scale-0 -rotate-90 opacity-0';
+	const hide = 'scale-90 -rotate-90 opacity-0';
 
 	interface Props {
 		menuOpen?: boolean;
@@ -60,19 +60,19 @@
 			>
 				<span class="relative grid size-5 place-items-center">
 					<Sun
-						class="col-start-1 row-start-1 size-5 transition-all duration-200 {theme.preference ===
+						class="col-start-1 row-start-1 size-5 transition-[transform,opacity] duration-200 {theme.preference ===
 						'light'
 							? show
 							: hide}"
 					/>
 					<Moon
-						class="col-start-1 row-start-1 size-5 transition-all duration-200 {theme.preference ===
+						class="col-start-1 row-start-1 size-5 transition-[transform,opacity] duration-200 {theme.preference ===
 						'dark'
 							? show
 							: hide}"
 					/>
 					<Monitor
-						class="col-start-1 row-start-1 size-5 transition-all duration-200 {theme.preference ===
+						class="col-start-1 row-start-1 size-5 transition-[transform,opacity] duration-200 {theme.preference ===
 						'system'
 							? show
 							: hide}"

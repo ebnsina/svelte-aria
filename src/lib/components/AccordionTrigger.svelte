@@ -48,7 +48,7 @@
 		{@render children()}
 		<ChevronDown
 			class={cn(
-				'size-4 shrink-0 text-sa-fg-muted transition-transform duration-200 motion-reduce:transition-none',
+				'size-4 shrink-0 text-sa-fg-muted transition-transform duration-200 ease-sa-out motion-reduce:transition-none',
 				item.open && 'rotate-180'
 			)}
 		/>

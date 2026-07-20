@@ -114,14 +114,14 @@
 	>
 		<Check
 			class={cn(
-				'col-start-1 row-start-1 size-3.5 text-sa-accent-fg transition-all duration-150 motion-reduce:transition-none',
+				'col-start-1 row-start-1 size-3.5 text-sa-accent-fg transition-[opacity,transform] duration-150 motion-reduce:transition-none',
 				isChecked && !indeterminate ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
 			)}
 			strokeWidth={3}
 		/>
 		<Minus
 			class={cn(
-				'col-start-1 row-start-1 size-3.5 text-sa-accent-fg transition-all duration-150 motion-reduce:transition-none',
+				'col-start-1 row-start-1 size-3.5 text-sa-accent-fg transition-[opacity,transform] duration-150 motion-reduce:transition-none',
 				indeterminate ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
 			)}
 			strokeWidth={3}

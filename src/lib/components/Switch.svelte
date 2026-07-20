@@ -100,7 +100,7 @@
 	>
 		<span
 			class={cn(
-				'pointer-events-none absolute top-0.5 left-0.5 size-4 rounded-full bg-white shadow-sm transition-transform duration-150 motion-reduce:transition-none',
+				'pointer-events-none absolute top-0.5 left-0.5 size-4 rounded-full bg-white shadow-sm transition-transform duration-150 ease-sa-out motion-reduce:transition-none',
 				isChecked ? 'translate-x-4' : 'translate-x-0'
 			)}
 		></span>

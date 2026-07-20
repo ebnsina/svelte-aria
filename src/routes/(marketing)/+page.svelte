@@ -302,7 +302,7 @@ npx svelte-aria add button dialog select calendar`;
 			{#each features as feature (feature.title)}
 				{@const Icon = feature.icon}
 				<div
-					class="group relative overflow-hidden rounded-sa-lg bg-sa-field p-6 shadow-sa-sm ring-1 ring-sa-hairline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sa-md motion-reduce:hover:translate-y-0"
+					class="group relative overflow-hidden rounded-sa-lg bg-sa-field p-6 shadow-sa-sm ring-1 ring-sa-hairline transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-sa-md motion-reduce:hover:translate-y-0"
 				>
 					<!-- accent wash on hover -->
 					<div
@@ -345,11 +345,11 @@ npx svelte-aria add button dialog select calendar`;
 			<li>
 				<a
 					href={c.href}
-					class="group flex items-center justify-between rounded-sa bg-sa-field px-4 py-3 text-sm font-medium text-sa-fg shadow-sa-sm ring-1 ring-sa-hairline transition-all duration-150 hover:-translate-y-0.5 hover:text-sa-accent hover:shadow-sa-md motion-reduce:hover:translate-y-0"
+					class="group flex items-center justify-between rounded-sa bg-sa-field px-4 py-3 text-sm font-medium text-sa-fg shadow-sa-sm ring-1 ring-sa-hairline transition-[transform,box-shadow,color] duration-150 hover:-translate-y-0.5 hover:text-sa-accent hover:shadow-sa-md motion-reduce:hover:translate-y-0"
 				>
 					{c.title}
 					<ArrowRight
-						class="size-3.5 -translate-x-1 text-sa-fg-muted opacity-0 transition-all group-hover:translate-x-0 group-hover:text-sa-accent group-hover:opacity-100"
+						class="size-3.5 -translate-x-1 text-sa-fg-muted opacity-0 transition-[transform,opacity,color] group-hover:translate-x-0 group-hover:text-sa-accent group-hover:opacity-100"
 					/>
 				</a>
 			</li>

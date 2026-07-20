@@ -45,12 +45,12 @@
 			<!-- Icon cross-fades between copy and check -->
 			<span class="relative grid size-4 place-items-center">
 				<Copy
-					class="col-start-1 row-start-1 size-4 transition-all duration-150 {copied
+					class="col-start-1 row-start-1 size-4 transition-[transform,opacity] duration-150 {copied
 						? 'scale-50 opacity-0'
 						: 'scale-100 opacity-100'}"
 				/>
 				<Check
-					class="col-start-1 row-start-1 size-4 text-sa-accent transition-all duration-150 {copied
+					class="col-start-1 row-start-1 size-4 text-sa-accent transition-[transform,opacity] duration-150 {copied
 						? 'scale-100 opacity-100'
 						: 'scale-50 opacity-0'}"
 				/>

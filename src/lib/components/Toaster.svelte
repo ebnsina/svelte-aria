@@ -11,6 +11,7 @@
 <script lang="ts">
 	import type { Attachment } from 'svelte/attachments';
 	import { fly } from 'svelte/transition';
+	import { flip } from 'svelte/animate';
 	import { CircleCheck, CircleX, Info, TriangleAlert, X } from '@lucide/svelte';
 	import { toaster, type ToastItem, type ToastType } from '../state/toast.svelte.js';
 	import { portal } from '../attachments/portal.js';
@@ -78,6 +79,7 @@
 			role={t.type === 'error' ? 'alert' : 'status'}
 			aria-atomic="true"
 			transition:fly={{ y: fromTop ? -16 : 16, duration: 200 }}
+			animate:flip={{ duration: 220 }}
 			{@attach autoDismiss(t)}
 			class="pointer-events-auto flex w-full items-start gap-3 rounded-sa-lg bg-sa-field p-4 shadow-sa-md ring-1 ring-sa-hairline"
 		>

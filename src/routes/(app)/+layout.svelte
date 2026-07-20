@@ -30,7 +30,8 @@
 		<!-- Main content, animated on navigation -->
 		<main class="min-w-0 flex-1">
 			{#key page.url.pathname}
-				<div in:fly={{ y: 8, duration: 200, opacity: 0 }}>
+				<!-- Subtle fade only — a per-navigation slide gets old in frequent docs use. -->
+				<div in:fade={{ duration: 120 }}>
 					{@render children()}
 				</div>
 			{/key}

@@ -10,8 +10,16 @@
 	import { getContext } from 'svelte';
 	import { MENU_KEY, type MenuContext } from './Menu.svelte';
 	import { portal } from '../attachments/portal.js';
-	import { computePosition } from '../utils/position.js';
+	import { computePosition, type Placement } from '../utils/position.js';
 	import { cn } from '../utils/cn.js';
+
+	// Scale from the trigger: origin is opposite the side the menu sits on.
+	const ORIGIN: Record<Placement, string> = {
+		top: 'origin-bottom',
+		bottom: 'origin-top',
+		left: 'origin-right',
+		right: 'origin-left'
+	};
 
 	let { class: className, children }: { class?: string; children: Snippet } = $props();
 
@@ -22,6 +30,7 @@
 	let x = $state(0);
 	let y = $state(0);
 	let placed = $state(false);
+	let resolvedPlacement = $state<Placement>('bottom');
 
 	const SELECTOR = '[role="menuitem"]:not([aria-disabled="true"])';
 	function items(): HTMLElement[] {
@@ -52,6 +61,7 @@
 			const vw = document.documentElement.clientWidth;
 			x = Math.max(pad, Math.min(a.left, vw - menuEl!.offsetWidth - pad));
 			y = p.y;
+			resolvedPlacement = p.placement;
 			placed = true;
 		};
 		update();
@@ -136,7 +146,8 @@
 		onkeydown={onKeydown}
 		style="left: {x}px; top: {y}px"
 		class={cn(
-			'fixed z-50 min-w-40 origin-top rounded-sa-lg bg-sa-field p-1 shadow-sa-md ring-1 ring-sa-hairline outline-none',
+			'fixed z-50 min-w-40 rounded-sa-lg bg-sa-field p-1 shadow-sa-md ring-1 ring-sa-hairline outline-none',
+			ORIGIN[resolvedPlacement],
 			'transition-[opacity,transform] duration-[180ms] ease-sa-out motion-reduce:transition-none',
 			placed ? 'scale-100 opacity-100' : 'scale-95 opacity-0',
 			className

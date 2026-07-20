@@ -79,8 +79,8 @@
 	>
 		<span
 			class={cn(
-				'size-2 rounded-full bg-sa-accent transition-transform duration-150 motion-reduce:transition-none',
-				selected ? 'scale-100' : 'scale-0'
+				'size-2 rounded-full bg-sa-accent transition-[opacity,transform] duration-150 ease-sa-out motion-reduce:transition-none',
+				selected ? 'scale-100 opacity-100' : 'scale-50 opacity-0'
 			)}
 		></span>
 	</span>

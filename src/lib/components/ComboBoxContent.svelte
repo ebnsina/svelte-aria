@@ -11,8 +11,16 @@
 	import { getContext } from 'svelte';
 	import { COMBOBOX_KEY, type ComboBoxContext } from './ComboBox.svelte';
 	import { portal } from '../attachments/portal.js';
-	import { computePosition } from '../utils/position.js';
+	import { computePosition, type Placement } from '../utils/position.js';
 	import { cn } from '../utils/cn.js';
+
+	// Scale from the trigger: origin is opposite the side the panel sits on.
+	const ORIGIN: Record<Placement, string> = {
+		top: 'origin-bottom',
+		bottom: 'origin-top',
+		left: 'origin-right',
+		right: 'origin-left'
+	};
 
 	let {
 		class: className,
@@ -28,6 +36,7 @@
 	let y = $state(0);
 	let minWidth = $state(0);
 	let placed = $state(false);
+	let resolvedPlacement = $state<Placement>('bottom');
 
 	// Position while open; track the input width and reposition on scroll / resize.
 	$effect(() => {
@@ -37,6 +46,7 @@
 			const p = computePosition(combo.anchor!, listboxEl!, { placement: combo.placement, offset: 6 });
 			x = p.x;
 			y = p.y;
+			resolvedPlacement = p.placement;
 			placed = true;
 		};
 		update();
@@ -78,7 +88,8 @@
 	hidden={!combo.open}
 	style="left: {x}px; top: {y}px; min-width: {minWidth}px"
 	class={cn(
-		'fixed z-50 max-h-60 origin-top overflow-y-auto rounded-sa-lg bg-sa-field p-1 shadow-sa-md ring-1 ring-sa-hairline outline-none',
+		'fixed z-50 max-h-60 overflow-y-auto rounded-sa-lg bg-sa-field p-1 shadow-sa-md ring-1 ring-sa-hairline outline-none',
+		ORIGIN[resolvedPlacement],
 		'transition-[opacity,transform] duration-[180ms] ease-sa-out motion-reduce:transition-none',
 		placed ? 'scale-100 opacity-100' : 'scale-95 opacity-0',
 		className
