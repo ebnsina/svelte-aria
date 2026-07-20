@@ -18,6 +18,12 @@ export { default as Radio } from './components/Radio.svelte';
 export { default as Switch } from './components/Switch.svelte';
 export { default as Spinner } from './components/Spinner.svelte';
 
+// Tabs (compound)
+export { default as Tabs } from './components/Tabs.svelte';
+export { default as TabList } from './components/TabList.svelte';
+export { default as Tab } from './components/Tab.svelte';
+export { default as TabPanel } from './components/TabPanel.svelte';
+
 // Dialog (compound)
 export { default as Dialog } from './components/Dialog.svelte';
 export { default as DialogTrigger } from './components/DialogTrigger.svelte';

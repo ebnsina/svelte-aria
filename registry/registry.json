@@ -108,6 +108,18 @@
 			"files": [{ "path": "src/lib/components/Switch.svelte", "target": "{ui}/switch.svelte", "type": "registry:ui" }]
 		},
 		{
+			"name": "tabs",
+			"type": "registry:ui",
+			"description": "Tabbed interface with roving-tabindex keyboard navigation.",
+			"registryDependencies": ["cn", "id"],
+			"files": [
+				{ "path": "src/lib/components/Tabs.svelte", "target": "{ui}/tabs.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/TabList.svelte", "target": "{ui}/tab-list.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/Tab.svelte", "target": "{ui}/tab.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/TabPanel.svelte", "target": "{ui}/tab-panel.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "text-field",
 			"type": "registry:ui",
 			"description": "Labelled input with description, validation, and ARIA wiring.",
