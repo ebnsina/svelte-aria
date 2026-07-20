@@ -27,6 +27,7 @@ export const nav: NavSection[] = [
 			{ title: 'Dialog', href: '/dialog' },
 			{ title: 'Popover', href: '/popover' },
 			{ title: 'RadioGroup', href: '/radio-group' },
+			{ title: 'Select', href: '/select' },
 			{ title: 'Switch', href: '/switch' },
 			{ title: 'Tabs', href: '/tabs' },
 			{ title: 'TextField', href: '/text-field' },

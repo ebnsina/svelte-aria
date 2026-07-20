@@ -17,6 +17,13 @@ svelte-aria as fully independent; don't reference other libraries by name.
 - **Verify in the browser, in both themes.** Every visual change is checked in
   light *and* dark (and, where relevant, with a non-default accent). Nothing is
   "done" from code alone.
+- **Validate interaction behaviour against the canonical pattern.** At each
+  component checkpoint, before it's "done", check its roles, keyboard support,
+  and focus management against the authoritative accessible-behaviour pattern
+  for that component (the WAI-ARIA Authoring Practices Guide, plus the behaviour
+  benchmark tracked in `docs/`). Match the pattern — don't ship an interaction
+  that diverges from the accepted a11y behaviour. Record any deliberate
+  deviation and why.
 - **Tokens, never hardcoded colours.** No `ring-black/10`, `text-white`,
   `#hex`, or Tailwind palette classes (`slate-*`, `sky-*`) in components or docs
   chrome. Use the `--sa-*` tokens / registered utilities so light, dark, and
@@ -122,6 +129,8 @@ press · hover · focusVisible   toggle           Button/Checkbox/TextField/Spin
 2. `npm run prepack` — `svelte-package` + `publint` clean; check `dist/` ships
    the styles.
 3. Browser pass in **light and dark** (dev server on `:5200`), console clean.
+4. **Behaviour parity** — keyboard, focus, and ARIA validated against the
+   canonical pattern for that component (see `docs/component-checklist.md`).
 
 ## Stack
 

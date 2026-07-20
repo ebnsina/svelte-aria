@@ -164,6 +164,19 @@
 			]
 		},
 		{
+			"name": "select",
+			"type": "registry:ui",
+			"description": "Collapsible listbox: portaled, positioned, keyboard + typeahead, single selection.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn", "id", "portal", "position"],
+			"files": [
+				{ "path": "src/lib/components/Select.svelte", "target": "{ui}/select.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/SelectTrigger.svelte", "target": "{ui}/select-trigger.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/SelectContent.svelte", "target": "{ui}/select-content.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/SelectItem.svelte", "target": "{ui}/select-item.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "radio-group",
 			"type": "registry:ui",
 			"description": "Radio group with shared context; native keyboard navigation.",

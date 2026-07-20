@@ -30,6 +30,12 @@ export { default as Popover } from './components/Popover.svelte';
 export { default as PopoverTrigger } from './components/PopoverTrigger.svelte';
 export { default as PopoverContent } from './components/PopoverContent.svelte';
 
+// Select (compound)
+export { default as Select } from './components/Select.svelte';
+export { default as SelectTrigger } from './components/SelectTrigger.svelte';
+export { default as SelectContent } from './components/SelectContent.svelte';
+export { default as SelectItem } from './components/SelectItem.svelte';
+
 // Tabs (compound)
 export { default as Tabs } from './components/Tabs.svelte';
 export { default as TabList } from './components/TabList.svelte';
