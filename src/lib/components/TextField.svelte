@@ -45,8 +45,10 @@
 	const errorId = `${id}-error`;
 
 	const invalid = $derived(Boolean(errorMessage));
+	// Only reference ids that are actually rendered — the description is replaced
+	// by the error message when invalid, so don't point aria-describedby at it.
 	const describedBy = $derived(
-		[description ? descriptionId : null, errorMessage ? errorId : null]
+		[description && !errorMessage ? descriptionId : null, errorMessage ? errorId : null]
 			.filter(Boolean)
 			.join(' ') || undefined
 	);

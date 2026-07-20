@@ -21,6 +21,9 @@
 		value?: string;
 		onChange?: (checked: boolean) => void;
 		class?: string;
+		/** Accessible name when the switch has no visible children. */
+		'aria-label'?: string;
+		'aria-labelledby'?: string;
 		children?: Snippet;
 	}
 
@@ -34,6 +37,8 @@
 		value,
 		onChange,
 		class: className,
+		'aria-label': ariaLabel,
+		'aria-labelledby': ariaLabelledby,
 		children
 	}: SwitchProps = $props();
 
@@ -79,7 +84,9 @@
 		{required}
 		{disabled}
 		checked={isChecked}
-		aria-checked={isChecked}
+		aria-readonly={readOnly || undefined}
+		aria-label={ariaLabel}
+		aria-labelledby={ariaLabelledby}
 		onchange={onInputChange}
 	/>
 

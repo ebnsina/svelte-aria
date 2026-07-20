@@ -77,6 +77,7 @@
 		{@attach portal()}
 		bind:this={contentEl}
 		id={popover.contentId}
+		role="dialog"
 		tabindex="-1"
 		style="left: {x}px; top: {y}px"
 		class={cn(

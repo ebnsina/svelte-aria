@@ -10,7 +10,17 @@
 	import { TABS_KEY, type TabsContext } from './Tabs.svelte';
 	import { cn } from '../utils/cn.js';
 
-	let { class: className, children }: { class?: string; children: Snippet } = $props();
+	let {
+		class: className,
+		'aria-label': ariaLabel,
+		'aria-labelledby': ariaLabelledby,
+		children
+	}: {
+		class?: string;
+		'aria-label'?: string;
+		'aria-labelledby'?: string;
+		children: Snippet;
+	} = $props();
 
 	const tabs = getContext<TabsContext>(TABS_KEY);
 	const vertical = $derived(tabs.orientation === 'vertical');
@@ -43,6 +53,8 @@
 <div
 	role="tablist"
 	aria-orientation={tabs.orientation}
+	aria-label={ariaLabel}
+	aria-labelledby={ariaLabelledby}
 	onkeydown={onKeydown}
 	class={cn(
 		'flex gap-1',

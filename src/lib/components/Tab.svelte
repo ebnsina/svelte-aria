@@ -20,6 +20,13 @@
 	const tabs = getContext<TabsContext>(TABS_KEY);
 	const active = $derived(tabs.value === value);
 	const vertical = $derived(tabs.orientation === 'vertical');
+
+	// Register so Tabs can fall back to the first enabled tab when nothing is
+	// selected (keeps exactly one tab in the tab order).
+	$effect(() => {
+		tabs.register(value, disabled);
+		return () => tabs.unregister(value);
+	});
 </script>
 
 <button

@@ -50,7 +50,7 @@ export function createFocusScope(): Attachment {
 			if (e.shiftKey && (active === first || active === el)) {
 				e.preventDefault();
 				last.focus();
-			} else if (!e.shiftKey && active === last) {
+			} else if (!e.shiftKey && (active === last || active === el)) {
 				e.preventDefault();
 				first.focus();
 			}

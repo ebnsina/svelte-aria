@@ -17,14 +17,23 @@
 
 	interface Props {
 		class?: string;
+		/** Accessible name when no <DialogTitle> is present. */
+		'aria-label'?: string;
+		'aria-labelledby'?: string;
 		children: Snippet;
 	}
-	let { class: className, children }: Props = $props();
+	let {
+		class: className,
+		'aria-label': ariaLabel,
+		'aria-labelledby': ariaLabelledby,
+		children
+	}: Props = $props();
 
 	const dialog = getContext<DialogContext>(DIALOG_KEY);
 	if (!dialog) throw new Error('<DialogContent> must be used inside a <Dialog>.');
 
 	const focusScope = createFocusScope();
+	let overlayEl = $state<HTMLElement>();
 
 	// Lock body scroll + close on Escape while open.
 	$effect(() => {
@@ -47,10 +56,30 @@
 			window.removeEventListener('keydown', onKeydown);
 		};
 	});
+
+	// Make the rest of the page inert so AT (and Tab) can't reach the background
+	// while the modal is open — aria-modal alone isn't honoured everywhere.
+	// Deferred to a microtask so the overlay has portaled to <body> first.
+	$effect(() => {
+		if (!dialog.open || !overlayEl) return;
+		const inerted: HTMLElement[] = [];
+		queueMicrotask(() => {
+			for (const child of Array.from(document.body.children)) {
+				if (child === overlayEl || child.contains(overlayEl!)) continue;
+				if (child instanceof HTMLElement && !child.inert) {
+					child.inert = true;
+					inerted.push(child);
+				}
+			}
+		});
+		return () => {
+			for (const el of inerted) el.inert = false;
+		};
+	});
 </script>
 
 {#if dialog.open}
-	<div class="fixed inset-0 z-50" {@attach portal()}>
+	<div class="fixed inset-0 z-50" bind:this={overlayEl} {@attach portal()}>
 		<!-- Backdrop -->
 		<div
 			class="absolute inset-0 bg-black/50"
@@ -64,7 +93,8 @@
 			<div
 				role="dialog"
 				aria-modal="true"
-				aria-labelledby={dialog.hasTitle ? dialog.titleId : undefined}
+				aria-labelledby={dialog.hasTitle ? dialog.titleId : ariaLabelledby}
+				aria-label={dialog.hasTitle ? undefined : ariaLabel}
 				aria-describedby={dialog.hasDescription ? dialog.descriptionId : undefined}
 				tabindex="-1"
 				transition:scale={{ start: 0.96, opacity: 0, duration: 150 }}

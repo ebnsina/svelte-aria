@@ -24,7 +24,7 @@
 		'font-medium select-none outline-none transition-[background-color,border-color,transform] duration-150 ' +
 		'[&_svg]:size-4 [&_svg]:shrink-0 ' +
 		'data-[pressed]:scale-[0.97] motion-reduce:data-[pressed]:scale-100 ' +
-		'data-[disabled]:pointer-events-none data-[disabled]:opacity-50';
+		'data-[disabled]:opacity-50 aria-disabled:pointer-events-none';
 
 	const variantClasses: Record<ButtonVariant, string> = {
 		primary: 'bg-sa-accent text-sa-accent-fg data-[hovered]:bg-sa-accent/90',
@@ -83,6 +83,14 @@
 
 	const isDisabled = $derived(disabled || loading);
 
+	// A loading button stays focusable and announces busy (aria-disabled +
+	// aria-busy) rather than dropping out of the tab order like native disabled.
+	// Activation is blocked by pointer-events (CSS) + this click guard — which
+	// also catches keyboard Enter/Space, since those dispatch a click.
+	function guard(e: MouseEvent) {
+		if (isDisabled) e.preventDefault();
+	}
+
 	const press = createPress({
 		get disabled() {
 			return isDisabled;
@@ -100,9 +108,11 @@
 <button
 	{...rest}
 	{type}
-	disabled={isDisabled}
+	disabled={disabled}
+	aria-disabled={loading || undefined}
 	data-disabled={disabled || undefined}
 	aria-busy={loading || undefined}
+	onclick={guard}
 	class={buttonVariants({ variant, size, class: className })}
 	{@attach behaviour}
 >

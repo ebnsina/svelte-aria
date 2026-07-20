@@ -12,6 +12,8 @@
 <script lang="ts" module>
 	export interface AccordionContext {
 		readonly disabled: boolean;
+		readonly type: 'single' | 'multiple';
+		readonly collapsible: boolean;
 		isOpen(value: string): boolean;
 		toggle(value: string): void;
 	}
@@ -76,6 +78,12 @@
 	setContext<AccordionContext>(ACCORDION_KEY, {
 		get disabled() {
 			return disabled;
+		},
+		get type() {
+			return type;
+		},
+		get collapsible() {
+			return collapsible;
 		},
 		isOpen,
 		toggle

@@ -19,7 +19,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { Attachment } from 'svelte/attachments';
-	import { fade } from 'svelte/transition';
 	import { portal } from '../attachments/portal.js';
 	import { computePosition, type Placement } from '../utils/position.js';
 	import { useId } from '../utils/id.js';
@@ -58,24 +57,39 @@
 	let y = $state(0);
 	let placed = $state(false);
 	let showTimer: ReturnType<typeof setTimeout> | undefined;
+	let hideTimer: ReturnType<typeof setTimeout> | undefined;
+	// Grace period so the cursor can travel the gap from the trigger to the
+	// bubble (which is itself hoverable) without the tooltip vanishing.
+	const closeDelay = 120;
 
 	function setOpen(v: boolean) {
 		if (isControlled) open = v;
 		else internalOpen = v;
 	}
-	function show() {
+	function clearTimers() {
 		clearTimeout(showTimer);
+		clearTimeout(hideTimer);
+	}
+	function show() {
+		clearTimers();
 		if (!disabled) setOpen(true);
 	}
 	function hide() {
-		clearTimeout(showTimer);
+		clearTimers();
 		placed = false;
 		setOpen(false);
 	}
 	function scheduleShow() {
-		clearTimeout(showTimer);
+		clearTimers();
 		if (disabled) return;
 		showTimer = setTimeout(() => setOpen(true), delay);
+	}
+	function scheduleHide() {
+		clearTimers();
+		hideTimer = setTimeout(() => {
+			placed = false;
+			setOpen(false);
+		}, closeDelay);
 	}
 
 	const anchor: Attachment = (node) => {
@@ -84,7 +98,7 @@
 		const onEnter = (e: PointerEvent) => {
 			if (e.pointerType !== 'touch') scheduleShow();
 		};
-		const onLeave = () => hide();
+		const onLeave = () => scheduleHide();
 		const onFocus = () => {
 			if (el.matches(':focus-visible')) show();
 		};
@@ -143,9 +157,11 @@
 		role="tooltip"
 		{id}
 		style="left: {x}px; top: {y}px"
-		transition:fade={{ duration: 100 }}
+		onpointerenter={() => clearTimers()}
+		onpointerleave={() => scheduleHide()}
 		class={cn(
-			'pointer-events-none fixed z-50 max-w-xs rounded-sa-sm bg-sa-fg px-2.5 py-1.5 text-xs font-medium text-sa-bg shadow-sa-md',
+			'fixed z-50 max-w-xs rounded-sa-sm bg-sa-fg px-2.5 py-1.5 text-xs font-medium text-sa-bg shadow-sa-md',
+			'transition-opacity duration-100 ease-out motion-reduce:transition-none',
 			placed ? 'opacity-100' : 'opacity-0',
 			className
 		)}

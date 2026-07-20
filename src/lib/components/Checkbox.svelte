@@ -90,7 +90,7 @@
 		{required}
 		{disabled}
 		checked={isChecked}
-		aria-checked={indeterminate ? 'mixed' : isChecked}
+		aria-readonly={readOnly || undefined}
 		onchange={onInputChange}
 		{@attach syncIndeterminate}
 	/>

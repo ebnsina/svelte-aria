@@ -12,6 +12,8 @@
 		readonly orientation: 'horizontal' | 'vertical';
 		baseId: string;
 		setValue(value: string): void;
+		register(value: string, disabled: boolean): void;
+		unregister(value: string): void;
 	}
 	export const TABS_KEY = Symbol('svelte-aria-tabs');
 </script>
@@ -47,6 +49,13 @@
 	const isControlled = $derived(value !== undefined);
 	const current = $derived(isControlled ? value : internal);
 
+	// Registered tabs (DOM order) so one tab is always selected/tabbable even
+	// when nothing is explicitly selected — otherwise every tab gets tabindex=-1
+	// and the tablist becomes keyboard-unreachable.
+	let registered = $state<{ value: string; disabled: boolean }[]>([]);
+	const firstEnabled = $derived(registered.find((t) => !t.disabled)?.value);
+	const effective = $derived(current ?? firstEnabled);
+
 	function setValue(next: string) {
 		if (isControlled) value = next;
 		else internal = next;
@@ -55,13 +64,21 @@
 
 	setContext<TabsContext>(TABS_KEY, {
 		get value() {
-			return current;
+			return effective;
 		},
 		get orientation() {
 			return orientation;
 		},
 		baseId,
-		setValue
+		setValue,
+		register: (v, disabled) => {
+			const i = registered.findIndex((t) => t.value === v);
+			if (i === -1) registered.push({ value: v, disabled });
+			else registered[i] = { value: v, disabled };
+		},
+		unregister: (v) => {
+			registered = registered.filter((t) => t.value !== v);
+		}
 	});
 </script>
 

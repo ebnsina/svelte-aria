@@ -18,10 +18,20 @@
 		/** Disable just this option (the group can also disable all). */
 		disabled?: boolean;
 		class?: string;
+		/** Accessible name when the radio has no visible children. */
+		'aria-label'?: string;
+		'aria-labelledby'?: string;
 		children?: Snippet;
 	}
 
-	let { value, disabled = false, class: className, children }: RadioProps = $props();
+	let {
+		value,
+		disabled = false,
+		class: className,
+		'aria-label': ariaLabel,
+		'aria-labelledby': ariaLabelledby,
+		children
+	}: RadioProps = $props();
 
 	const group = getContext<RadioGroupContext>(RADIO_GROUP_KEY);
 	if (!group) throw new Error('<Radio> must be used inside a <RadioGroup>.');
@@ -52,6 +62,8 @@
 		checked={selected}
 		disabled={isDisabled}
 		required={group.required}
+		aria-label={ariaLabel}
+		aria-labelledby={ariaLabelledby}
 		onchange={onChange}
 	/>
 

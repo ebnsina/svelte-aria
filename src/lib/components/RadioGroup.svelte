@@ -39,6 +39,9 @@
 		description?: string;
 		errorMessage?: string;
 		class?: string;
+		/** Accessible name when no visible `label` is provided. */
+		'aria-label'?: string;
+		'aria-labelledby'?: string;
 		children: Snippet;
 	}
 
@@ -54,6 +57,8 @@
 		description,
 		errorMessage,
 		class: className,
+		'aria-label': ariaLabel,
+		'aria-labelledby': ariaLabelledby,
 		children
 	}: RadioGroupProps = $props();
 
@@ -70,8 +75,10 @@
 	const currentValue = $derived(isControlled ? value : internal);
 	const invalid = $derived(Boolean(errorMessage));
 
+	// Only reference ids that are actually rendered (description is replaced by
+	// the error when invalid).
 	const describedBy = $derived(
-		[description ? descriptionId : null, errorMessage ? errorId : null]
+		[description && !errorMessage ? descriptionId : null, errorMessage ? errorId : null]
 			.filter(Boolean)
 			.join(' ') || undefined
 	);
@@ -100,7 +107,8 @@
 
 <div
 	role="radiogroup"
-	aria-labelledby={label ? labelId : undefined}
+	aria-labelledby={label ? labelId : ariaLabelledby}
+	aria-label={label ? undefined : ariaLabel}
 	aria-describedby={describedBy}
 	aria-orientation={orientation}
 	aria-required={required || undefined}
