@@ -93,15 +93,16 @@
 	let activeValue = $state<string | undefined>(undefined);
 	let options = $state<SelectOption[]>([]);
 
-	const valueControlled = $derived(value !== undefined);
-	const currentValue = $derived(valueControlled ? value : internalValue);
+	// Always write the bindable so bind:value works even when it starts undefined;
+	// `internal*` is the uncontrolled fallback.
+	const currentValue = $derived(value ?? internalValue);
 	const openControlled = $derived(open !== undefined);
 	const isOpen = $derived(openControlled ? (open as boolean) : internalOpen);
 	const selectedLabel = $derived(options.find((o) => o.value === currentValue)?.label);
 
 	function setValue(next: string) {
-		if (valueControlled) value = next;
-		else internalValue = next;
+		internalValue = next;
+		value = next;
 		onChange?.(next);
 	}
 

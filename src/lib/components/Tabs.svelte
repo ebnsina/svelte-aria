@@ -46,8 +46,8 @@
 
 	// svelte-ignore state_referenced_locally
 	let internal = $state(defaultValue);
-	const isControlled = $derived(value !== undefined);
-	const current = $derived(isControlled ? value : internal);
+	// Always write `value` so bind:value works even when it starts undefined.
+	const current = $derived(value ?? internal);
 
 	// Registered tabs (DOM order) so one tab is always selected/tabbable even
 	// when nothing is explicitly selected — otherwise every tab gets tabindex=-1
@@ -57,8 +57,8 @@
 	const effective = $derived(current ?? firstEnabled);
 
 	function setValue(next: string) {
-		if (isControlled) value = next;
-		else internal = next;
+		internal = next;
+		value = next;
 		onChange?.(next);
 	}
 

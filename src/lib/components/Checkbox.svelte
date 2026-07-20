@@ -45,14 +45,14 @@
 
 	// svelte-ignore state_referenced_locally
 	let internal = $state(defaultChecked ?? false);
-	const isControlled = $derived(checked !== undefined);
-	const isChecked = $derived(isControlled ? (checked as boolean) : internal);
+	// Always write `checked` so bind:checked works even when it starts undefined.
+	const isChecked = $derived(checked ?? internal);
 	const isOn = $derived(isChecked || indeterminate);
 
 	function setChecked(next: boolean) {
 		if (disabled || readOnly) return;
-		if (isControlled) checked = next;
-		else internal = next;
+		internal = next;
+		checked = next;
 		onChange?.(next);
 	}
 

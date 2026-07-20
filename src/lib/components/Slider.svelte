@@ -57,8 +57,8 @@
 
 	// svelte-ignore state_referenced_locally
 	let internal = $state(defaultValue ?? min);
-	const isControlled = $derived(value !== undefined);
-	const current = $derived(isControlled ? (value as number) : internal);
+	// Always write `value` so bind:value works even when it starts undefined.
+	const current = $derived(value ?? internal);
 
 	const decimals = $derived((String(step).split('.')[1] ?? '').length);
 	function snap(v: number): number {
@@ -77,8 +77,8 @@
 	function commit(next: number) {
 		const v = snap(next);
 		if (v === current) return;
-		if (isControlled) value = v;
-		else internal = v;
+		internal = v;
+		value = v;
 		onChange?.(v);
 	}
 

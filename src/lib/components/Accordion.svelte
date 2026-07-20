@@ -52,12 +52,12 @@
 
 	// svelte-ignore state_referenced_locally
 	let internal = $state<Value>(defaultValue ?? (type === 'multiple' ? [] : undefined));
-	const isControlled = $derived(value !== undefined);
-	const current = $derived(isControlled ? value : internal);
+	// Always write `value` so bind:value works even when it starts undefined.
+	const current = $derived(value ?? internal);
 
 	function set(next: Value) {
-		if (isControlled) value = next;
-		else internal = next;
+		internal = next;
+		value = next;
 		onChange?.(next);
 	}
 

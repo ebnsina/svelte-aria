@@ -104,10 +104,10 @@
 	// True once the user edits the text — gates filtering + label sync.
 	let typed = $state(false);
 
-	const valueControlled = $derived(value !== undefined);
-	const currentValue = $derived(valueControlled ? value : internalValue);
-	const inputControlled = $derived(inputValue !== undefined);
-	const text = $derived(inputControlled ? (inputValue as string) : internalInput);
+	// Always write the bindables so bind:value / bind:inputValue work even when
+	// they start undefined; `internal*` are the uncontrolled fallbacks.
+	const currentValue = $derived(value ?? internalValue);
+	const text = $derived(inputValue ?? internalInput);
 	const openControlled = $derived(open !== undefined);
 	const isOpen = $derived(openControlled ? (open as boolean) : internalOpen);
 
@@ -120,13 +120,13 @@
 	const enabled = $derived(filtered.filter((o) => !o.disabled));
 
 	function setValue(next: string | undefined) {
-		if (valueControlled) value = next;
-		else internalValue = next;
+		internalValue = next;
+		value = next;
 		onChange?.(next);
 	}
 	function setText(next: string) {
-		if (inputControlled) inputValue = next;
-		else internalInput = next;
+		internalInput = next;
+		inputValue = next;
 	}
 	function setOpen(next: boolean) {
 		if (disabled && next) return;
