@@ -101,6 +101,13 @@
 			"files": [{ "path": "src/lib/components/Checkbox.svelte", "target": "{ui}/checkbox.svelte", "type": "registry:ui" }]
 		},
 		{
+			"name": "switch",
+			"type": "registry:ui",
+			"description": "On/off toggle; native switch semantics.",
+			"registryDependencies": ["cn", "id"],
+			"files": [{ "path": "src/lib/components/Switch.svelte", "target": "{ui}/switch.svelte", "type": "registry:ui" }]
+		},
+		{
 			"name": "text-field",
 			"type": "registry:ui",
 			"description": "Labelled input with description, validation, and ARIA wiring.",

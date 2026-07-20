@@ -13,7 +13,10 @@ export interface NavSection {
 export const nav: NavSection[] = [
 	{
 		title: 'Getting started',
-		items: [{ title: 'Introduction', href: '/' }]
+		items: [
+			{ title: 'Introduction', href: '/' },
+			{ title: 'Installation', href: '/installation' }
+		]
 	},
 	{
 		title: 'Components',
@@ -22,6 +25,7 @@ export const nav: NavSection[] = [
 			{ title: 'Checkbox', href: '/checkbox' },
 			{ title: 'Dialog', href: '/dialog' },
 			{ title: 'RadioGroup', href: '/radio-group' },
+			{ title: 'Switch', href: '/switch' },
 			{ title: 'TextField', href: '/text-field' }
 		]
 	},

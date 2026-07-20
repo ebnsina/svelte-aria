@@ -15,6 +15,7 @@ export { default as Checkbox } from './components/Checkbox.svelte';
 export { default as TextField } from './components/TextField.svelte';
 export { default as RadioGroup } from './components/RadioGroup.svelte';
 export { default as Radio } from './components/Radio.svelte';
+export { default as Switch } from './components/Switch.svelte';
 export { default as Spinner } from './components/Spinner.svelte';
 
 // Dialog (compound)

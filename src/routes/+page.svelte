@@ -3,9 +3,10 @@
 	import { ArrowRight, Keyboard, Palette, Accessibility, Feather } from '@lucide/svelte';
 	import CodeBlock from '$lib/site/CodeBlock.svelte';
 
-	const install = `npm install svelte-aria`;
+	const install = `npx svelte-aria init
+npx svelte-aria add button dialog switch`;
 	const usage = `<script>
-  import { Button } from 'svelte-aria';
+  import Button from '$lib/components/ui/button.svelte';
 <\/script>
 
 <Button variant="primary" onPress={() => save()}>
