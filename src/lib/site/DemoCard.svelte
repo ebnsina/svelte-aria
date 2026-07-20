@@ -15,7 +15,7 @@
 <div class="not-prose overflow-hidden rounded-sa-lg bg-sa-field shadow-sa-sm ring-1 ring-sa-hairline">
 	<div
 		class="grid gap-6 bg-sa-bg p-8 md:grid-cols-[1fr_auto] md:gap-10"
-		style="background-image: radial-gradient(var(--sa-highlight-hover) 1.1px, transparent 1.1px); background-size: 16px 16px;"
+		style="background-image: radial-gradient(55% 60% at 42% 42%, oklch(from var(--sa-tint) 62% c h / 0.09), transparent 72%);"
 	>
 		<div class="grid min-h-40 place-items-center">
 			{@render preview()}
