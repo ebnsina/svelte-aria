@@ -1,5 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { page } from '$app/state';
+	import { ArrowLeft, ArrowRight } from '@lucide/svelte';
+	import { nav, allLinks } from './nav.js';
 	import OnThisPage from './OnThisPage.svelte';
 
 	interface Heading {
@@ -13,11 +16,24 @@
 		children: Snippet;
 	}
 	let { title, description, headings = [], children }: Props = $props();
+
+	const path = $derived(page.url.pathname);
+	const section = $derived(nav.find((s) => s.items.some((i) => i.href === path))?.title);
+	const index = $derived(allLinks.findIndex((l) => l.href === path));
+	const prev = $derived(index > 0 ? allLinks[index - 1] : undefined);
+	const next = $derived(index >= 0 && index < allLinks.length - 1 ? allLinks[index + 1] : undefined);
 </script>
 
 <div class="mx-auto flex w-full max-w-6xl gap-12 px-4 py-10 lg:px-8">
 	<article class="min-w-0 flex-1">
 		<header class="mb-10">
+			{#if section}
+				<div class="mb-3 flex items-center gap-1.5 text-xs font-medium text-sa-fg-muted">
+					<span>{section}</span>
+					<span class="text-sa-fg-muted/60">/</span>
+					<span class="text-sa-accent">{title}</span>
+				</div>
+			{/if}
 			<h1 class="text-4xl font-bold tracking-tight text-sa-fg">{title}</h1>
 			<p class="mt-3 text-lg text-sa-fg-muted">{description}</p>
 		</header>
@@ -25,6 +41,44 @@
 		<div class="flex flex-col gap-12">
 			{@render children()}
 		</div>
+
+		{#if prev || next}
+			<nav
+				aria-label="Pagination"
+				class="mt-16 grid grid-cols-2 gap-3 border-t border-sa-hairline pt-8"
+			>
+				{#if prev}
+					<a
+						href={prev.href}
+						class="group flex flex-col gap-1 rounded-sa-lg border border-sa-hairline p-4 transition-colors hover:border-sa-border hover:bg-[var(--sa-highlight-hover)]"
+					>
+						<span class="text-xs text-sa-fg-muted">Previous</span>
+						<span class="flex items-center gap-1.5 font-medium text-sa-fg">
+							<ArrowLeft
+								class="size-4 text-sa-fg-muted transition-transform group-hover:-translate-x-0.5"
+							/>
+							{prev.title}
+						</span>
+					</a>
+				{:else}
+					<span></span>
+				{/if}
+				{#if next}
+					<a
+						href={next.href}
+						class="group col-start-2 flex flex-col items-end gap-1 rounded-sa-lg border border-sa-hairline p-4 text-right transition-colors hover:border-sa-border hover:bg-[var(--sa-highlight-hover)]"
+					>
+						<span class="text-xs text-sa-fg-muted">Next</span>
+						<span class="flex items-center gap-1.5 font-medium text-sa-fg">
+							{next.title}
+							<ArrowRight
+								class="size-4 text-sa-fg-muted transition-transform group-hover:translate-x-0.5"
+							/>
+						</span>
+					</a>
+				{/if}
+			</nav>
+		{/if}
 	</article>
 
 	{#if headings.length}

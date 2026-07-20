@@ -22,22 +22,21 @@
 			<ul class="flex flex-col gap-0.5">
 				{#each section.items as item (item.href)}
 					{@const active = isActive(item.href)}
-					<li class="relative">
-						{#if active}
-							<!-- Active indicator bar; the layout id lets it slide between items -->
-							<span
-								class="absolute top-1/2 left-0 h-4 w-0.5 -translate-y-1/2 rounded-full bg-sa-accent"
-							></span>
-						{/if}
+					<li>
 						<a
 							href={item.href}
 							aria-current={active ? 'page' : undefined}
 							onclick={onnavigate}
-							class="block rounded-sa-sm px-3 py-1.5 transition-colors duration-150
+							class="flex items-center gap-2 rounded-sa-sm px-3 py-1.5 transition-colors duration-150
 								{active
-								? 'font-medium text-sa-fg'
+								? 'bg-[var(--sa-highlight-hover)] font-medium text-sa-fg'
 								: 'text-sa-fg-muted hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg'}"
 						>
+							<span
+								class="size-1 rounded-full transition-colors {active
+									? 'bg-sa-accent'
+									: 'bg-transparent'}"
+							></span>
 							{item.title}
 						</a>
 					</li>
