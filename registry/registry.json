@@ -186,6 +186,16 @@
 			"files": [{ "path": "src/lib/components/TextField.svelte", "target": "{ui}/text-field.svelte", "type": "registry:ui" }]
 		},
 		{
+			"name": "toolbar",
+			"type": "registry:ui",
+			"description": "Grouping of controls with roving-tabindex arrow navigation; role=toolbar.",
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/Toolbar.svelte", "target": "{ui}/toolbar.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/ToolbarSeparator.svelte", "target": "{ui}/toolbar-separator.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "tooltip",
 			"type": "registry:ui",
 			"description": "Hint on hover / keyboard focus; portaled, positioned with flip.",

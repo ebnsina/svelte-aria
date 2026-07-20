@@ -40,6 +40,7 @@ export const nav: NavSection[] = [
 			{ title: 'Tabs', href: '/tabs' },
 			{ title: 'TextField', href: '/text-field' },
 			{ title: 'Toast', href: '/toast' },
+			{ title: 'Toolbar', href: '/toolbar' },
 			{ title: 'Tooltip', href: '/tooltip' }
 		]
 	},
