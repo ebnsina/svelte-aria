@@ -64,6 +64,17 @@ export { default as SelectTrigger } from './components/SelectTrigger.svelte';
 export { default as SelectContent } from './components/SelectContent.svelte';
 export { default as SelectItem } from './components/SelectItem.svelte';
 
+// Sheet / Drawer — an edge-anchored modal. Reuses the Dialog root + parts
+// (a sheet is a modal dialog); only the sliding content differs.
+export { default as Sheet } from './components/Dialog.svelte';
+export { default as SheetTrigger } from './components/DialogTrigger.svelte';
+export { default as SheetContent } from './components/SheetContent.svelte';
+export { default as SheetHeader } from './components/DialogHeader.svelte';
+export { default as SheetTitle } from './components/DialogTitle.svelte';
+export { default as SheetDescription } from './components/DialogDescription.svelte';
+export { default as SheetFooter } from './components/DialogFooter.svelte';
+export { default as SheetClose } from './components/DialogClose.svelte';
+
 // Tabs (compound)
 // Table
 export { default as Table } from './components/Table.svelte';

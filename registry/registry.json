@@ -172,6 +172,15 @@
 			"files": [{ "path": "src/lib/components/Checkbox.svelte", "target": "{ui}/checkbox.svelte", "type": "registry:ui" }]
 		},
 		{
+			"name": "sheet",
+			"type": "registry:ui",
+			"description": "Edge-anchored modal (drawer) that slides in from any side; reuses the dialog.",
+			"registryDependencies": ["cn", "portal", "focus-scope", "dialog"],
+			"files": [
+				{ "path": "src/lib/components/SheetContent.svelte", "target": "{ui}/sheet-content.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "slider",
 			"type": "registry:ui",
 			"description": "Single-thumb range slider with pointer drag + full keyboard control and ARIA.",

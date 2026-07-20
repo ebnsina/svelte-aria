@@ -40,6 +40,7 @@ export const nav: NavSection[] = [
 			{ title: 'RadioGroup', href: '/radio-group' },
 			{ title: 'Select', href: '/select' },
 			{ title: 'Separator', href: '/separator' },
+			{ title: 'Sheet', href: '/sheet' },
 			{ title: 'Slider', href: '/slider' },
 			{ title: 'Switch', href: '/switch' },
 			{ title: 'Table', href: '/table' },
