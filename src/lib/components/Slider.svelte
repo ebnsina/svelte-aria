@@ -189,6 +189,8 @@
 			class={cn(
 				'absolute size-4 rounded-full border-2 border-sa-accent bg-sa-field shadow-sm',
 				'transition-[box-shadow] duration-150',
+				// Replace the global offset outline with a clean ring hugging the thumb.
+				'focus-visible:outline-none focus-visible:[box-shadow:0_0_0_2px_var(--sa-field),0_0_0_4px_var(--sa-focus-ring-color)]',
 				disabled ? 'cursor-not-allowed' : 'cursor-grab active:cursor-grabbing',
 				vertical ? 'left-1/2 -translate-x-1/2 translate-y-1/2' : 'top-1/2 -translate-x-1/2 -translate-y-1/2'
 			)}

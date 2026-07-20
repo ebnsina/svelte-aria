@@ -56,6 +56,20 @@ kbd {
 	background: oklch(from var(--sa-tint) 55% c h / 0.28);
 }
 
+/* Marketing group — pins the accent to a fixed brand hue so the landing keeps a
+   consistent identity regardless of the accent chosen in the docs. Re-declares
+   the tint + the tokens the utilities actually consume (they resolve at :root
+   otherwise). Light/dark still follows the theme. */
+.sa-marketing {
+	--sa-tint: var(--sa-pink);
+	--sa-tint-1000: oklch(from var(--sa-tint) var(--sa-l-1000) var(--sa-c-1000) h);
+	--sa-highlight-background: oklch(from var(--sa-tint) 55% c h);
+	--sa-highlight-background-pressed: oklch(from var(--sa-tint) 50% c h);
+	--sa-focus-ring-color: var(--sa-tint-1000);
+	--color-sa-accent: var(--sa-highlight-background);
+	--color-sa-accent-pressed: var(--sa-highlight-background-pressed);
+}
+
 /* Smooth crossfade during a theme toggle (added briefly by the theme controller,
    so it doesn't interfere with press/hover transitions the rest of the time). */
 html.sa-theme-anim,
