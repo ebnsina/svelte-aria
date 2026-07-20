@@ -49,10 +49,26 @@ export function createPress(options: PressOptions = {}) {
 		// and so we can distinguish keyboard-held-space from a pointer press.
 		let activePointerId: number | null = null;
 		let keyboardPressed = false;
+		// After we handle a real pointer/keyboard press, the browser dispatches a
+		// follow-up `click`. We swallow that one so onPress doesn't fire twice.
+		let ignoreNextClick = false;
+		let clickTimer: ReturnType<typeof setTimeout> | undefined;
 
 		const setPressed = (value: boolean) => {
 			pressed = value;
 			setDataAttr(el, 'data-pressed', value);
+		};
+
+		// Called after a handled pointer/keyboard interaction so the trailing
+		// native click is ignored. Reset on the next tick in case no click follows
+		// (e.g. released off-target), so a later virtual click isn't swallowed.
+		const suppressNextClick = () => {
+			ignoreNextClick = true;
+			if (clickTimer) clearTimeout(clickTimer);
+			clickTimer = setTimeout(() => {
+				ignoreNextClick = false;
+				clickTimer = undefined;
+			}, 0);
 		};
 
 		const makeEvent = (
@@ -93,6 +109,7 @@ export function createPress(options: PressOptions = {}) {
 				e.clientY <= rect.bottom;
 			activePointerId = null;
 			end(e.pointerType as PressEvent['pointerType'], e, over);
+			suppressNextClick();
 		};
 
 		const onPointerCancel = (e: PointerEvent) => {
@@ -115,6 +132,28 @@ export function createPress(options: PressOptions = {}) {
 			e.preventDefault();
 			keyboardPressed = false;
 			end('keyboard', e, true);
+			suppressNextClick();
+		};
+
+		// ---- Virtual / assistive-tech activation ----
+		// Screen readers, voice control, and some automation activate a control by
+		// dispatching a bare `click` (no pointer events, detail 0). React Aria fires
+		// onPress for these; without this, AT users can't trigger a Button/Trigger.
+		const onClick = (e: MouseEvent) => {
+			if (ignoreNextClick) {
+				// This is the click that follows a real pointer/keyboard press.
+				ignoreNextClick = false;
+				if (clickTimer) {
+					clearTimeout(clickTimer);
+					clickTimer = undefined;
+				}
+				return;
+			}
+			if (options.disabled || e.detail !== 0) return;
+			const event = makeEvent('virtual', e);
+			options.onPressStart?.(event);
+			options.onPress?.(event);
+			options.onPressEnd?.(event);
 		};
 
 		// Cancel a keyboard press if focus is lost mid-hold.
@@ -130,6 +169,7 @@ export function createPress(options: PressOptions = {}) {
 		el.addEventListener('pointercancel', onPointerCancel);
 		el.addEventListener('keydown', onKeyDown);
 		el.addEventListener('keyup', onKeyUp);
+		el.addEventListener('click', onClick);
 		el.addEventListener('blur', onBlur);
 
 		return () => {
@@ -138,7 +178,9 @@ export function createPress(options: PressOptions = {}) {
 			el.removeEventListener('pointercancel', onPointerCancel);
 			el.removeEventListener('keydown', onKeyDown);
 			el.removeEventListener('keyup', onKeyUp);
+			el.removeEventListener('click', onClick);
 			el.removeEventListener('blur', onBlur);
+			if (clickTimer) clearTimeout(clickTimer);
 			setPressed(false);
 		};
 	};
