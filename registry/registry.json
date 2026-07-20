@@ -239,6 +239,14 @@
 			]
 		},
 		{
+			"name": "date-picker",
+			"type": "registry:ui",
+			"description": "A field that opens a Calendar in a popover; composes popover + calendar.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn", "id", "popover", "calendar"],
+			"files": [{ "path": "src/lib/components/DatePicker.svelte", "target": "{ui}/date-picker.svelte", "type": "registry:ui" }]
+		},
+		{
 			"name": "dialog",
 			"type": "registry:ui",
 			"description": "Modal dialog: portal, focus trap + restore, scroll lock, dismiss.",

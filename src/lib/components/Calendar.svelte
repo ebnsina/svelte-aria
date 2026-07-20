@@ -70,8 +70,9 @@
 
 	// svelte-ignore state_referenced_locally
 	let internal = $state<Date | undefined>(defaultValue);
-	const isControlled = $derived(value !== undefined);
-	const selected = $derived(isControlled ? value : internal);
+	// Always write `value` too, so `bind:value` works even when it starts
+	// undefined; `internal` is the fallback for the uncontrolled case.
+	const selected = $derived(value ?? internal);
 
 	// The roving-focus date; the grid always shows its month.
 	// svelte-ignore state_referenced_locally
@@ -121,8 +122,8 @@
 
 	function select(d: Date) {
 		if (isDisabled(d)) return;
-		if (isControlled) value = d;
-		else internal = d;
+		internal = d;
+		value = d;
 		focused = d;
 		onChange?.(d);
 	}
