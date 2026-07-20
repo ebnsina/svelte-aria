@@ -112,6 +112,14 @@
 			"files": [{ "path": "src/lib/components/Button.svelte", "target": "{ui}/button.svelte", "type": "registry:ui" }]
 		},
 		{
+			"name": "calendar",
+			"type": "registry:ui",
+			"description": "Single-date month grid with roving focus, full keyboard date navigation, and ARIA grid semantics.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn", "id"],
+			"files": [{ "path": "src/lib/components/Calendar.svelte", "target": "{ui}/calendar.svelte", "type": "registry:ui" }]
+		},
+		{
 			"name": "checkbox",
 			"type": "registry:ui",
 			"description": "Native checkbox with indeterminate + animated check.",

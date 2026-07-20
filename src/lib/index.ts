@@ -17,6 +17,7 @@ export { default as RadioGroup } from './components/RadioGroup.svelte';
 export { default as Radio } from './components/Radio.svelte';
 export { default as Switch } from './components/Switch.svelte';
 export { default as Slider } from './components/Slider.svelte';
+export { default as Calendar } from './components/Calendar.svelte';
 export { default as Tooltip } from './components/Tooltip.svelte';
 export { default as Spinner } from './components/Spinner.svelte';
 export { default as Toaster } from './components/Toaster.svelte';

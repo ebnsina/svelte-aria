@@ -23,6 +23,7 @@ export const nav: NavSection[] = [
 		items: [
 			{ title: 'Accordion', href: '/accordion' },
 			{ title: 'Button', href: '/button' },
+			{ title: 'Calendar', href: '/calendar' },
 			{ title: 'Checkbox', href: '/checkbox' },
 			{ title: 'ComboBox', href: '/combobox' },
 			{ title: 'Dialog', href: '/dialog' },
