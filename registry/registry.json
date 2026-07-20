@@ -80,6 +80,19 @@
 		},
 
 		{
+			"name": "accordion",
+			"type": "registry:ui",
+			"description": "Collapsible sections; single or multiple open.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn", "id"],
+			"files": [
+				{ "path": "src/lib/components/Accordion.svelte", "target": "{ui}/accordion.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/AccordionItem.svelte", "target": "{ui}/accordion-item.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/AccordionTrigger.svelte", "target": "{ui}/accordion-trigger.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/AccordionContent.svelte", "target": "{ui}/accordion-content.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "spinner",
 			"type": "registry:ui",
 			"description": "Indeterminate progress circle (track + rotating arc).",

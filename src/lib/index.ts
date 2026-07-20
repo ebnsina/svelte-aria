@@ -18,6 +18,12 @@ export { default as Radio } from './components/Radio.svelte';
 export { default as Switch } from './components/Switch.svelte';
 export { default as Spinner } from './components/Spinner.svelte';
 
+// Accordion (compound)
+export { default as Accordion } from './components/Accordion.svelte';
+export { default as AccordionItem } from './components/AccordionItem.svelte';
+export { default as AccordionTrigger } from './components/AccordionTrigger.svelte';
+export { default as AccordionContent } from './components/AccordionContent.svelte';
+
 // Tabs (compound)
 export { default as Tabs } from './components/Tabs.svelte';
 export { default as TabList } from './components/TabList.svelte';

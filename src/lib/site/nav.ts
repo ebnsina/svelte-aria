@@ -21,6 +21,7 @@ export const nav: NavSection[] = [
 	{
 		title: 'Components',
 		items: [
+			{ title: 'Accordion', href: '/accordion' },
 			{ title: 'Button', href: '/button' },
 			{ title: 'Checkbox', href: '/checkbox' },
 			{ title: 'Dialog', href: '/dialog' },

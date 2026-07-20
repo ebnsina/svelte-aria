@@ -86,7 +86,7 @@
 	<span
 		aria-hidden="true"
 		class={cn(
-			'relative inline-flex h-5 w-9 shrink-0 rounded-full border border-transparent transition-colors duration-150',
+			'relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors duration-150',
 			'peer-focus-visible:[outline:2px_solid_var(--sa-focus-ring-color)] peer-focus-visible:outline-offset-2',
 			isChecked ? 'bg-sa-accent' : 'bg-sa-gray-300'
 		)}
