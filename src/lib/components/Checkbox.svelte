@@ -102,7 +102,7 @@
 			'transition-[background-color,border-color,transform] duration-150',
 			'peer-active:scale-95 motion-reduce:peer-active:scale-100',
 			'peer-focus-visible:[outline:2px_solid_var(--sa-focus-ring-color)] peer-focus-visible:outline-offset-2',
-			isOn ? 'border-sa-accent bg-sa-accent' : 'border-sa-gray-200 bg-sa-field'
+			isOn ? 'border-sa-accent bg-sa-accent' : 'border-sa-border bg-sa-field'
 		)}
 	>
 		<Check
