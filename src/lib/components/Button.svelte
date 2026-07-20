@@ -1,5 +1,5 @@
 <!--
-  Button — inline-Tailwind (shadcn-style) prototype.
+  Button — inline-Tailwind.
 
   All styling lives right here as Tailwind utilities, keyed off the data-*
   interaction state the primitives emit (data-pressed / data-hovered) — so
@@ -10,7 +10,7 @@
   hover, unified pointer+keyboard press); the focus ring comes from the global
   :focus-visible rule; loading swaps the label for a centred spinner.
 
-  `buttonVariants` is exported (the cva/shadcn pattern) so you can style a link
+  `buttonVariants` is exported (a variants pattern) so you can style a link
   or any element as a button: class={buttonVariants({ variant: 'outline' })}.
 -->
 <script lang="ts" module>
@@ -41,7 +41,7 @@
 		lg: 'h-10 px-6 text-base'
 	};
 
-	/** cva/shadcn-style class resolver — style any element as a button. */
+	/** variants class resolver — style any element as a button. */
 	export function buttonVariants(
 		opts: { variant?: ButtonVariant; size?: ButtonSize; class?: string } = {}
 	): string {
@@ -62,7 +62,7 @@
 		variant?: ButtonVariant;
 		size?: ButtonSize;
 		disabled?: boolean;
-		/** Renders a spinner and blocks interaction (React Aria's isPending). */
+		/** Renders a spinner and blocks interaction. */
 		loading?: boolean;
 		onPress?: (event: PressEvent) => void;
 		class?: string;

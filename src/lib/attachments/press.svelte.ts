@@ -24,7 +24,7 @@ export interface PressOptions {
 const isKeyboardActivation = (e: KeyboardEvent) => e.key === 'Enter' || e.key === ' ';
 
 /**
- * `press` — a normalized press interaction, mirroring React Aria's `usePress`.
+ * `press` — a normalized press interaction across mouse, touch, keyboard, and virtual (AT) clicks.
  *
  * Why not just `onclick`? A single, correct press abstraction needs to:
  *  - unify mouse, touch, pen and keyboard (Enter/Space) into one event,
@@ -137,8 +137,8 @@ export function createPress(options: PressOptions = {}) {
 
 		// ---- Virtual / assistive-tech activation ----
 		// Screen readers, voice control, and some automation activate a control by
-		// dispatching a bare `click` (no pointer events, detail 0). React Aria fires
-		// onPress for these; without this, AT users can't trigger a Button/Trigger.
+		// dispatching a bare `click` (no pointer events, detail 0). We fire onPress
+		// for these; without it, AT users couldn't trigger a Button/Trigger.
 		const onClick = (e: MouseEvent) => {
 			if (ignoreNextClick) {
 				// This is the click that follows a real pointer/keyboard press.

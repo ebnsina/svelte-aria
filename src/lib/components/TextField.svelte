@@ -1,5 +1,5 @@
 <!--
-  TextField — inline-Tailwind (shadcn-style).
+  TextField — inline-Tailwind.
 
   A native <input> is the accessible control; the wrapper carries the visuals
   inline. Focus and hover are pure CSS off the input (`has-[:focus-visible]`,

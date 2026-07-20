@@ -12,8 +12,8 @@ export interface HoverOptions {
  *
  * On touch devices a tap emits emulated pointer events with
  * `pointerType === 'touch'`; treating those as "hover" leaves elements stuck in
- * a hovered state after a tap. Like React Aria's `useHover`, we only react to
- * mouse and pen, and expose `data-hovered` for styling.
+ * a hovered state after a tap. We only react to mouse and pen, and expose
+ * `data-hovered` for styling.
  */
 export function createHover(options: HoverOptions = {}) {
 	let hovered = $state(false);

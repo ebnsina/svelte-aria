@@ -1,5 +1,5 @@
 <!--
-  Radio — a single option inside a <RadioGroup> (inline-Tailwind, shadcn-style).
+  Radio — a single option inside a <RadioGroup> (inline-Tailwind).
 
   Reads the shared group context for name / selected value / disabled, and is a
   native <input type="radio">, so keyboard navigation and selection come from the

@@ -1,15 +1,12 @@
 /**
  * svelte-aria design tokens.
  *
- * Ported from Adobe's React Aria Components starter theme so svelte-aria shares
- * React Aria's exact palette and token model: an OKLCH-based, re-tintable colour
- * system (default tint = indigo), a neutral gray scale, semantic tokens, plus
- * dark-mode and Windows high-contrast support.
+ * An OKLCH-based, re-tintable colour system: change one variable (`--sa-tint`,
+ * default indigo) to re-theme every component. Includes a neutral gray scale,
+ * semantic tokens, explicit light/dark themes, and Windows high-contrast support.
  *
  * All custom properties are namespaced `--sa-*` to avoid collisions in consumer
- * apps. Change `--sa-tint` to re-theme every component at once.
- *
- * Reference: https://react-aria.adobe.com/  (react-spectrum/starters/docs)
+ * apps.
  */
 
 /* Base hues (lightness channel is only a chroma multiplier — see scales) */
@@ -189,7 +186,7 @@
 	--sa-radius-sm: 8px;
 	--sa-radius-lg: 16px;
 
-	/* Spacing scale (4px step), matching React Aria */
+	/* Spacing scale (4px step) */
 	--sa-spacing: 0.25rem;
 	--sa-spacing-1: calc(1 * var(--sa-spacing));
 	--sa-spacing-2: calc(2 * var(--sa-spacing));

@@ -41,7 +41,7 @@
 		{
 			"name": "press",
 			"type": "registry:primitive",
-			"description": "Unified press across mouse/touch/keyboard/virtual (usePress-equivalent).",
+			"description": "Unified press across mouse, touch, keyboard, and virtual (AT) activation.",
 			"registryDependencies": ["attachment-utils"],
 			"files": [{ "path": "src/lib/attachments/press.svelte.ts", "target": "{lib}/attachments/press.svelte.ts", "type": "registry:primitive" }]
 		},
@@ -82,7 +82,7 @@
 		{
 			"name": "spinner",
 			"type": "registry:ui",
-			"description": "Indeterminate progress circle (ProgressCircle port).",
+			"description": "Indeterminate progress circle (track + rotating arc).",
 			"files": [{ "path": "src/lib/components/Spinner.svelte", "target": "{ui}/spinner.svelte", "type": "registry:ui" }]
 		},
 		{

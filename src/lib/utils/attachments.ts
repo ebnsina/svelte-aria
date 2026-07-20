@@ -24,8 +24,8 @@ export function combineAttachments(
 }
 
 /**
- * Toggle a boolean `data-*` attribute the way React Aria exposes interaction
- * state (`data-pressed`, `data-hovered`, `data-focus-visible`…). Present with an
+ * Toggle a boolean `data-*` attribute exposing interaction state
+ * (`data-pressed`, `data-hovered`, `data-focus-visible`…). Present with an
  * empty value when `on`, removed entirely when `off` — so CSS can target
  * `&[data-pressed]` / `data-[pressed]:` and styled kits stay swappable.
  */

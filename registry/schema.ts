@@ -2,7 +2,7 @@
  * svelte-aria registry schema.
  *
  * The registry is the source of truth the CLI reads to copy components (and
- * everything they depend on) into a user's project — the shadcn model, where
+ * everything they depend on) into a user's project — a copy-paste model, where
  * the code lands in *their* repo and they own it, rather than an npm dependency.
  *
  * Authoring: registry.json holds metadata + file *paths* (into src/lib). A build

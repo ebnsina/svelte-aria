@@ -1,7 +1,7 @@
 # svelte-aria registry
 
 The registry is what the CLI reads to copy components into a user's project —
-the **shadcn distribution model**: the code lands in *their* repo under *their*
+a **copy-paste distribution model**: the code lands in *their* repo under *their*
 aliases, and they own and edit it. Not an npm dependency.
 
 - **`schema.ts`** — the manifest types (source of truth for shapes).
@@ -152,8 +152,8 @@ svelte-aria diff <name>    # show local edits vs upstream
 
 - **Theme merge strategy** — copy `svelte-aria.css` + `@import` (current design,
   keeps the user's CSS clean and updatable) vs. inline `@theme`/vars into
-  `app.css` (shadcn-style, but harder to update). Leaning copy-and-import.
-- **cn location** — `{utils}/cn.ts` (shadcn convention) vs. under `{lib}`.
-  Current: `{utils}`, so it matches existing shadcn-svelte projects.
+  `app.css` (inlined, but harder to update). Leaning copy-and-import.
+- **cn location** — `{utils}/cn.ts` (a common convention) vs. under `{lib}`.
+  Current: `{utils}`, so it matches projects that keep utils there.
 - **Namespaced imports** — Dialog is 8 files; consider also shipping a barrel so
   users can `import * as Dialog`. Optional, post-v1.

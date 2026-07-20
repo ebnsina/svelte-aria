@@ -1,5 +1,5 @@
 /**
- * svelte-aria — React Aria–level behaviour, Svelte-level DX.
+ * svelte-aria — accessible, headless-first Svelte 5 components.
  *
  * Public entry point. The library is layered:
  *   - primitives (attachments): press, hover, focusVisible

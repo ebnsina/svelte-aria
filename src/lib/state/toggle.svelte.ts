@@ -3,7 +3,7 @@
  * toggle buttons. Framework logic only: no DOM, no ARIA, no styling.
  *
  * Supports both controlled (`checked` passed in) and uncontrolled
- * (`defaultChecked`) usage, mirroring React Aria's `useToggleState`.
+ * (`defaultChecked`) usage.
  */
 
 export interface ToggleStateOptions {

@@ -1,5 +1,5 @@
 <!--
-  Checkbox — inline-Tailwind (shadcn-style).
+  Checkbox — inline-Tailwind.
 
   A real, visually-hidden <input type="checkbox"> drives state (native form
   submission + screen-reader support). The visible box is styled inline: its

@@ -1,45 +1,44 @@
 # svelte-aria
 
-**React Aria–level behaviour, Svelte-level DX.**
+**Accessible Svelte components, done right.**
 
-Accessible, headless-first components for **Svelte 5**, built on composable
-interaction primitives. The hard parts — keyboard, pointer and touch handling,
-focus management, ARIA wiring — are handled correctly, using
-[React Aria](https://react-aria.adobe.com/) as a behavioural reference (not a
-code port). The API is Svelte-native: runes, attachments, snippets.
+Headless-first components for **Svelte 5**, built on composable interaction
+primitives. The hard parts — keyboard, pointer and touch handling, focus
+management, ARIA wiring — are handled correctly, with the edge cases covered
+(drag-off cancels a press, keyboard `Enter`/`Space`, touch that doesn't stick as
+hover, keyboard-only focus rings, assistive-tech activation). The API is
+Svelte-native: runes, attachments, snippets.
 
-> Status: early. Ships `Button`, `Checkbox`, `TextField` and the primitives
-> they're built on. Styled with Tailwind CSS v4; a vanilla-CSS kit is planned.
+Components are **copied into your project** by a CLI — you own and edit every
+file. No runtime dependency.
 
 ## Why
 
-- **Correctness first.** Interaction models mirror React Aria's, including the
-  edge cases (drag-off cancels a press, keyboard `Enter`/`Space`, touch that
-  doesn't stick as hover, keyboard-only focus rings).
+- **Correctness first.** Rigorous interaction models across mouse, touch and
+  keyboard, with correct focus management and ARIA — not just the happy path.
 - **Svelte-native.** Behaviour ships as [attachments](https://svelte.dev/docs/svelte/@attach)
   (`{@attach ...}`) that compose on one element — no prop-spreading ceremony.
 - **Styling is swappable.** Interaction state is exposed via `data-*`
-  attributes (`data-pressed`, `data-hovered`, `data-focus-visible`), so a
-  future vanilla-CSS kit reuses the exact same behaviour with no core changes.
+  attributes (`data-pressed`, `data-hovered`, `data-focus-visible`), so the
+  visual layer stays yours to change.
 
 ## Install
 
+Requires **Svelte 5** + **Tailwind CSS v4**. Run once, then add components:
+
 ```bash
-npm install svelte-aria
+npx svelte-aria init
+npx svelte-aria add button dialog switch
 ```
 
-Requires **Svelte 5**. The styled components use Tailwind CSS v4 utilities —
-make sure Tailwind is set up in your app, then import the theme once in your
-Tailwind entry CSS:
+`init` writes a `components.json`, copies the design tokens + Tailwind preset,
+wires the `@import` into your app CSS, and installs `clsx` / `tailwind-merge`.
+`add` copies each component plus everything it depends on, rewriting imports to
+your aliases.
 
-```css
-@import 'tailwindcss';
-@import 'svelte-aria/styles/tailwind.css';
-```
-
-This brings in svelte-aria's **design tokens and palette, ported from React
-Aria** — an OKLCH-based, re-tintable colour system (default tint: indigo) with
-a cool-slate neutral scale, semantic tokens, and Windows high-contrast support.
+The palette is an **OKLCH-based, re-tintable colour system** (default tint:
+indigo) with a cool-slate neutral scale, semantic tokens, and Windows
+high-contrast support.
 
 ### Light / dark themes
 
@@ -72,14 +71,16 @@ Re-theme every component by overriding one variable:
 }
 ```
 
-Not using Tailwind yet? Import just the tokens — `svelte-aria/styles/theme.css`
-— a vanilla-CSS kit that consumes them is planned.
-
 ## Usage
+
+Import from wherever the CLI placed the files (your `ui` alias —
+`$lib/components/ui` by default):
 
 ```svelte
 <script>
-	import { Button, Checkbox, TextField } from 'svelte-aria';
+	import Button from '$lib/components/ui/button.svelte';
+	import Checkbox from '$lib/components/ui/checkbox.svelte';
+	import TextField from '$lib/components/ui/text-field.svelte';
 
 	let agreed = $state(false);
 	let email = $state('');
@@ -106,7 +107,7 @@ Not using Tailwind yet? Import just the tokens — `svelte-aria/styles/theme.css
 | `variant` | `'primary' \| 'secondary' \| 'outline' \| 'ghost' \| 'destructive'`   | `'primary'` |
 | `size`    | `'sm' \| 'md' \| 'lg'`                                                 | `'md'`      |
 | `disabled`| `boolean`                                                             | `false`     |
-| `loading` | `boolean` — replaces the label with a spinner (React Aria's isPending) | `false`     |
+| `loading` | `boolean` — replaces the label with a spinner | `false`     |
 | `onPress` | `(event: PressEvent) => void` — unified mouse/touch/keyboard press      | —           |
 | `class`   | `string` — merged with Tailwind conflict resolution                    | —           |
 

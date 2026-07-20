@@ -27,7 +27,7 @@
 
 <DocsPage
 	title="Installation"
-	description="svelte-aria is distributed like shadcn: a CLI copies the component source into your project, so you own and edit every file. Requires Svelte 5 + Tailwind v4."
+	description="A CLI copies the component source into your project, so you own and edit every file — no runtime dependency. Requires Svelte 5 + Tailwind v4."
 	{headings}
 >
 	<Section id="init" title="Init">

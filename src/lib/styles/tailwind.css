@@ -2,7 +2,7 @@
  * svelte-aria Tailwind preset.
  *
  * Import this once in your app's Tailwind entry (after `@import 'tailwindcss'`)
- * to get both the React Aria design tokens and the semantic colour/radius
+ * to get both the design tokens and the semantic colour/radius
  * utilities the components rely on:
  *
  *   @import 'tailwindcss';

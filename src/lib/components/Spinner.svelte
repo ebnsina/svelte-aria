@@ -1,7 +1,6 @@
 <!--
-  Spinner — indeterminate progress circle, ported from React Aria's
-  ProgressCircle. A faint full-circle track plus a rotating 25% arc. Uses
-  currentColor so it inherits the button's text colour across variants.
+  Spinner — indeterminate progress circle: a faint full-circle track plus a
+  rotating 25% arc. Uses currentColor so it inherits the button's text colour.
 -->
 <script lang="ts">
 	interface Props {

@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-/* svelte-aria design tokens + semantic utilities (React Aria palette) */
+/* svelte-aria design tokens + semantic utilities */
 @import '../lib/styles/tailwind.css';
 
 /* Fonts: Mona Sans (UI) + Geist Mono (code) */

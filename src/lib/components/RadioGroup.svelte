@@ -1,5 +1,5 @@
 <!--
-  RadioGroup — the group/context archetype (inline-Tailwind, shadcn-style).
+  RadioGroup — the group/context archetype (inline-Tailwind).
 
   Owns the selected value and shares it with its <Radio> children via context.
   Rendered as role="radiogroup"; the radios are native <input type="radio"> with

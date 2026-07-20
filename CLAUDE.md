@@ -1,8 +1,9 @@
 # svelte-aria — project guide
 
-Accessible, headless-first **Svelte 5** component library. Goal: **React
-Aria–level behaviour, Svelte-level DX.** React Aria is a *behavioural + visual
-reference* (interaction models, ARIA wiring, token system) — not a code port.
+Accessible, headless-first **Svelte 5** component library. Goal: rigorous,
+correct interaction behaviour (keyboard, pointer, touch, focus, ARIA) with a
+Svelte-native API — runes, attachments, snippets. Public-facing text presents
+svelte-aria as fully independent; don't reference other libraries by name.
 
 ## Working principles (read first)
 
@@ -36,8 +37,8 @@ press · hover · focusVisible   toggle           Button/Checkbox/TextField/Spin
   (`{@attach}`), Svelte 5.29+. They attach listeners and set `data-*`. Compose
   with `combineAttachments`.
 - `src/lib/state/*.svelte.ts` — framework-only rune state machines (no DOM).
-- `src/lib/components/*.svelte` — accessible components, **inline-Tailwind
-  (shadcn-style)**: all styling lives in the `.svelte` file as Tailwind
+- `src/lib/components/*.svelte` — accessible components, **inline-Tailwind**:
+  all styling lives in the `.svelte` file as Tailwind
   utilities so a copied component is self-contained and editable (ready for the
   planned CLI/registry). No shared component CSS. Variant/size maps + an
   exported `xVariants()` (cva pattern). Styling is driven by:
@@ -53,13 +54,13 @@ press · hover · focusVisible   toggle           Button/Checkbox/TextField/Spin
   - `tailwind.css` — the consumer preset: imports `theme.css` + `@theme`
     mapping tokens to utilities + `dark:` variant remap + the global
     `:focus-visible` rule. (No `components.css` — styling is inline per the
-    shadcn model.)
+    inline model.)
 - `src/lib/site/` — **docs-only** chrome (Sidebar, Topbar, CodeBlock, pickers…).
   Excluded from the published package (`files: !dist/site`). Not part of the API.
 - `registry/` — the **CLI registry** (committed, public): `schema.ts` (manifest
   types), `registry.json` (every installable item + dependency graph),
   `README.md` (the design), and `build.ts` (the import rewriter → `dist/`,
-  gitignored). The shadcn-style distribution model. **When adding a component**:
+  gitignored). The copy-paste distribution model. **When adding a component**:
   add a `registry:ui` item to `registry.json` with its `files` +
   `registryDependencies`, then run `npm run registry:build`.
 - `cli/` — the **CLI** (`node cli/index.ts` / `npm run cli`): `init` (writes
@@ -72,7 +73,7 @@ press · hover · focusVisible   toggle           Button/Checkbox/TextField/Spin
 
 ## Design tokens & theming
 
-- **Palette** ported from React Aria: OKLCH, re-tintable via one variable
+- **Palette** — OKLCH, re-tintable via one variable
   `--sa-tint` (default `--sa-indigo`). The tint scale, `--sa-highlight-*`, focus
   ring, etc. all derive from it. Neutral gray carries a faint cool undertone.
 - **Themes are explicit**: `data-theme="light" | "dark"` on `<html>`, seeded
@@ -100,8 +101,7 @@ press · hover · focusVisible   toggle           Button/Checkbox/TextField/Spin
 - **Elevation:** docs surfaces (cards/code/tables) use soft shadows
   (`--sa-shadow-sm/md`) + a `--sa-hairline` ring, not heavy borders; structural
   dividers use `--sa-hairline`.
-- **Components are modern / clean / minimal** (shadcn/Radix-ish), NOT
-  skeuomorphic. Flat surfaces, solid accent fills, **light 1px borders**
+- **Components are modern / clean / minimal**, NOT skeuomorphic. Flat surfaces, solid accent fills, **light 1px borders**
   (`--sa-gray-300`) on inputs/checkbox, no gloss/specular/inset treatments.
   Keep every control on this same flat system.
 - **Hover surfaces:** `var(--sa-highlight-hover)`.

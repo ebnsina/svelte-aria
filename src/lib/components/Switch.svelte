@@ -1,5 +1,5 @@
 <!--
-  Switch — an on/off toggle (inline-Tailwind, shadcn-style).
+  Switch — an on/off toggle (inline-Tailwind).
 
   A visually-hidden native <input type="checkbox" role="switch"> drives state and
   screen-reader semantics ("switch, on/off"); the track + thumb are styled off

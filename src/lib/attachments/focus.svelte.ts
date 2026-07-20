@@ -7,7 +7,7 @@ import { setDataAttr } from '../utils/attachments.js';
  * "Focus visible" should only show a ring when the user is navigating by
  * keyboard — not after a mouse click. The browser's own `:focus-visible` does
  * this, but we mirror it as state/`data-*` so behaviour is consistent across
- * browsers and available to JS (React Aria takes the same approach). We watch
+ * browsers and available to JS. We watch
  * the *last* interaction globally: any pointer press switches to pointer
  * modality, any Tab/arrow/etc. key switches to keyboard modality.
  */

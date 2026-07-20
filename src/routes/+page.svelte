@@ -16,8 +16,8 @@ npx svelte-aria add button dialog switch`;
 	const features = [
 		{
 			icon: Accessibility,
-			title: 'React Aria–level behaviour',
-			body: 'Interaction models and ARIA wiring modelled on Adobe React Aria — the edge cases handled.'
+			title: 'Accessibility, first-class',
+			body: 'Rigorous interaction models and ARIA wiring — keyboard, focus management, and screen readers, edge cases included.'
 		},
 		{
 			icon: Keyboard,
@@ -26,8 +26,8 @@ npx svelte-aria add button dialog switch`;
 		},
 		{
 			icon: Palette,
-			title: 'React Aria palette',
-			body: 'An OKLCH, re-tintable token system with automatic dark mode and high-contrast support.'
+			title: 'Re-tintable palette',
+			body: 'An OKLCH, re-tintable token system with light/dark themes and high-contrast support.'
 		},
 		{
 			icon: Feather,
@@ -53,8 +53,8 @@ npx svelte-aria add button dialog switch`;
 		<span class="text-sa-fg">Svelte</span> <span class="text-sa-accent">ARIA</span>
 	</h1>
 	<p class="mt-5 max-w-2xl text-lg text-sa-fg-muted sm:text-xl">
-		React Aria–level behaviour, Svelte-level DX. Accessible, headless-first components built on
-		composable interaction primitives.
+		Accessible, headless-first Svelte 5 components — built on composable interaction primitives
+		that get keyboard, pointer, and touch right.
 	</p>
 
 	<div class="mt-8 flex flex-wrap gap-3">

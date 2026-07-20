@@ -1,5 +1,5 @@
 <!--
-  Dialog (root) — the overlay/compound archetype (inline-Tailwind, shadcn-style).
+  Dialog (root) — the overlay/compound archetype (inline-Tailwind).
 
   Owns open state and shares it, plus the title/description ids for ARIA, with
   the sub-components via context. Renders no DOM of its own — just its children
