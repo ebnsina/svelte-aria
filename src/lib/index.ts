@@ -25,6 +25,11 @@ export { default as AccordionItem } from './components/AccordionItem.svelte';
 export { default as AccordionTrigger } from './components/AccordionTrigger.svelte';
 export { default as AccordionContent } from './components/AccordionContent.svelte';
 
+// Popover (compound)
+export { default as Popover } from './components/Popover.svelte';
+export { default as PopoverTrigger } from './components/PopoverTrigger.svelte';
+export { default as PopoverContent } from './components/PopoverContent.svelte';
+
 // Tabs (compound)
 export { default as Tabs } from './components/Tabs.svelte';
 export { default as TabList } from './components/TabList.svelte';

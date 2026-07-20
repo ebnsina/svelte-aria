@@ -153,6 +153,17 @@
 			"files": [{ "path": "src/lib/components/Tooltip.svelte", "target": "{ui}/tooltip.svelte", "type": "registry:ui" }]
 		},
 		{
+			"name": "popover",
+			"type": "registry:ui",
+			"description": "Click-triggered floating panel; portaled, positioned, dismissible.",
+			"registryDependencies": ["cn", "id", "portal", "position", "button"],
+			"files": [
+				{ "path": "src/lib/components/Popover.svelte", "target": "{ui}/popover.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/PopoverTrigger.svelte", "target": "{ui}/popover-trigger.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/PopoverContent.svelte", "target": "{ui}/popover-content.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "radio-group",
 			"type": "registry:ui",
 			"description": "Radio group with shared context; native keyboard navigation.",
