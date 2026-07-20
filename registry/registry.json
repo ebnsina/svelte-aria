@@ -164,6 +164,19 @@
 			]
 		},
 		{
+			"name": "menu",
+			"type": "registry:ui",
+			"description": "Menu button: portaled, positioned menu of actions with roving focus, typeahead, keyboard.",
+			"registryDependencies": ["cn", "id", "portal", "position", "button"],
+			"files": [
+				{ "path": "src/lib/components/Menu.svelte", "target": "{ui}/menu.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/MenuTrigger.svelte", "target": "{ui}/menu-trigger.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/MenuContent.svelte", "target": "{ui}/menu-content.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/MenuItem.svelte", "target": "{ui}/menu-item.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/MenuSeparator.svelte", "target": "{ui}/menu-separator.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "combobox",
 			"type": "registry:ui",
 			"description": "Editable input + filtered listbox (list autocomplete); virtual focus, keyboard, ARIA combobox.",
