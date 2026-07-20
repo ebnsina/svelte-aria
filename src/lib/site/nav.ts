@@ -22,6 +22,7 @@ export const nav: NavSection[] = [
 		title: 'Components',
 		items: [
 			{ title: 'Accordion', href: '/accordion' },
+			{ title: 'Avatar', href: '/avatar' },
 			{ title: 'Button', href: '/button' },
 			{ title: 'Calendar', href: '/calendar' },
 			{ title: 'Checkbox', href: '/checkbox' },

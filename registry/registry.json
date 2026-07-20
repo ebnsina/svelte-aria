@@ -112,6 +112,13 @@
 			"files": [{ "path": "src/lib/components/Spinner.svelte", "target": "{ui}/spinner.svelte", "type": "registry:ui" }]
 		},
 		{
+			"name": "avatar",
+			"type": "registry:ui",
+			"description": "User image with graceful fallback to initials when it fails or is missing.",
+			"registryDependencies": ["cn"],
+			"files": [{ "path": "src/lib/components/Avatar.svelte", "target": "{ui}/avatar.svelte", "type": "registry:ui" }]
+		},
+		{
 			"name": "button",
 			"type": "registry:ui",
 			"description": "Accessible button; unified press, variants, spinner loading. Exports buttonVariants.",
