@@ -120,6 +120,13 @@
 			"files": [{ "path": "src/lib/components/Checkbox.svelte", "target": "{ui}/checkbox.svelte", "type": "registry:ui" }]
 		},
 		{
+			"name": "slider",
+			"type": "registry:ui",
+			"description": "Single-thumb range slider with pointer drag + full keyboard control and ARIA.",
+			"registryDependencies": ["cn", "id"],
+			"files": [{ "path": "src/lib/components/Slider.svelte", "target": "{ui}/slider.svelte", "type": "registry:ui" }]
+		},
+		{
 			"name": "switch",
 			"type": "registry:ui",
 			"description": "On/off toggle; native switch semantics.",
