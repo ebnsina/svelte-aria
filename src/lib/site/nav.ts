@@ -31,6 +31,7 @@ export const nav: NavSection[] = [
 			{ title: 'Menu', href: '/menu' },
 			{ title: 'NumberField', href: '/number-field' },
 			{ title: 'Popover', href: '/popover' },
+			{ title: 'Progress', href: '/progress' },
 			{ title: 'RadioGroup', href: '/radio-group' },
 			{ title: 'Select', href: '/select' },
 			{ title: 'Slider', href: '/slider' },

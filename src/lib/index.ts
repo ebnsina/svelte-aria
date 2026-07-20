@@ -22,6 +22,7 @@ export { default as Calendar } from './components/Calendar.svelte';
 export { default as DatePicker } from './components/DatePicker.svelte';
 export { default as Tooltip } from './components/Tooltip.svelte';
 export { default as Spinner } from './components/Spinner.svelte';
+export { default as Progress } from './components/Progress.svelte';
 export { default as Toaster } from './components/Toaster.svelte';
 
 // Accordion (compound)
