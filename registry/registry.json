@@ -119,6 +119,14 @@
 			"files": [{ "path": "src/lib/components/Avatar.svelte", "target": "{ui}/avatar.svelte", "type": "registry:ui" }]
 		},
 		{
+			"name": "breadcrumb",
+			"type": "registry:ui",
+			"description": "Navigation trail: nav + ordered list of links with aria-current on the current page.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn"],
+			"files": [{ "path": "src/lib/components/Breadcrumb.svelte", "target": "{ui}/breadcrumb.svelte", "type": "registry:ui" }]
+		},
+		{
 			"name": "button",
 			"type": "registry:ui",
 			"description": "Accessible button; unified press, variants, spinner loading. Exports buttonVariants.",
