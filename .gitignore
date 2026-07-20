@@ -26,3 +26,6 @@ vite.config.ts.timestamp-*
 # Internal planning docs & data (not for public repo)
 /docs/
 /data/
+
+# Generated registry (CLI fetches the hosted build)
+/registry/dist/
