@@ -57,11 +57,18 @@ press · hover · focusVisible   toggle           Button/Checkbox/TextField/Spin
 - `src/lib/site/` — **docs-only** chrome (Sidebar, Topbar, CodeBlock, pickers…).
   Excluded from the published package (`files: !dist/site`). Not part of the API.
 - `registry/` — the **CLI registry** (committed, public): `schema.ts` (manifest
-  types), `registry.json` (every installable item + dependency graph), and
-  `README.md` (the design: item types, aliases, import-rewriting, init/add
-  flows). The shadcn-style distribution model — the CLI copies components into a
-  user's project. Keep `registry.json` in sync when adding components: a new
-  component is a `registry:ui` item with its `files` + `registryDependencies`.
+  types), `registry.json` (every installable item + dependency graph),
+  `README.md` (the design), and `build.ts` (the import rewriter → `dist/`,
+  gitignored). The shadcn-style distribution model. **When adding a component**:
+  add a `registry:ui` item to `registry.json` with its `files` +
+  `registryDependencies`, then run `npm run registry:build`.
+- `cli/` — the **CLI** (`node cli/index.ts` / `npm run cli`): `init` (writes
+  `components.json`, installs base = theme + cn, adds the `@import`), `add`
+  (resolves the transitive tree from the registry, fills `{ui}/{lib}/{utils}`
+  placeholders from the user's aliases, writes files, installs npm deps), and
+  `list`. Import-graph correctness comes from the build's rewriter; the CLI just
+  fills placeholders. Keep it strip-only TS (no param-properties/enums so
+  `node` runs it directly).
 
 ## Design tokens & theming
 
