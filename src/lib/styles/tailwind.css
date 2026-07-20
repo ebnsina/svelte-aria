@@ -69,4 +69,10 @@
 	--shadow-sa-md: var(--sa-shadow-md);
 
 	--color-sa-hairline: var(--sa-hairline);
+
+	/* Neutral gray scale exposed as utilities (control borders, etc.) */
+	--color-sa-gray-100: var(--sa-gray-100);
+	--color-sa-gray-200: var(--sa-gray-200);
+	--color-sa-gray-300: var(--sa-gray-300);
+	--color-sa-gray-400: var(--sa-gray-400);
 }

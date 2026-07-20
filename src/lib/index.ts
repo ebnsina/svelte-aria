@@ -23,6 +23,8 @@ export { default as DialogTrigger } from './components/DialogTrigger.svelte';
 export { default as DialogContent } from './components/DialogContent.svelte';
 export { default as DialogTitle } from './components/DialogTitle.svelte';
 export { default as DialogDescription } from './components/DialogDescription.svelte';
+export { default as DialogHeader } from './components/DialogHeader.svelte';
+export { default as DialogFooter } from './components/DialogFooter.svelte';
 export { default as DialogClose } from './components/DialogClose.svelte';
 
 // Primitives (attachments)

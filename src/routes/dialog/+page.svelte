@@ -4,8 +4,10 @@
 		Dialog,
 		DialogTrigger,
 		DialogContent,
+		DialogHeader,
 		DialogTitle,
 		DialogDescription,
+		DialogFooter,
 		DialogClose,
 		TextField
 	} from '$lib/index.js';
@@ -21,14 +23,16 @@
 	const code = `<Dialog>
   <DialogTrigger>Open dialog</DialogTrigger>
   <DialogContent>
-    <DialogTitle>Delete project</DialogTitle>
-    <DialogDescription>
-      This permanently removes the project and all its data.
-    </DialogDescription>
-    <div class="mt-6 flex justify-end gap-3">
+    <DialogHeader>
+      <DialogTitle>Delete project</DialogTitle>
+      <DialogDescription>
+        This permanently removes the project and all its data.
+      </DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
       <DialogClose>Cancel</DialogClose>
       <DialogClose variant="destructive">Delete</DialogClose>
-    </div>
+    </DialogFooter>
   </DialogContent>
 </Dialog>`;
 
@@ -61,15 +65,17 @@
 				<Dialog>
 					<DialogTrigger>Open dialog</DialogTrigger>
 					<DialogContent>
-						<DialogTitle>Delete project</DialogTitle>
-						<DialogDescription>
-							This permanently removes the project and all of its data. This action cannot be
-							undone.
-						</DialogDescription>
-						<div class="mt-6 flex justify-end gap-3">
+						<DialogHeader>
+							<DialogTitle>Delete project</DialogTitle>
+							<DialogDescription>
+								This permanently removes the project and all of its data. This action cannot be
+								undone.
+							</DialogDescription>
+						</DialogHeader>
+						<DialogFooter>
 							<DialogClose>Cancel</DialogClose>
 							<DialogClose variant="destructive">Delete</DialogClose>
-						</div>
+						</DialogFooter>
 					</DialogContent>
 				</Dialog>
 			{/snippet}
@@ -92,16 +98,18 @@
 		<Dialog>
 			<DialogTrigger variant="secondary">Edit profile</DialogTrigger>
 			<DialogContent>
-				<DialogTitle>Edit profile</DialogTitle>
-				<DialogDescription>Update your details, then save.</DialogDescription>
+				<DialogHeader>
+					<DialogTitle>Edit profile</DialogTitle>
+					<DialogDescription>Update your details, then save.</DialogDescription>
+				</DialogHeader>
 				<div class="mt-5 flex flex-col gap-4">
 					<TextField label="Name" placeholder="Ada Lovelace" />
 					<TextField label="Email" type="email" placeholder="ada@example.com" />
 				</div>
-				<div class="mt-6 flex justify-end gap-3">
+				<DialogFooter>
 					<DialogClose>Cancel</DialogClose>
 					<DialogClose variant="primary">Save</DialogClose>
-				</div>
+				</DialogFooter>
 			</DialogContent>
 		</Dialog>
 	</Section>
@@ -116,11 +124,13 @@
 		</div>
 		<Dialog bind:open>
 			<DialogContent>
-				<DialogTitle>Controlled dialog</DialogTitle>
-				<DialogDescription>Its visibility is owned by the parent component.</DialogDescription>
-				<div class="mt-6 flex justify-end">
+				<DialogHeader>
+					<DialogTitle>Controlled dialog</DialogTitle>
+					<DialogDescription>Its visibility is owned by the parent component.</DialogDescription>
+				</DialogHeader>
+				<DialogFooter>
 					<DialogClose>Close</DialogClose>
-				</div>
+				</DialogFooter>
 			</DialogContent>
 		</Dialog>
 	</Section>

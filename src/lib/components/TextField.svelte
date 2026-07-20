@@ -65,9 +65,9 @@
 	<div
 		data-invalid={invalid || undefined}
 		class={cn(
-			'flex items-center gap-2 rounded-sa border border-sa-gray-300 bg-sa-field px-3',
+			'flex items-center gap-2 rounded-sa border border-sa-gray-200 bg-sa-field px-3',
 			'transition-[border-color,box-shadow] duration-150',
-			'hover:border-sa-border',
+			'hover:border-sa-gray-300',
 			'has-[:focus-visible]:[outline:2px_solid_var(--sa-focus-ring-color)] has-[:focus-visible]:outline-offset-2',
 			'has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-55',
 			'data-[invalid]:border-sa-invalid',
