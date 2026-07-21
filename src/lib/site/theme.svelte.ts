@@ -97,11 +97,14 @@ export const theme = {
 				Math.max(x, window.innerWidth - x),
 				Math.max(y, window.innerHeight - y)
 			);
+			// Note on easing: the circle's *area* already accelerates as the radius
+			// grows, so strong ease-out curves stall visibly over the far half of
+			// the screen. A balanced ease keeps the wipe reading as one motion.
 			doc.documentElement.animate(
 				{ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
 				{
-					duration: 500,
-					easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+					duration: 420,
+					easing: 'ease-in-out',
 					pseudoElement: '::view-transition-new(root)'
 				}
 			);
