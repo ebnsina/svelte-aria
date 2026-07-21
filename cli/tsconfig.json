@@ -1,0 +1,24 @@
+{
+	// Compiles the strip-only CLI TS to plain JS so `npx svelte-aria` runs on any
+	// Node >=18 (not just Node 23.6+ that strips types natively). Emits dist/cli/*.js
+	// with relative `.ts` import specifiers rewritten to `.js`. Output is shipped
+	// via the package `files: ["dist"]`; `bin` points at dist/cli/index.js.
+	"compilerOptions": {
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"target": "es2022",
+		"lib": ["es2023"],
+		"types": ["node"],
+		"outDir": "../dist/cli",
+		"rootDir": ".",
+		"allowImportingTsExtensions": true,
+		"rewriteRelativeImportExtensions": true,
+		"verbatimModuleSyntax": true,
+		"isolatedModules": true,
+		"strict": true,
+		"skipLibCheck": true,
+		"declaration": false,
+		"sourceMap": false
+	},
+	"include": ["*.ts"]
+}

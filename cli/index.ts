@@ -9,16 +9,14 @@
  * Run locally: `node cli/index.ts <cmd>` (Node 23.6+ strips the TS types).
  */
 
-import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { init, add, list, type CliOptions } from './commands.ts';
 
-const HERE = dirname(fileURLToPath(import.meta.url));
-// Default registry: the local build in this repo. A published CLI would point at
-// the hosted URL instead (override with --registry).
+// Default registry: the hosted build served by GitHub Pages. Override with
+// --registry <path|url> or SVELTE_ARIA_REGISTRY (e.g. `./static/r` for local dev).
 const DEFAULT_REGISTRY =
-	process.env.SVELTE_ARIA_REGISTRY ?? resolve(HERE, '../registry/dist');
+	process.env.SVELTE_ARIA_REGISTRY ?? 'https://ebnsina.github.io/svelte-aria/r';
 
 const HELP = `
 svelte-aria — accessible Svelte components, copied into your project.

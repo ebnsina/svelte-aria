@@ -3,7 +3,8 @@
  * the CLI fetches (file *contents*, with imports rewritten to alias placeholders).
  *
  * Run:  node registry/build.ts   (Node 23.6+ strips the TS types natively)
- * Out:  registry/dist/<name>.json  +  registry/dist/index.json
+ * Out:  static/r/<name>.json  +  static/r/index.json  (served by GitHub Pages
+ *       at https://ebnsina.github.io/svelte-aria/r, where the CLI fetches it).
  *
  * Import rewriting is driven entirely by the path -> target map from
  * registry.json, so it stays correct as items are added — no hand-kept table.
@@ -17,7 +18,7 @@ import type { Registry, RegistryItem } from './schema.ts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, '..');
-const OUT = join(HERE, 'dist');
+const OUT = join(ROOT, 'static', 'r');
 
 const registry: Registry = JSON.parse(readFileSync(join(HERE, 'registry.json'), 'utf8'));
 
@@ -121,4 +122,4 @@ writeFileSync(
 	JSON.stringify({ name: registry.name, homepage: registry.homepage, base: registry.base, items: index }, null, '\t') + '\n'
 );
 
-console.log(`registry: ${registry.items.length} items, ${fileCount} files -> registry/dist`);
+console.log(`registry: ${registry.items.length} items, ${fileCount} files -> static/r`);

@@ -4,20 +4,28 @@
 	"description": "React Aria–level behaviour, Svelte-level DX. Accessible, headless-first components for Svelte 5.",
 	"author": "ebnsina",
 	"license": "MIT",
+	"homepage": "https://ebnsina.github.io/svelte-aria",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/ebnsina/svelte-aria.git"
 	},
+	"bin": {
+		"svelte-aria": "./dist/cli/index.js"
+	},
+	"engines": {
+		"node": ">=18"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run prepack",
-		"build:site": "vite build",
+		"build:site": "npm run registry:build && vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
-		"prepack": "svelte-kit sync && svelte-package && publint",
+		"prepack": "svelte-kit sync && svelte-package && npm run cli:build && publint",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"registry:build": "node registry/build.ts",
+		"cli:build": "tsc -p cli/tsconfig.json",
 		"cli": "node cli/index.ts"
 	},
 	"files": [
@@ -53,6 +61,7 @@
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",
 		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.3.0",
+		"@types/node": "^26.1.1",
 		"publint": "^0.3.21",
 		"svelte": "^5.56.1",
 		"svelte-check": "^4.6.0",
