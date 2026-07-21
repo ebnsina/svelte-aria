@@ -91,24 +91,35 @@ export const theme = {
 		}
 
 		const transition = doc.startViewTransition(() => apply(pref, false));
-		transition.ready.then(() => {
-			const { x, y } = origin;
-			const r = Math.hypot(
-				Math.max(x, window.innerWidth - x),
-				Math.max(y, window.innerHeight - y)
-			);
-			// Note on easing: the circle's *area* already accelerates as the radius
-			// grows, so strong ease-out curves stall visibly over the far half of
-			// the screen. A balanced ease keeps the wipe reading as one motion.
-			doc.documentElement.animate(
-				{ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
-				{
-					duration: 420,
-					easing: 'ease-in-out',
-					pseudoElement: '::view-transition-new(root)'
-				}
-			);
-		});
+		transition.ready
+			.then(() => {
+				// Everything in PERCENTAGES: the ::view-transition-new(root) pseudo
+				// is not reliably sized in CSS pixels (device-pixel-ratio / zoom can
+				// scale its coordinate space, leaving a px-based circle covering only
+				// part of the screen that then snaps at the end). Percentages resolve
+				// against the pseudo's own box, so the wipe is scale-proof. 142% ≈ √2
+				// of the circle's reference size — enough to reach the farthest
+				// corner from any origin.
+				const px = (origin.x / window.innerWidth) * 100;
+				const py = (origin.y / window.innerHeight) * 100;
+				// Note on easing: the circle's *area* already accelerates as the
+				// radius grows, so strong ease-out curves stall visibly over the far
+				// half of the screen. A balanced ease reads as one motion.
+				doc.documentElement.animate(
+					{
+						clipPath: [`circle(0% at ${px}% ${py}%)`, `circle(142% at ${px}% ${py}%)`]
+					},
+					{
+						duration: 420,
+						easing: 'ease-in-out',
+						pseudoElement: '::view-transition-new(root)'
+					}
+				);
+			})
+			.catch(() => {
+				// Capture can abort (e.g. the tab was hidden mid-flight). The theme
+				// itself was already applied inside the transition callback.
+			});
 	},
 	/** Cycle light → dark → system → light. */
 	cycle() {
