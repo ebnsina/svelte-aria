@@ -35,7 +35,7 @@
 </script>
 
 <nav aria-label="On this page" class="flex flex-col gap-3 text-sm">
-	<p class="font-semibold text-sa-fg">On this page</p>
+	<p class="text-[0.7rem] font-semibold tracking-[0.08em] text-sa-fg uppercase">On this page</p>
 	<ul class="flex flex-col gap-1 border-l border-sa-hairline">
 		{#each headings as h (h.id)}
 			{@const active = activeId === h.id}
@@ -44,7 +44,7 @@
 					href="#{h.id}"
 					class="-ml-px block border-l-2 py-1 pl-3 transition-colors duration-150
 						{active
-						? 'border-sa-accent font-medium text-sa-fg'
+						? 'border-sa-accent font-medium text-sa-accent'
 						: 'border-transparent text-sa-fg-muted hover:border-sa-border-hover hover:text-sa-fg'}"
 				>
 					{h.title}

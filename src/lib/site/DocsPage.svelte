@@ -26,16 +26,12 @@
 
 <div class="mx-auto flex w-full max-w-6xl gap-12 px-4 py-10 lg:px-8">
 	<article class="min-w-0 flex-1">
-		<header class="mb-10">
+		<header class="mb-12">
 			{#if section}
-				<div class="mb-3 flex items-center gap-1.5 text-xs font-medium text-sa-fg-muted">
-					<span>{section}</span>
-					<span class="text-sa-fg-muted/60">/</span>
-					<span class="text-sa-accent">{title}</span>
-				</div>
+				<p class="mb-3 text-sm font-semibold text-sa-accent">{section}</p>
 			{/if}
-			<h1 class="text-4xl font-bold tracking-tight text-sa-fg">{title}</h1>
-			<p class="mt-3 text-lg text-sa-fg-muted">{description}</p>
+			<h1 class="text-4xl font-bold tracking-tight text-balance text-sa-fg">{title}</h1>
+			<p class="mt-4 text-lg leading-relaxed text-pretty text-sa-fg-muted">{description}</p>
 		</header>
 
 		<div class="flex flex-col gap-12">

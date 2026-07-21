@@ -2,6 +2,7 @@
 	import DocsPage from '$lib/site/DocsPage.svelte';
 	import Section from '$lib/site/Section.svelte';
 	import CodeBlock from '$lib/site/CodeBlock.svelte';
+	import Callout from '$lib/site/Callout.svelte';
 
 	const headings = [
 		{ id: 'init', title: 'Init' },
@@ -30,6 +31,12 @@
 	description="A CLI copies the component source into your project, so you own and edit every file — no runtime dependency. Requires Svelte 5 + Tailwind v4."
 	{headings}
 >
+	<Callout type="note" title="Prerequisites">
+		svelte-aria targets <strong>Svelte 5</strong> (runes + attachments) and <strong>Tailwind v4</strong>.
+		The CLI copies source into your project, so once installed there's no runtime dependency to keep in
+		sync.
+	</Callout>
+
 	<Section id="init" title="Init">
 		<p class="mb-4 text-sa-fg-muted">
 			Run <code class="font-mono text-sa-accent">init</code> once. It writes a
