@@ -32,6 +32,14 @@ svelte-aria as fully independent; don't reference other libraries by name.
   `data-pressed` / `data-hovered` / `data-focus-visible` / `data-selected` /
   `data-disabled` / `data-invalid` so styling stays declarative and the styled
   layer is swappable.
+- **Sample/demo content draws from the Islamic Golden Age & Islamic culture.**
+  Placeholder people are Golden-Age polymaths (Ibn Sīnā, al-Khwārizmī, Ibn
+  al-Haytham, Fāṭima al-Fihrī, al-Bīrūnī, Omar Khayyām, Maryam al-Asṭurlābī…),
+  and sample datasets/scenarios are themed to match (e.g. a Bayt al-Hikma —
+  House of Wisdom — manuscript catalogue). Use `.example` domains
+  (`bayt-al-hikma.example`). Prefer this over generic Western placeholders (Ada
+  Lovelace, John Doe, Lorem ipsum). Include women scholars, and add Arabic
+  script where it fits (with `lang="ar" dir="rtl"` for correct font + shaping).
 
 ## Architecture (layers)
 

@@ -28,8 +28,9 @@
 	import {
 		ArrowRight,
 		Search,
-		Sun,
-		Droplets,
+		ScrollText,
+		GraduationCap,
+		Languages,
 		Star,
 		MoreHorizontal,
 		SlidersHorizontal,
@@ -54,36 +55,44 @@
 	const componentCount = nav.find((s) => s.title === 'Components')?.items.length ?? 45;
 	const go = (href: string) => (location.href = href);
 
-	// ---- Hero showcase (plant table) -------------------------------------------
-	type Plant = { name: string; sci: string; sun: string; water: 'Minimum' | 'Average'; checked: boolean; starred: boolean };
-	let plants = $state<Plant[]>([
-		{ name: 'Agapanthus', sci: 'Agapanthus praecox', sun: 'Full sun', water: 'Minimum', checked: true, starred: true },
-		{ name: 'Aloe', sci: 'Aloe vera', sun: 'Full sun', water: 'Minimum', checked: true, starred: false },
-		{ name: 'Blue Jacaranda', sci: 'Jacaranda mimosifolia', sun: 'Full sun', water: 'Minimum', checked: false, starred: false },
-		{ name: 'Chinese Money Plant', sci: 'Pilea peperomioides', sun: 'Part sun', water: 'Average', checked: false, starred: false },
-		{ name: 'Christmas Bush', sci: 'Ceratopetalum', sun: 'Full sun', water: 'Average', checked: false, starred: false }
+	// ---- Hero showcase: a Bayt al-Hikma (House of Wisdom) manuscript catalogue --
+	type Status = 'Translated' | 'Copying' | 'Original';
+	type Work = {
+		title: string; // Latin transliteration
+		arabic: string; // Arabic script (rendered RTL, lang="ar")
+		field: string;
+		status: Status;
+		checked: boolean;
+		starred: boolean;
+	};
+	let works = $state<Work[]>([
+		{ title: 'Kitāb al-Jabr', arabic: 'كتاب الجبر', field: 'Algebra', status: 'Translated', checked: true, starred: true },
+		{ title: 'al-Qānūn fī al-Ṭibb', arabic: 'القانون في الطب', field: 'Medicine', status: 'Translated', checked: true, starred: false },
+		{ title: 'Kitāb al-Manāẓir', arabic: 'كتاب المناظر', field: 'Optics', status: 'Copying', checked: false, starred: false },
+		{ title: 'al-Āthār al-Bāqiya', arabic: 'الآثار الباقية', field: 'Astronomy', status: 'Original', checked: false, starred: false },
+		{ title: 'Kitāb al-Ḥiyal', arabic: 'كتاب الحيل', field: 'Engineering', status: 'Copying', checked: false, starred: false }
 	]);
 	let search = $state('');
 	let onlyStarred = $state(false);
 	let sortAsc = $state<boolean | null>(null); // null = unsorted
-	// Live-filtered + sorted view of the plants (the hero table is interactive).
-	const visiblePlants = $derived.by(() => {
-		let rows = plants.filter(
-			(p) =>
-				(!onlyStarred || p.starred) &&
-				(!search || (p.name + ' ' + p.sci).toLowerCase().includes(search.toLowerCase()))
+	// Live-filtered + sorted view (the hero table is interactive).
+	const visibleWorks = $derived.by(() => {
+		let rows = works.filter(
+			(w) =>
+				(!onlyStarred || w.starred) &&
+				(!search || (w.title + ' ' + w.field + ' ' + w.arabic).toLowerCase().includes(search.toLowerCase()))
 		);
 		if (sortAsc !== null) {
-			rows = [...rows].sort((a, b) => (sortAsc ? 1 : -1) * a.name.localeCompare(b.name));
+			rows = [...rows].sort((a, b) => (sortAsc ? 1 : -1) * a.title.localeCompare(b.title));
 		}
 		return rows;
 	});
-	function indexOf(p: Plant) {
-		return plants.findIndex((x) => x.name === p.name);
+	function indexOf(w: Work) {
+		return works.findIndex((x) => x.title === w.title);
 	}
-	const allChecked = $derived(plants.length > 0 && plants.every((p) => p.checked));
+	const allChecked = $derived(works.length > 0 && works.every((w) => w.checked));
 	function toggleAll(v: boolean) {
-		plants = plants.map((p) => ({ ...p, checked: v }));
+		works = works.map((w) => ({ ...w, checked: v }));
 	}
 	function cycleSort() {
 		sortAsc = sortAsc === null ? true : sortAsc ? false : null;
@@ -273,12 +282,12 @@ state.toggle();`
 			<!-- toolbar (live: search filters, the toggle shows starred only) -->
 			<div class="flex items-center gap-2 px-4 py-3">
 				<div class="flex-1">
-					<SearchField bind:value={search} placeholder="Search plants" aria-label="Search plants" />
+					<SearchField bind:value={search} placeholder="Search manuscripts" aria-label="Search manuscripts" />
 				</div>
 				<ToggleButton bind:isSelected={onlyStarred} size="icon" aria-label="Show starred only">
 					<Star class={onlyStarred ? 'fill-sa-accent-fg' : ''} />
 				</ToggleButton>
-				<Button size="icon" aria-label="Add plant"><Plus class="size-4" /></Button>
+				<Button size="icon" aria-label="Add manuscript"><Plus class="size-4" /></Button>
 			</div>
 			<!-- table -->
 			<table class="w-full border-collapse text-sm">
@@ -288,7 +297,7 @@ state.toggle();`
 						<th class="w-8"></th>
 						<th class="py-2 text-left font-medium" aria-sort={sortAsc === null ? 'none' : sortAsc ? 'ascending' : 'descending'}>
 							<button type="button" onclick={cycleSort} class="-mx-1 inline-flex items-center gap-1 rounded-sa-sm px-1 py-0.5 transition-colors hover:text-sa-fg">
-								Name
+								Title
 								{#if sortAsc === true}
 									<ChevronUp class="size-3.5" aria-hidden="true" />
 								{:else if sortAsc === false}
@@ -298,45 +307,47 @@ state.toggle();`
 								{/if}
 							</button>
 						</th>
-						<th class="hidden py-2 text-left font-medium sm:table-cell">Sunlight</th>
-						<th class="hidden py-2 text-left font-medium sm:table-cell">Watering</th>
+						<th class="hidden py-2 text-left font-medium sm:table-cell">Field</th>
+						<th class="hidden py-2 text-left font-medium sm:table-cell">Status</th>
 						<th class="w-10"></th>
 					</tr>
 				</thead>
 				<tbody>
-					{#each visiblePlants as p (p.name)}
-						{@const i = indexOf(p)}
-						<tr class="border-b border-sa-hairline last:border-0 transition-colors hover:bg-[var(--sa-highlight-hover)] data-[selected]:bg-sa-accent/8" data-selected={p.checked || undefined}>
-							<td class="py-2.5 pl-4"><Checkbox bind:checked={plants[i].checked} aria-label="Select {p.name}" /></td>
+					{#each visibleWorks as w (w.title)}
+						{@const i = indexOf(w)}
+						<tr class="border-b border-sa-hairline last:border-0 transition-colors hover:bg-[var(--sa-highlight-hover)] data-[selected]:bg-sa-accent/8" data-selected={w.checked || undefined}>
+							<td class="py-2.5 pl-4"><Checkbox bind:checked={works[i].checked} aria-label="Select {w.title}" /></td>
 							<td>
 								<button
 									type="button"
-									onclick={() => (plants[i].starred = !plants[i].starred)}
-									aria-label="Star {p.name}"
-									aria-pressed={p.starred}
+									onclick={() => (works[i].starred = !works[i].starred)}
+									aria-label="Star {w.title}"
+									aria-pressed={w.starred}
 									class="grid size-7 place-items-center rounded-sa-sm text-sa-fg-muted transition-colors hover:text-sa-accent"
 								>
-									<Star class="size-4 {p.starred ? 'fill-sa-accent text-sa-accent' : ''}" />
+									<Star class="size-4 {w.starred ? 'fill-sa-accent text-sa-accent' : ''}" />
 								</button>
 							</td>
 							<td class="py-2.5">
 								<div class="flex items-center gap-2.5">
-									<Avatar alt={p.name} size="sm" />
+									<span class="grid size-8 shrink-0 place-items-center rounded-sa-sm bg-sa-subtle text-sa-fg-muted ring-1 ring-sa-hairline">
+										<ScrollText class="size-4" />
+									</span>
 									<div class="min-w-0">
-										<div class="truncate font-medium text-sa-fg">{p.name}</div>
-										<div class="truncate text-xs text-sa-fg-muted italic">{p.sci}</div>
+										<div class="truncate font-medium text-sa-fg">{w.title}</div>
+										<div class="truncate text-xs text-sa-fg-muted" lang="ar" dir="rtl">{w.arabic}</div>
 									</div>
 								</div>
 							</td>
 							<td class="hidden sm:table-cell">
-								<Badge variant="secondary"><Sun class="text-sa-accent" />{p.sun}</Badge>
+								<Badge variant="secondary"><GraduationCap class="text-sa-accent" />{w.field}</Badge>
 							</td>
 							<td class="hidden sm:table-cell">
-								<Badge variant="outline"><Droplets class="text-sa-fg-muted" />{p.water}</Badge>
+								<Badge variant="outline"><Languages class="text-sa-fg-muted" />{w.status}</Badge>
 							</td>
 							<td class="pr-3">
 								<Menu>
-									<MenuTrigger variant="ghost" size="icon" aria-label="Actions for {p.name}">
+									<MenuTrigger variant="ghost" size="icon" aria-label="Actions for {w.title}">
 										<MoreHorizontal class="size-4" />
 									</MenuTrigger>
 									<MenuContent>
@@ -350,7 +361,7 @@ state.toggle();`
 						</tr>
 					{:else}
 						<tr>
-							<td colspan="6" class="px-4 py-10 text-center text-sm text-sa-fg-muted">No plants match your search.</td>
+							<td colspan="6" class="px-4 py-10 text-center text-sm text-sa-fg-muted">No manuscripts match your search.</td>
 						</tr>
 					{/each}
 				</tbody>
