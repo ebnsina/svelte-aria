@@ -17,7 +17,7 @@
 <header
 	class="sticky top-0 z-40 border-b border-sa-hairline bg-[color-mix(in_oklch,var(--sa-background-color),transparent_20%)] backdrop-blur-md"
 >
-	<div class="flex h-16 items-center gap-4 px-4 lg:px-6">
+	<div class="relative flex h-16 items-center gap-4 px-4 lg:px-6">
 		<!-- Mobile menu toggle -->
 		<button
 			type="button"
@@ -33,20 +33,22 @@
 			<Logo />
 		</a>
 
-		<!-- Search (decorative for now) -->
-		<div class="ml-2 hidden max-w-md flex-1 md:block">
-			<button
-				type="button"
-				class="group flex w-full items-center gap-2 rounded-sa border border-sa-border bg-sa-field px-3 py-2 text-sm text-sa-fg-muted transition-colors hover:border-sa-border-hover"
-			>
-				<Search class="size-4" />
-				<span>Search components</span>
-				<kbd
-					class="ml-auto rounded border border-sa-border bg-[var(--sa-highlight-hover)] px-1.5 py-0.5 text-xs"
+		<!-- Search, centered in the header (decorative for now). -->
+		<div class="pointer-events-none absolute inset-x-0 hidden justify-center md:flex">
+			<div class="pointer-events-auto w-full max-w-sm px-4">
+				<button
+					type="button"
+					class="group flex w-full items-center gap-2 rounded-sa border border-sa-border bg-sa-field px-3 py-2 text-sm text-sa-fg-muted transition-colors hover:border-sa-border-hover"
 				>
-					⌘K
-				</kbd>
-			</button>
+					<Search class="size-4" />
+					<span>Search components</span>
+					<kbd
+						class="ml-auto rounded border border-sa-border bg-[var(--sa-highlight-hover)] px-1.5 py-0.5 text-xs"
+					>
+						⌘K
+					</kbd>
+				</button>
+			</div>
 		</div>
 
 		<nav class="ml-auto flex items-center gap-1 text-sm">

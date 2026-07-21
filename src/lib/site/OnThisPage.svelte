@@ -44,7 +44,7 @@
 					href="#{h.id}"
 					class="-ml-px block border-l-2 py-1 pl-3 transition-colors duration-150
 						{active
-						? 'border-sa-accent font-medium text-sa-accent'
+						? 'border-sa-accent font-medium text-sa-fg'
 						: 'border-transparent text-sa-fg-muted hover:border-sa-border-hover hover:text-sa-fg'}"
 				>
 					{h.title}

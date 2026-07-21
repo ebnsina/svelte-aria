@@ -17,25 +17,23 @@
 			<h2 class="mb-3 px-3 text-[0.7rem] font-semibold tracking-[0.08em] text-sa-fg uppercase">
 				{section.title}
 			</h2>
-			<!-- A guide line runs down each group; the active item marks its place on
-			     it with an accent segment and a soft highlight pill. -->
-			<ul class="flex flex-col border-l border-sa-hairline">
+			<ul class="flex flex-col gap-0.5">
 				{#each section.items as item (item.href)}
 					{@const active = isActive(item.href)}
-					<li class="relative -ml-px">
+					<li class="relative">
 						{#if active}
 							<span
 								aria-hidden="true"
-								class="absolute top-1/2 left-0 h-5 w-0.5 -translate-y-1/2 rounded-full bg-sa-accent"
+								class="absolute top-1/2 left-0 h-4 w-0.5 -translate-y-1/2 rounded-full bg-sa-accent"
 							></span>
 						{/if}
 						<a
 							href={item.href}
 							aria-current={active ? 'page' : undefined}
 							onclick={onnavigate}
-							class="relative block rounded-r-sa-sm py-1.5 pr-3 pl-4 transition-colors duration-150
+							class="block rounded-sa-sm px-3 py-1.5 transition-colors duration-150
 								{active
-								? 'bg-sa-subtle font-medium text-sa-accent'
+								? 'font-medium text-sa-fg'
 								: 'text-sa-fg-muted hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg'}"
 						>
 							{item.title}
