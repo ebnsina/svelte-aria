@@ -77,13 +77,27 @@ kbd {
 	--sa-focus-ring-color: oklch(from var(--sa-tint) 62% c h);
 	--color-sa-accent: var(--sa-highlight-background);
 	--color-sa-accent-pressed: var(--sa-highlight-background-pressed);
-	/* Deep lime for accent text so headings/links stay legible on any surface. */
-	--sa-accent-ink: oklch(0.55 0.16 128);
+	/* Keep neutral surfaces neutral. bg-sa-subtle normally derives from the tint
+	   (--sa-tint-100), which would wash the section bands, icon chips, and table
+	   header in lime. Point it at the neutral gray so backgrounds read white/grey
+	   and the lime stays reserved for the accent. */
+	--sa-button-background: var(--sa-gray-100);
+	--sa-button-background-pressed: var(--sa-gray-200);
+	/* Accent TEXT is theme-adaptive so lime stays legible (this is an a11y
+	   library — the brand can't cost contrast). On white, the brightest lime
+	   that still clears WCAG AA (4.5:1 for small links/wordmark) is a deep, vivid
+	   lime. Dark theme gets the bright neon lime below. */
+	--sa-accent-ink: oklch(0.52 0.16 128);
 }
 
-/* Accent TEXT is decoupled from the bright fill (both would resolve to
-   --color-sa-accent otherwise). Unlayered, so it beats Tailwind's layered
-   .text-sa-accent utility without a specificity war. Fills keep bright lime. */
+:root[data-theme='dark'] .sa-marketing {
+	/* On dark, the neon lime passes AA and looks its best. */
+	--sa-accent-ink: oklch(0.84 0.2 128);
+}
+
+/* Accent TEXT is decoupled from the fill token (the fill carries a dark ink on
+   top; text needs the lime itself). Unlayered, so it beats Tailwind's layered
+   .text-sa-accent utility without a specificity war. */
 .sa-marketing :is(.text-sa-accent) {
 	color: var(--sa-accent-ink);
 }
