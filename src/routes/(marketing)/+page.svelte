@@ -481,7 +481,7 @@ state.toggle();`
 		<div aria-live="assertive" class="sr-only">{dnd.message}</div>
 
 		{#snippet dropLine()}
-			<div class="h-0.5 rounded-full bg-sa-accent" aria-hidden="true"></div>
+			<div class="mx-1 h-0.5 rounded-full bg-sa-accent" aria-hidden="true"></div>
 		{/snippet}
 
 		<div class="mt-10 grid gap-4 md:grid-cols-3">
@@ -490,7 +490,7 @@ state.toggle();`
 					{...dnd.zoneProps(String(ci))}
 					role="group"
 					aria-label="{col.title} — {col.tasks.length} tasks"
-					class="flex flex-col rounded-sa-lg bg-sa-field p-4 shadow-sa-sm ring-1 ring-sa-hairline transition-colors data-[dnd-active]:ring-sa-accent/40 data-[dropactive]:bg-sa-accent/5 data-[dropactive]:ring-sa-accent"
+					class="flex flex-col rounded-sa-lg bg-sa-field p-4 shadow-sa-sm ring-1 ring-sa-hairline transition-colors data-[dropactive]:bg-sa-accent/8"
 				>
 					<div class="mb-3 flex items-baseline justify-between">
 						<h3 class="text-sm font-semibold text-sa-fg">{col.title}</h3>
