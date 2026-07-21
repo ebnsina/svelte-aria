@@ -45,7 +45,7 @@
 	</svg>
 	{#if !markOnly}
 		<span class="text-[1.02rem] leading-none tracking-tight">
-			<span class="font-light text-sa-fg">svelte</span><span class="font-extrabold text-sa-accent">aria</span>
+			<span class="font-light text-sa-fg">svelte</span><span class="font-extrabold text-sa-accent ml-[0.22em]">aria</span>
 		</span>
 	{/if}
 </span>

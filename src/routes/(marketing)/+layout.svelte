@@ -33,7 +33,10 @@
 	>
 		<div class="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 lg:px-8">
 			<a href="{base}/" class="rounded-sa-sm" aria-label="Svelte ARIA — home">
-				<Logo />
+				<!-- Wordmark needs room three text links don't leave on a phone; show the
+				     mark alone on mobile, the full wordmark from sm up. -->
+				<span class="flex sm:hidden"><Logo markOnly /></span>
+				<span class="hidden sm:flex"><Logo /></span>
 			</a>
 
 			<nav class="ml-auto flex items-center gap-1 text-sm">

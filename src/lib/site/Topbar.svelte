@@ -44,7 +44,10 @@
 		</button>
 
 		<a href="{base}/" class="rounded-sa-sm" aria-label="Svelte ARIA — home">
-			<Logo />
+			<!-- Mark alone on mobile (shares the row with the menu toggle + nav); full
+			     wordmark from sm up. -->
+			<span class="flex sm:hidden"><Logo markOnly /></span>
+			<span class="hidden sm:flex"><Logo /></span>
 		</a>
 
 		<!-- Search, centered in the header (decorative for now). -->

@@ -378,37 +378,41 @@ state.toggle();`
 
 <!-- ======================= HERO ======================= -->
 <section class="relative">
-	<div class="relative mx-auto max-w-6xl px-4 pt-16 lg:px-8 lg:pt-24">
-		<div class="rise flex items-center gap-3 font-mono text-xs text-sa-fg-muted">
+	<div class="relative mx-auto max-w-6xl px-4 pt-16 text-center lg:px-8 lg:pt-24">
+		<div class="rise flex items-center justify-center gap-3 font-mono text-xs text-sa-fg-muted">
 			<span class="h-3.5 w-[3px] rounded-full bg-sa-accent" aria-hidden="true"></span>
 			<span class="tracking-[0.18em] uppercase">A component library for Svelte 5</span>
 		</div>
-		<h1 class="rise rise-1 mt-6 max-w-3xl text-[2.75rem] leading-[1.04] tracking-[-0.03em] text-sa-fg sm:text-6xl lg:text-[4.25rem]">
+		<h1 class="rise rise-1 mx-auto mt-6 max-w-3xl text-[2.75rem] leading-[1.04] tracking-[-0.03em] text-sa-fg sm:text-6xl lg:text-[4.25rem]">
 			<span class="font-light">Accessible components,</span><br />
 			<span class="font-extrabold">in your own hand.</span>
 		</h1>
-		<p class="rise rise-2 mt-6 max-w-xl text-lg text-pretty text-sa-fg-muted">
+		<p class="rise rise-2 mx-auto mt-6 max-w-xl text-lg text-pretty text-sa-fg-muted">
 			{componentCount} components with built-in behaviour, adaptive pointer &amp; touch interactions, top-tier
 			accessibility, and complete keyboard support — copied into your project, yours to edit.
 		</p>
-		<div class="rise rise-3 mt-9 flex flex-wrap items-center gap-3">
+		<div class="rise rise-3 mt-9 flex flex-wrap items-center justify-center gap-3">
 			<Button size="lg" onPress={() => go('/installation')}>
 				Get started
 				<ArrowRight class="size-4" />
 			</Button>
 			<Button size="lg" variant="outline" onPress={() => go('/button')}>Explore components</Button>
+		</div>
+		<!-- Install command, demoted to a single copy line so the hero leads with two
+		     buttons, not a row of three. -->
+		<div class="rise rise-3 mt-6 flex justify-center">
 			<button
 				type="button"
 				onclick={copyCmd}
-				class="inline-flex h-11 items-center gap-2.5 rounded-sa bg-sa-field px-4 font-mono text-sm text-sa-fg shadow-sa-sm ring-1 ring-sa-hairline transition-colors hover:bg-[var(--sa-highlight-hover)]"
+				class="group inline-flex items-center gap-2 font-mono text-sm text-sa-fg-muted transition-colors hover:text-sa-fg"
 				aria-label="Copy the install command: {installCmd}"
 			>
 				<span class="text-sa-accent select-none" aria-hidden="true">❯</span>
-				{installCmd}
+				<span class="text-sa-fg">{installCmd}</span>
 				{#if copied}
 					<Check class="size-4 text-sa-accent" aria-hidden="true" />
 				{:else}
-					<Copy class="size-4 text-sa-fg-muted" aria-hidden="true" />
+					<Copy class="size-4 opacity-60 transition-opacity group-hover:opacity-100" aria-hidden="true" />
 				{/if}
 			</button>
 		</div>
@@ -418,15 +422,17 @@ state.toggle();`
 	     into the text block. -->
 	{#snippet arrow(flip: boolean)}
 		<svg
-			width="56"
-			height="30"
+			width="52"
+			height="28"
 			viewBox="0 0 56 30"
 			fill="none"
 			aria-hidden="true"
 			class="shrink-0 {flip ? '-scale-x-100' : ''}"
 		>
-			<path d="M3 6C19 2 38 5 50 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="0.5 5" />
-			<path d="M50 22L40 21M50 22L47 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+			<!-- a clean, precise connector: a single smooth curve to a chevron head
+			     aligned to the curve's end tangent -->
+			<path d="M5 7C22 4 39 8 50 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" />
+			<path d="M48.5 13L50 21L42.5 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
 		</svg>
 	{/snippet}
 
@@ -568,7 +574,7 @@ state.toggle();`
 	</div>
 
 	<div class="mt-10 grid items-start gap-6 lg:grid-cols-[1.5fr_1fr]">
-		<div class="rounded-sa-lg bg-sa-field p-2 shadow-sa-sm ring-1 ring-sa-hairline">
+		<div class="min-w-0 rounded-sa-lg bg-sa-field p-2 shadow-sa-sm ring-1 ring-sa-hairline">
 			<Tabs bind:value={styleTab}>
 				<TabList aria-label="Styling approaches" class="px-2 pt-1">
 					<Tab value="tailwind">Tailwind</Tab>
@@ -678,7 +684,7 @@ state.toggle();`
 	</div>
 
 	<Tabs bind:value={aiTab} orientation="vertical" class="mt-10 !block">
-		<div class="grid items-center gap-6 lg:grid-cols-[1.35fr_1fr]">
+		<div class="grid min-w-0 items-center gap-6 lg:grid-cols-[1.35fr_1fr]">
 			<!-- LEFT: preview of the selected component -->
 			<div class="min-w-0">
 				<TabPanel value="chat" class="!block outline-none">
@@ -810,7 +816,7 @@ state.toggle();`
 			</div>
 
 			<!-- RIGHT: the tablist drives the preview; the button opens its docs -->
-			<div class="flex flex-col gap-3">
+			<div class="flex min-w-0 flex-col gap-3">
 				<TabList aria-label="AI components" class="gap-3 border-r-0">
 					{#each aiTabs as t (t.id)}
 						{@const Icon = t.icon}
@@ -1071,7 +1077,7 @@ state.toggle();`
 
 		<div class="mt-10 grid gap-4 md:grid-cols-2">
 			{#each customCards as card (card.title)}
-				<div class="flex flex-col overflow-hidden rounded-sa-lg bg-sa-field shadow-sa-sm ring-1 ring-sa-hairline">
+				<div class="flex min-w-0 flex-col overflow-hidden rounded-sa-lg bg-sa-field shadow-sa-sm ring-1 ring-sa-hairline">
 					<div class="p-6 pb-4">
 						<h3 class="font-semibold text-sa-fg">{card.title}</h3>
 						<p class="mt-1.5 text-sm leading-relaxed text-sa-fg-muted">{card.body}</p>
