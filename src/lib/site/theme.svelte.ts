@@ -62,7 +62,13 @@ export const theme = {
 	get resolved() {
 		return resolved;
 	},
-	set(pref: Preference) {
+	/**
+	 * Set the preference. Pass the click point as `origin` to reveal the new
+	 * theme spatially — a circular wipe (View Transition API) growing from the
+	 * control. Falls back to the colour crossfade where the API is missing,
+	 * and to an instant swap under reduced motion.
+	 */
+	set(pref: Preference, origin?: { x: number; y: number }) {
 		preference = pref;
 		if (typeof localStorage !== 'undefined') {
 			try {
@@ -71,7 +77,35 @@ export const theme = {
 				// storage may be unavailable (private mode); ignore.
 			}
 		}
-		apply(pref, true);
+
+		const next: Resolved = pref === 'system' ? systemTheme() : pref;
+		const reduced =
+			typeof window !== 'undefined' &&
+			window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+		const doc = typeof document !== 'undefined' ? document : undefined;
+
+		// Spatial reveal only when the theme actually flips and the API exists.
+		if (!origin || !doc?.startViewTransition || reduced || next === resolved) {
+			apply(pref, !reduced);
+			return;
+		}
+
+		const transition = doc.startViewTransition(() => apply(pref, false));
+		transition.ready.then(() => {
+			const { x, y } = origin;
+			const r = Math.hypot(
+				Math.max(x, window.innerWidth - x),
+				Math.max(y, window.innerHeight - y)
+			);
+			doc.documentElement.animate(
+				{ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
+				{
+					duration: 500,
+					easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+					pseudoElement: '::view-transition-new(root)'
+				}
+			);
+		});
 	},
 	/** Cycle light → dark → system → light. */
 	cycle() {

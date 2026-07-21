@@ -68,7 +68,9 @@
 		AudioLines,
 		SquareTerminal,
 		Play,
-		Download
+		Download,
+		Copy,
+		Check
 	} from '@lucide/svelte';
 	import CodeBlock from '$lib/site/CodeBlock.svelte';
 	import { nav } from '$lib/site/nav.js';
@@ -76,22 +78,33 @@
 	const componentCount = nav.find((s) => s.title === 'Components')?.items.length ?? 45;
 	const go = (href: string) => (location.href = href.startsWith('http') ? href : base + href);
 
+	// ---- Hero: copyable install command ---------------------------------------
+	const installCmd = 'npx svelte-aria add button';
+	let copied = $state(false);
+	let copyTimer: ReturnType<typeof setTimeout> | undefined;
+	function copyCmd() {
+		navigator.clipboard?.writeText(installCmd);
+		copied = true;
+		clearTimeout(copyTimer);
+		copyTimer = setTimeout(() => (copied = false), 1600);
+	}
+
 	// ---- Hero showcase: a Bayt al-Hikma (House of Wisdom) manuscript catalogue --
 	type Status = 'Translated' | 'Copying' | 'Original';
 	type Work = {
 		title: string; // Latin transliteration
-		arabic: string; // Arabic script (rendered RTL, lang="ar")
+		author: string;
 		field: string;
 		status: Status;
 		checked: boolean;
 		starred: boolean;
 	};
 	let works = $state<Work[]>([
-		{ title: 'Kitāb al-Jabr', arabic: 'كتاب الجبر', field: 'Algebra', status: 'Translated', checked: true, starred: true },
-		{ title: 'al-Qānūn fī al-Ṭibb', arabic: 'القانون في الطب', field: 'Medicine', status: 'Translated', checked: true, starred: false },
-		{ title: 'Kitāb al-Manāẓir', arabic: 'كتاب المناظر', field: 'Optics', status: 'Copying', checked: false, starred: false },
-		{ title: 'al-Āthār al-Bāqiya', arabic: 'الآثار الباقية', field: 'Astronomy', status: 'Original', checked: false, starred: false },
-		{ title: 'Kitāb al-Ḥiyal', arabic: 'كتاب الحيل', field: 'Engineering', status: 'Copying', checked: false, starred: false }
+		{ title: 'Kitāb al-Jabr', author: 'al-Khwārizmī', field: 'Algebra', status: 'Translated', checked: true, starred: true },
+		{ title: 'al-Qānūn fī al-Ṭibb', author: 'Ibn Sīnā', field: 'Medicine', status: 'Translated', checked: true, starred: false },
+		{ title: 'Kitāb al-Manāẓir', author: 'Ibn al-Haytham', field: 'Optics', status: 'Copying', checked: false, starred: false },
+		{ title: 'al-Āthār al-Bāqiya', author: 'al-Bīrūnī', field: 'Astronomy', status: 'Original', checked: false, starred: false },
+		{ title: 'Kitāb al-Ḥiyal', author: 'Banū Mūsā', field: 'Engineering', status: 'Copying', checked: false, starred: false }
 	]);
 	let search = $state('');
 	let onlyStarred = $state(false);
@@ -101,7 +114,7 @@
 		let rows = works.filter(
 			(w) =>
 				(!onlyStarred || w.starred) &&
-				(!search || (w.title + ' ' + w.field + ' ' + w.arabic).toLowerCase().includes(search.toLowerCase()))
+				(!search || (w.title + ' ' + w.field + ' ' + w.author).toLowerCase().includes(search.toLowerCase()))
 		);
 		if (sortAsc !== null) {
 			rows = [...rows].sort((a, b) => (sortAsc ? 1 : -1) * a.title.localeCompare(b.title));
@@ -296,7 +309,7 @@ state.toggle();`
 			parts: [
 				{ type: 'thinking', content: 'The catalogue tracks a translation status per work. I’ll search the Optics field filtered to translated manuscripts.' },
 				{ type: 'tool-call', id: 't1', name: 'search_catalogue', input: { field: 'Optics', status: 'Translated' }, state: 'output-available', output: '1 match — Kitāb al-Manāẓir (Ibn al-Haytham)' },
-				{ type: 'text', content: 'كتاب المناظر (Kitāb al-Manāẓir) — the Book of Optics by Ibn al-Haytham — is our one translated optics manuscript, shelved at O-114.' }
+				{ type: 'text', content: 'Kitāb al-Manāẓir — the Book of Optics by Ibn al-Haytham — is our one translated optics manuscript, shelved at O-114.' }
 			]
 		}
 	]);
@@ -354,24 +367,55 @@ state.toggle();`
 	<title>Svelte ARIA — accessible components, in your own style</title>
 </svelte:head>
 
+<!-- Chapter opening: a mono eyebrow on a running hairline — one consistent
+     rubric that opens every section of the page. -->
+{#snippet bab(slug: string)}
+	<div class="rise flex items-center gap-3 font-mono text-xs text-sa-fg-muted">
+		<span class="h-3.5 w-[3px] rounded-full bg-sa-accent" aria-hidden="true"></span>
+		<span class="tracking-[0.18em] uppercase">{slug}</span>
+	</div>
+{/snippet}
+
 <!-- ======================= HERO ======================= -->
-<section class="mx-auto max-w-6xl px-4 pt-20 pb-16 text-center lg:px-8 lg:pt-28">
-	<h1 class="mx-auto max-w-4xl text-4xl font-semibold tracking-tight text-balance text-sa-fg sm:text-5xl lg:text-[3.5rem] lg:leading-[1.06]">
-		Craft world-class accessible components, in <span class="text-sa-accent">your own style.</span>
-	</h1>
-	<p class="mx-auto mt-6 max-w-2xl text-lg text-pretty text-sa-fg-muted">
-		{componentCount} components with built-in behaviour, adaptive pointer &amp; touch interactions, top-tier
-		accessibility, and complete keyboard support out of the box — ready for your styles.
-	</p>
-	<div class="mt-9 flex flex-wrap justify-center gap-3">
-		<Button size="lg" onPress={() => go('/installation')}>
-			Get started
-			<ArrowRight class="size-4" />
-		</Button>
-		<Button size="lg" variant="outline" onPress={() => go('/button')}>Explore components</Button>
+<section class="relative">
+	<div class="relative mx-auto max-w-6xl px-4 pt-16 lg:px-8 lg:pt-24">
+		<div class="rise flex items-center gap-3 font-mono text-xs text-sa-fg-muted">
+			<span class="h-3.5 w-[3px] rounded-full bg-sa-accent" aria-hidden="true"></span>
+			<span class="tracking-[0.18em] uppercase">A component library for Svelte 5</span>
+		</div>
+		<h1 class="rise rise-1 mt-6 max-w-3xl text-[2.75rem] leading-[1.04] tracking-[-0.03em] text-sa-fg sm:text-6xl lg:text-[4.25rem]">
+			<span class="font-light">Accessible components,</span><br />
+			<span class="font-extrabold">in your own hand.</span>
+		</h1>
+		<p class="rise rise-2 mt-6 max-w-xl text-lg text-pretty text-sa-fg-muted">
+			{componentCount} components with built-in behaviour, adaptive pointer &amp; touch interactions, top-tier
+			accessibility, and complete keyboard support — copied into your project, yours to edit.
+		</p>
+		<div class="rise rise-3 mt-9 flex flex-wrap items-center gap-3">
+			<Button size="lg" onPress={() => go('/installation')}>
+				Get started
+				<ArrowRight class="size-4" />
+			</Button>
+			<Button size="lg" variant="outline" onPress={() => go('/button')}>Explore components</Button>
+			<button
+				type="button"
+				onclick={copyCmd}
+				class="inline-flex h-11 items-center gap-2.5 rounded-sa bg-sa-field px-4 font-mono text-sm text-sa-fg shadow-sa-sm ring-1 ring-sa-hairline transition-colors hover:bg-[var(--sa-highlight-hover)]"
+				aria-label="Copy the install command: {installCmd}"
+			>
+				<span class="text-sa-accent select-none" aria-hidden="true">❯</span>
+				{installCmd}
+				{#if copied}
+					<Check class="size-4 text-sa-accent" aria-hidden="true" />
+				{:else}
+					<Copy class="size-4 text-sa-fg-muted" aria-hidden="true" />
+				{/if}
+			</button>
+		</div>
 	</div>
 
-	<!-- Hand-drawn-style annotation arrow (points down-right toward the card). -->
+	<!-- Marginalia annotation — a dotted hand-curve, like a ḥāshiya note pointing
+	     into the text block. -->
 	{#snippet arrow(flip: boolean)}
 		<svg
 			width="56"
@@ -381,13 +425,13 @@ state.toggle();`
 			aria-hidden="true"
 			class="shrink-0 {flip ? '-scale-x-100' : ''}"
 		>
-			<path d="M3 6C19 2 38 5 50 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+			<path d="M3 6C19 2 38 5 50 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="0.5 5" />
 			<path d="M50 22L40 21M50 22L47 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 		</svg>
 	{/snippet}
 
 	<!-- Annotated product showcase -->
-	<div class="relative mx-auto mt-20 max-w-3xl">
+	<div class="rise rise-4 relative mx-auto mt-16 mb-4 max-w-3xl px-4 sm:px-0 lg:mt-20">
 		<!-- left callouts -->
 		<div class="absolute top-4 right-full bottom-4 hidden w-52 flex-col justify-around pr-2 lg:flex">
 			{#each leftCallouts as c (c.label)}
@@ -471,7 +515,7 @@ state.toggle();`
 									</span>
 									<div class="min-w-0">
 										<div class="truncate font-medium text-sa-fg">{w.title}</div>
-										<div class="truncate text-xs text-sa-fg-muted" lang="ar" dir="rtl">{w.arabic}</div>
+										<div class="truncate text-xs text-sa-fg-muted">{w.author}</div>
 									</div>
 								</div>
 							</td>
@@ -507,10 +551,11 @@ state.toggle();`
 </section>
 
 <!-- ======================= STYLES ======================= -->
-<section class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
-	<div class="max-w-2xl">
-		<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">
-			Styled — and <span class="text-sa-accent">yours to restyle.</span>
+<section class="mx-auto max-w-6xl px-4 py-14 lg:px-8 lg:py-20">
+	{@render bab('Restyle')}
+	<div class="mt-8 max-w-2xl">
+		<h2 class="text-3xl tracking-tight text-sa-fg sm:text-4xl">
+			<span class="font-light">Styled, and</span> <span class="font-extrabold">yours to restyle.</span>
 		</h2>
 		<p class="mt-4 text-lg text-sa-fg-muted">
 			Components ship styled, but nothing is locked down. Restyle with Tailwind utilities, re-tint the
@@ -549,11 +594,12 @@ state.toggle();`
 </section>
 
 <!-- ======================= ADVANCED FEATURES (kanban) ======================= -->
-<section class="border-y border-sa-hairline bg-sa-subtle/40">
-	<div class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
-		<div class="max-w-2xl">
-			<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">
-				<span class="text-sa-accent">Advanced features</span> for ambitious apps.
+<section>
+	<div class="mx-auto max-w-6xl px-4 py-14 lg:px-8 lg:py-20">
+		{@render bab('Behaviour')}
+		<div class="mt-8 max-w-2xl">
+			<h2 class="text-3xl tracking-tight text-sa-fg sm:text-4xl">
+				<span class="font-light">Behaviour that</span> <span class="font-extrabold">feels native.</span>
 			</h2>
 			<p class="mt-4 text-lg text-sa-fg-muted">
 				Make your app feel native with rich interactions that adapt to device, platform, and user —
@@ -615,10 +661,11 @@ state.toggle();`
 </section>
 
 <!-- ======================= AI COMPONENTS ======================= -->
-<section class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
-	<div class="max-w-2xl">
-		<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">
-			Build <span class="text-sa-accent">AI experiences</span>, accessibly.
+<section class="mx-auto max-w-6xl px-4 py-14 lg:px-8 lg:py-20">
+	{@render bab('AI')}
+	<div class="mt-8 max-w-2xl">
+		<h2 class="text-3xl tracking-tight text-sa-fg sm:text-4xl">
+			<span class="font-light">AI surfaces,</span> <span class="font-extrabold">accessible by default.</span>
 		</h2>
 		<p class="mt-4 text-lg text-sa-fg-muted">
 			A complete kit for AI apps — streaming chat with tool calls, reasoning, and cited sources, plus
@@ -792,10 +839,11 @@ state.toggle();`
 </section>
 
 <!-- ======================= INTERACTIONS ======================= -->
-<section class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
-	<div class="max-w-2xl">
-		<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">
-			High-quality <span class="text-sa-accent">interactions</span> on every device.
+<section class="mx-auto max-w-6xl px-4 py-14 lg:px-8 lg:py-20">
+	{@render bab('Input')}
+	<div class="mt-8 max-w-2xl">
+		<h2 class="text-3xl tracking-tight text-sa-fg sm:text-4xl">
+			<span class="font-light">Tuned for</span> <span class="font-extrabold">every input.</span>
 		</h2>
 		<p class="mt-4 text-lg text-sa-fg-muted">
 			A great experience for every user, whatever their device. Components are tuned for mouse, touch,
@@ -864,11 +912,12 @@ state.toggle();`
 </section>
 
 <!-- ======================= ACCESSIBILITY ======================= -->
-<section class="border-y border-sa-hairline bg-sa-subtle/40">
-	<div class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
-		<div class="max-w-2xl">
-			<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">
-				<span class="text-sa-accent">Accessibility</span> that's truly first-class.
+<section>
+	<div class="mx-auto max-w-6xl px-4 py-14 lg:px-8 lg:py-20">
+		{@render bab('Access')}
+		<div class="mt-8 max-w-2xl">
+			<h2 class="text-3xl tracking-tight text-sa-fg sm:text-4xl">
+				<span class="font-light">Accessibility,</span> <span class="font-extrabold">truly first-class.</span>
 			</h2>
 			<p class="mt-4 text-lg text-sa-fg-muted">
 				Accessibility is a top priority, not an afterthought. Every component is built to work across a
@@ -938,10 +987,11 @@ state.toggle();`
 </section>
 
 <!-- ======================= INTERNATIONAL ======================= -->
-<section class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
-	<div class="max-w-2xl">
-		<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">
-			Ready for an <span class="text-sa-accent">international</span> audience.
+<section class="mx-auto max-w-6xl px-4 py-14 lg:px-8 lg:py-20">
+	{@render bab('Locales')}
+	<div class="mt-8 max-w-2xl">
+		<h2 class="text-3xl tracking-tight text-sa-fg sm:text-4xl">
+			<span class="font-light">Ready for</span> <span class="font-extrabold">every locale.</span>
 		</h2>
 		<p class="mt-4 text-lg text-sa-fg-muted">
 			Date and number controls format and parse against the active locale, with calendar grids that
@@ -1003,11 +1053,12 @@ state.toggle();`
 </section>
 
 <!-- ======================= CUSTOMIZABLE ======================= -->
-<section class="border-t border-sa-hairline bg-sa-subtle/40">
-	<div class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
-		<div class="max-w-2xl">
-			<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">
-				<span class="text-sa-accent">Customizable</span> to the core.
+<section>
+	<div class="mx-auto max-w-6xl px-4 py-14 lg:px-8 lg:py-20">
+		{@render bab('Ownership')}
+		<div class="mt-8 max-w-2xl">
+			<h2 class="text-3xl tracking-tight text-sa-fg sm:text-4xl">
+				<span class="font-light">Customizable</span> <span class="font-extrabold">to the core.</span>
 			</h2>
 			<p class="mt-4 text-lg text-sa-fg-muted">
 				Start with ready-made components, compose your own patterns from the interaction primitives, or
@@ -1033,18 +1084,60 @@ state.toggle();`
 </section>
 
 <!-- ======================= CTA ======================= -->
-<section class="mx-auto max-w-6xl px-4 py-20 text-center lg:px-8">
-	<h2 class="mx-auto max-w-2xl text-3xl font-semibold tracking-tight text-balance text-sa-fg sm:text-4xl">
-		Build your next Svelte app on a solid foundation.
-	</h2>
-	<p class="mx-auto mt-4 max-w-xl text-lg text-sa-fg-muted">
-		Install the CLI, add the components you need, and make them yours.
-	</p>
-	<div class="mt-8 flex flex-wrap justify-center gap-3">
-		<Button size="lg" onPress={() => go('/installation')}>
-			Get started
-			<ArrowRight class="size-4" />
-		</Button>
-		<Button size="lg" variant="outline" onPress={() => go('https://github.com/ebnsina/svelte-aria')}>GitHub</Button>
+<section class="relative">
+	<div class="relative mx-auto max-w-6xl px-4 py-20 text-center lg:px-8 lg:py-28">
+		<div class="flex items-center justify-center gap-3 font-mono text-xs text-sa-fg-muted">
+			<span class="h-3.5 w-[3px] rounded-full bg-sa-accent" aria-hidden="true"></span>
+			<span class="tracking-[0.18em] uppercase">Get started</span>
+		</div>
+		<h2 class="mx-auto mt-6 max-w-2xl text-3xl tracking-tight text-balance text-sa-fg sm:text-5xl">
+			<span class="font-light">Own every line</span> <span class="font-extrabold">of your UI.</span>
+		</h2>
+		<p class="mx-auto mt-5 max-w-xl text-lg text-sa-fg-muted">
+			Install the CLI, add the components you need, and make them yours — the source lands in your
+			project, not in node_modules.
+		</p>
+		<div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+			<Button size="lg" onPress={() => go('/installation')}>
+				Get started
+				<ArrowRight class="size-4" />
+			</Button>
+			<Button size="lg" variant="outline" onPress={() => go('https://github.com/ebnsina/svelte-aria')}>GitHub</Button>
+		</div>
 	</div>
 </section>
+
+<style>
+	/* Hero load sequence: each block rises once, staggered. Chapter rubrics reuse
+	   the same curve. Disabled entirely under reduced motion. */
+	@keyframes rise {
+		from {
+			opacity: 0;
+			transform: translateY(14px);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+	.rise {
+		animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+	}
+	.rise-1 {
+		animation-delay: 0.08s;
+	}
+	.rise-2 {
+		animation-delay: 0.16s;
+	}
+	.rise-3 {
+		animation-delay: 0.24s;
+	}
+	.rise-4 {
+		animation-delay: 0.34s;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.rise {
+			animation: none;
+		}
+	}
+</style>

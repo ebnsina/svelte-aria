@@ -4,10 +4,17 @@
   so they stay in sync as components are added.
 -->
 <script lang="ts">
-	import { ArrowUpRight } from '@lucide/svelte';
+	import { ArrowUpRight, Sun, Moon, Monitor } from '@lucide/svelte';
 	import { base } from '$app/paths';
 	import Logo from './Logo.svelte';
 	import { nav } from './nav.js';
+	import { theme, type Preference } from './theme.svelte.js';
+
+	const themeOptions: { value: Preference; icon: typeof Sun; label: string }[] = [
+		{ value: 'light', icon: Sun, label: 'Light' },
+		{ value: 'dark', icon: Moon, label: 'Dark' },
+		{ value: 'system', icon: Monitor, label: 'System' }
+	];
 
 	const components = nav.find((s) => s.title === 'Components')?.items ?? [];
 	// A curated subset for the footer (the full list lives in the sidebar).
@@ -89,14 +96,35 @@
 		</div>
 
 		<div class="mt-12 flex flex-col items-start justify-between gap-4 border-t border-sa-hairline pt-6 text-sm text-sa-fg-muted sm:flex-row sm:items-center">
-			<p>© {year} svelte-aria. Released under the MIT License.</p>
+			<div class="flex flex-wrap items-center gap-x-5 gap-y-3">
+				<p>© {year} svelte-aria. Released under the MIT License.</p>
+				<div class="flex items-center gap-0.5 rounded-sa-sm p-0.5 ring-1 ring-sa-hairline" role="group" aria-label="Theme">
+					{#each themeOptions as opt (opt.value)}
+						{@const Icon = opt.icon}
+						<button
+							type="button"
+							onclick={(e) => theme.set(opt.value, { x: e.clientX, y: e.clientY })}
+							aria-pressed={theme.preference === opt.value}
+							aria-label="{opt.label} theme"
+							title="{opt.label} theme"
+							class="grid size-6 place-items-center rounded-sa-sm transition-colors {theme.preference === opt.value
+								? 'bg-sa-field text-sa-fg shadow-sa-sm ring-1 ring-sa-hairline'
+								: 'text-sa-fg-muted hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg'}"
+						>
+							<Icon class="size-3.5" />
+						</button>
+					{/each}
+				</div>
+			</div>
 			<p class="inline-flex items-center gap-1.5">
 				Made in Bangladesh 🇧🇩 by
 				<a
 					href="https://x.com/ebns1na"
+					target="_blank"
+					rel="noreferrer"
 					class="font-medium text-sa-fg underline-offset-2 transition-colors hover:text-sa-accent hover:underline"
 				>
-					Ebn Sina
+					Ebn Sina<span class="sr-only"> (opens in a new tab)</span>
 				</a>
 			</p>
 		</div>

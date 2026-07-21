@@ -102,6 +102,22 @@ kbd {
 	color: var(--sa-accent-ink);
 }
 
+/* Theme toggle — spatial reveal. The controller wraps the data-theme flip in a
+   view transition and animates ::view-transition-new(root) as a growing circle
+   from the click point; the UA's default crossfade is disabled so the wipe is
+   the only motion. Old snapshot stays beneath the reveal. */
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation: none;
+	mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+	z-index: 1;
+}
+::view-transition-new(root) {
+	z-index: 2;
+}
+
 /* Smooth crossfade during a theme toggle (added briefly by the theme controller,
    so it doesn't interfere with press/hover transitions the rest of the time). */
 html.sa-theme-anim,

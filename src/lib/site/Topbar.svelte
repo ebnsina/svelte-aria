@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Search, Menu, X, Sun, Moon, Monitor } from '@lucide/svelte';
+	import { Search, Menu, X } from '@lucide/svelte';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import {
@@ -10,7 +10,6 @@
 		CommandItem,
 		CommandEmpty
 	} from '$lib/index.js';
-	import { theme } from './theme.svelte.js';
 	import { nav } from './nav.js';
 	import AccentPicker from './AccentPicker.svelte';
 	import Logo from './Logo.svelte';
@@ -21,9 +20,6 @@
 		searchOpen = false;
 		goto(base + href);
 	}
-
-	const show = 'scale-100 rotate-0 opacity-100';
-	const hide = 'scale-90 -rotate-90 opacity-0';
 
 	interface Props {
 		menuOpen?: boolean;
@@ -72,34 +68,6 @@
 
 		<nav class="ml-auto flex items-center gap-1 text-sm">
 			<AccentPicker />
-			<button
-				type="button"
-				onclick={() => theme.cycle()}
-				aria-label="Theme: {theme.preference} (click to change)"
-				title="Theme: {theme.preference}"
-				class="grid size-9 place-items-center rounded-sa-sm text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
-			>
-				<span class="relative grid size-5 place-items-center">
-					<Sun
-						class="col-start-1 row-start-1 size-5 transition-[transform,opacity] duration-200 {theme.preference ===
-						'light'
-							? show
-							: hide}"
-					/>
-					<Moon
-						class="col-start-1 row-start-1 size-5 transition-[transform,opacity] duration-200 {theme.preference ===
-						'dark'
-							? show
-							: hide}"
-					/>
-					<Monitor
-						class="col-start-1 row-start-1 size-5 transition-[transform,opacity] duration-200 {theme.preference ===
-						'system'
-							? show
-							: hide}"
-					/>
-				</span>
-			</button>
 			<a
 				href="{base}/"
 				class="rounded-sa-sm px-3 py-2 text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
