@@ -29,6 +29,8 @@
 		placeholder?: string;
 		/** Intl.NumberFormat options for display (e.g. currency, percent). */
 		formatOptions?: Intl.NumberFormatOptions;
+		/** BCP-47 locale for formatting/parsing (defaults to the runtime locale). */
+		locale?: string;
 		name?: string;
 		onChange?: (value: number | undefined) => void;
 		class?: string;
@@ -49,6 +51,7 @@
 		errorMessage,
 		placeholder,
 		formatOptions,
+		locale,
 		name,
 		onChange,
 		class: className,
@@ -69,7 +72,7 @@
 	let text = $state('');
 	let focused = $state(false);
 
-	const formatter = $derived(new Intl.NumberFormat(undefined, formatOptions));
+	const formatter = $derived(new Intl.NumberFormat(locale, formatOptions));
 	function fmt(n: number): string {
 		return formatter.format(n);
 	}

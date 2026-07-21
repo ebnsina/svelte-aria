@@ -12,7 +12,8 @@
 		Calendar,
 		NumberField,
 		DatePicker,
-		TextField,
+		SearchField,
+		ToggleButton,
 		List,
 		ListItem,
 		Menu,
@@ -32,6 +33,9 @@
 		Star,
 		MoreHorizontal,
 		SlidersHorizontal,
+		ChevronUp,
+		ChevronDown,
+		ChevronsUpDown,
 		Plus,
 		Fingerprint,
 		MousePointer2,
@@ -60,16 +64,36 @@
 		{ name: 'Christmas Bush', sci: 'Ceratopetalum', sun: 'Full sun', water: 'Average', checked: false, starred: false }
 	]);
 	let search = $state('');
-	const allChecked = $derived(plants.every((p) => p.checked));
+	let onlyStarred = $state(false);
+	let sortAsc = $state<boolean | null>(null); // null = unsorted
+	// Live-filtered + sorted view of the plants (the hero table is interactive).
+	const visiblePlants = $derived.by(() => {
+		let rows = plants.filter(
+			(p) =>
+				(!onlyStarred || p.starred) &&
+				(!search || (p.name + ' ' + p.sci).toLowerCase().includes(search.toLowerCase()))
+		);
+		if (sortAsc !== null) {
+			rows = [...rows].sort((a, b) => (sortAsc ? 1 : -1) * a.name.localeCompare(b.name));
+		}
+		return rows;
+	});
+	function indexOf(p: Plant) {
+		return plants.findIndex((x) => x.name === p.name);
+	}
+	const allChecked = $derived(plants.length > 0 && plants.every((p) => p.checked));
 	function toggleAll(v: boolean) {
 		plants = plants.map((p) => ({ ...p, checked: v }));
 	}
+	function cycleSort() {
+		sortAsc = sortAsc === null ? true : sortAsc ? false : null;
+	}
 
 	const leftCallouts = [
-		{ label: 'SearchField', href: '/text-field' },
+		{ label: 'SearchField', href: '/search-field' },
 		{ label: 'Checkbox', href: '/checkbox' },
 		{ label: 'Table', href: '/data-table' },
-		{ label: 'ToggleButton', href: '/switch' }
+		{ label: 'ToggleButton', href: '/toggle-button' }
 	];
 	const rightCallouts = [
 		{ label: 'Tooltip', href: '/tooltip' },
@@ -111,13 +135,23 @@
 	// ---- Section: accessibility (phone) ----------------------------------------
 	let permission = $state('read');
 
-	// ---- Section: international -------------------------------------------------
+	// ---- Section: international (genuinely reformats via Intl) ------------------
 	let locale = $state('en-US');
-	let calSystem = $state('gregorian');
-	let numbering = $state('latin');
+	let calSystem = $state('gregory');
+	let numbering = $state('latn');
 	let numberFmt = $state('decimal');
 	let intlDate = $state<Date>(new Date(2026, 6, 21));
-	let intlNumber = $state(1234);
+	let intlNumber = $state(1234.5);
+	// One BCP-47 locale string carrying the calendar + numbering extensions, fed to
+	// every date/number control so they all reformat live as the selects change.
+	const intlLocale = $derived(`${locale}-u-ca-${calSystem}-nu-${numbering}`);
+	const numberFormatOptions = $derived<Intl.NumberFormatOptions>(
+		numberFmt === 'currency'
+			? { style: 'currency', currency: 'USD' }
+			: numberFmt === 'percent'
+				? { style: 'percent' }
+				: { maximumFractionDigits: 2 }
+	);
 
 	// ---- Section: kanban -------------------------------------------------------
 	const board = [
@@ -236,16 +270,14 @@ state.toggle();`
 				<span class="size-3 rounded-full bg-sa-hairline"></span>
 				<span class="size-3 rounded-full bg-sa-hairline"></span>
 			</div>
-			<!-- toolbar -->
+			<!-- toolbar (live: search filters, the toggle shows starred only) -->
 			<div class="flex items-center gap-2 px-4 py-3">
 				<div class="flex-1">
-					<TextField bind:value={search} placeholder="Search plants" aria-label="Search plants">
-						{#snippet prefix()}
-							<Search class="size-4 text-sa-fg-muted" />
-						{/snippet}
-					</TextField>
+					<SearchField bind:value={search} placeholder="Search plants" aria-label="Search plants" />
 				</div>
-				<Button variant="outline" size="icon" aria-label="Filter"><SlidersHorizontal class="size-4" /></Button>
+				<ToggleButton bind:isSelected={onlyStarred} size="icon" aria-label="Show starred only">
+					<Star class={onlyStarred ? 'fill-sa-accent-fg' : ''} />
+				</ToggleButton>
 				<Button size="icon" aria-label="Add plant"><Plus class="size-4" /></Button>
 			</div>
 			<!-- table -->
@@ -254,14 +286,26 @@ state.toggle();`
 					<tr class="border-y border-sa-hairline bg-sa-subtle/50 text-xs text-sa-fg-muted">
 						<th class="w-10 py-2 pl-4"><Checkbox checked={allChecked} onChange={toggleAll} aria-label="Select all" /></th>
 						<th class="w-8"></th>
-						<th class="py-2 text-left font-medium">Name</th>
+						<th class="py-2 text-left font-medium" aria-sort={sortAsc === null ? 'none' : sortAsc ? 'ascending' : 'descending'}>
+							<button type="button" onclick={cycleSort} class="-mx-1 inline-flex items-center gap-1 rounded-sa-sm px-1 py-0.5 transition-colors hover:text-sa-fg">
+								Name
+								{#if sortAsc === true}
+									<ChevronUp class="size-3.5" aria-hidden="true" />
+								{:else if sortAsc === false}
+									<ChevronDown class="size-3.5" aria-hidden="true" />
+								{:else}
+									<ChevronsUpDown class="size-3.5 opacity-50" aria-hidden="true" />
+								{/if}
+							</button>
+						</th>
 						<th class="hidden py-2 text-left font-medium sm:table-cell">Sunlight</th>
 						<th class="hidden py-2 text-left font-medium sm:table-cell">Watering</th>
 						<th class="w-10"></th>
 					</tr>
 				</thead>
 				<tbody>
-					{#each plants as p, i (p.name)}
+					{#each visiblePlants as p (p.name)}
+						{@const i = indexOf(p)}
 						<tr class="border-b border-sa-hairline last:border-0 transition-colors hover:bg-[var(--sa-highlight-hover)] data-[selected]:bg-sa-accent/8" data-selected={p.checked || undefined}>
 							<td class="py-2.5 pl-4"><Checkbox bind:checked={plants[i].checked} aria-label="Select {p.name}" /></td>
 							<td>
@@ -303,6 +347,10 @@ state.toggle();`
 									</MenuContent>
 								</Menu>
 							</td>
+						</tr>
+					{:else}
+						<tr>
+							<td colspan="6" class="px-4 py-10 text-center text-sm text-sa-fg-muted">No plants match your search.</td>
 						</tr>
 					{/each}
 				</tbody>
@@ -497,23 +545,44 @@ state.toggle();`
 
 			<!-- phone mockup -->
 			<div class="flex justify-center">
-				<div class="w-full max-w-[17rem] rounded-[2.25rem] bg-sa-bg p-2.5 shadow-sa-md ring-1 ring-sa-hairline">
-					<div class="overflow-hidden rounded-[1.75rem] bg-sa-field ring-1 ring-sa-hairline">
-						<div class="flex items-center justify-between px-6 py-2.5 text-xs font-medium text-sa-fg">
-							<span>9:36</span>
-							<span class="flex items-center gap-1.5"><Signal class="size-3.5" /><Wifi class="size-3.5" /><BatteryFull class="size-4" /></span>
+				<!-- Realistic handset: black frame (scrim exception), dynamic island,
+				     side buttons, and a theme-aware screen. -->
+				<div class="relative">
+					<!-- side buttons -->
+					<span aria-hidden="true" class="absolute top-[6.5rem] -left-[2px] h-7 w-[3px] rounded-l-sm bg-black"></span>
+					<span aria-hidden="true" class="absolute top-[9rem] -left-[2px] h-12 w-[3px] rounded-l-sm bg-black"></span>
+					<span aria-hidden="true" class="absolute top-[12.5rem] -left-[2px] h-12 w-[3px] rounded-l-sm bg-black"></span>
+					<span aria-hidden="true" class="absolute top-[10.5rem] -right-[2px] h-16 w-[3px] rounded-r-sm bg-black"></span>
+
+					<!-- frame + bezel -->
+					<div class="w-[16.5rem] rounded-[2.9rem] bg-black p-[10px] shadow-[0_20px_50px_-12px_rgb(0_0_0/0.45)]">
+						<div class="relative overflow-hidden rounded-[2.3rem] bg-sa-bg">
+							<!-- dynamic island -->
+							<div aria-hidden="true" class="absolute top-2.5 left-1/2 z-10 h-[26px] w-[5.5rem] -translate-x-1/2 rounded-full bg-black"></div>
+
+							<!-- status bar -->
+							<div class="flex items-center justify-between px-7 pt-3.5 pb-1 text-xs font-semibold text-sa-fg">
+								<span class="tabular-nums">9:36</span>
+								<span class="flex items-center gap-1.5"><Signal class="size-3.5" /><Wifi class="size-3.5" /><BatteryFull class="size-4" /></span>
+							</div>
+
+							<!-- app content -->
+							<div class="flex min-h-80 flex-col gap-2 px-6 pt-10 pb-6">
+								<p class="mb-2 text-lg font-semibold text-sa-fg">Sharing</p>
+								<Select bind:value={permission} label="Permissions">
+									<SelectTrigger />
+									<SelectContent>
+										<SelectItem value="read">Read Only</SelectItem>
+										<SelectItem value="edit">Edit</SelectItem>
+										<SelectItem value="admin">Admin</SelectItem>
+									</SelectContent>
+								</Select>
+								<p class="mt-1 text-sm text-sa-fg-muted">Screen-reader users get the same native picker, with focus moved into the list and restored on close.</p>
+							</div>
+
+							<!-- home indicator -->
+							<div class="flex justify-center pb-2.5 pt-2"><span class="h-1 w-28 rounded-full bg-sa-fg/30"></span></div>
 						</div>
-						<div class="flex min-h-72 flex-col justify-center gap-2 px-6 py-8">
-							<Select bind:value={permission} label="Permissions">
-								<SelectTrigger />
-								<SelectContent>
-									<SelectItem value="read">Read Only</SelectItem>
-									<SelectItem value="edit">Edit</SelectItem>
-									<SelectItem value="admin">Admin</SelectItem>
-								</SelectContent>
-							</Select>
-						</div>
-						<div class="flex justify-center pb-2"><span class="h-1 w-28 rounded-full bg-sa-hairline"></span></div>
 					</div>
 				</div>
 			</div>
@@ -550,7 +619,7 @@ state.toggle();`
 			<Select bind:value={calSystem} label="Calendar">
 				<SelectTrigger />
 				<SelectContent>
-					<SelectItem value="gregorian">Gregorian</SelectItem>
+					<SelectItem value="gregory">Gregorian</SelectItem>
 					<SelectItem value="buddhist">Buddhist</SelectItem>
 					<SelectItem value="hebrew">Hebrew</SelectItem>
 				</SelectContent>
@@ -558,7 +627,7 @@ state.toggle();`
 			<Select bind:value={numbering} label="Numbering system">
 				<SelectTrigger />
 				<SelectContent>
-					<SelectItem value="latin">Latin</SelectItem>
+					<SelectItem value="latn">Latin</SelectItem>
 					<SelectItem value="arab">Arabic-Indic</SelectItem>
 					<SelectItem value="hanidec">Han decimal</SelectItem>
 				</SelectContent>
@@ -566,7 +635,7 @@ state.toggle();`
 		</div>
 
 		<div class="grid place-items-center border-y border-sa-hairline py-4 lg:border-x lg:border-y-0">
-			<Calendar bind:value={intlDate} />
+			<Calendar bind:value={intlDate} locale={intlLocale} />
 		</div>
 
 		<div class="flex flex-col gap-4">
@@ -578,8 +647,8 @@ state.toggle();`
 					<SelectItem value="percent">Percent</SelectItem>
 				</SelectContent>
 			</Select>
-			<NumberField bind:value={intlNumber} label="Number" />
-			<DatePicker bind:value={intlDate} label="Date" />
+			<NumberField bind:value={intlNumber} label="Number" locale={intlLocale} formatOptions={numberFormatOptions} />
+			<DatePicker bind:value={intlDate} label="Date" locale={intlLocale} formatOptions={{ dateStyle: 'long' }} />
 		</div>
 	</div>
 </section>

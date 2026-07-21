@@ -206,6 +206,25 @@
 			]
 		},
 		{
+			"name": "search-field",
+			"type": "registry:ui",
+			"description": "A search input (role=searchbox) with a leading icon and a clear button; Escape clears.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/SearchField.svelte", "target": "{ui}/search-field.svelte", "type": "registry:ui" }
+			]
+		},
+		{
+			"name": "toggle-button",
+			"type": "registry:ui",
+			"description": "A button that stays pressed/on (aria-pressed), with press + hover primitives and data-* state.",
+			"registryDependencies": ["cn", "press", "hover"],
+			"files": [
+				{ "path": "src/lib/components/ToggleButton.svelte", "target": "{ui}/toggle-button.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "list",
 			"type": "registry:ui",
 			"description": "A simple divided list surface — List + ListItem (plain, link, or button rows).",

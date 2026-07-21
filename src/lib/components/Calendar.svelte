@@ -46,6 +46,9 @@
 		max?: Date;
 		/** 0 = Sunday (default), 1 = Monday, … */
 		weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+		/** BCP-47 locale for month/weekday/day labels (defaults to runtime). May
+		    carry Unicode extensions, e.g. `ja-JP-u-ca-japanese-nu-hanidec`. */
+		locale?: string;
 		disabled?: boolean;
 		onChange?: (value: Date) => void;
 		class?: string;
@@ -58,6 +61,7 @@
 		min,
 		max,
 		weekStartsOn = 0,
+		locale,
 		disabled = false,
 		onChange,
 		class: className,
@@ -87,15 +91,17 @@
 	let gridEl = $state<HTMLElement>();
 
 	const monthLabel = $derived(
-		new Intl.DateTimeFormat(undefined, { month: 'long', year: 'numeric' }).format(focused)
+		new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(focused)
 	);
+	// Localised day-of-month number (respects the locale's numbering system).
+	const dayFmt = $derived(new Intl.DateTimeFormat(locale, { day: 'numeric' }));
 	const weekdays = $derived(
 		Array.from({ length: 7 }, (_, i) => {
 			// Aug 1 2021 is a Sunday; offset by weekStartsOn.
 			const d = new Date(2021, 7, 1 + ((weekStartsOn + i) % 7));
 			return {
-				short: new Intl.DateTimeFormat(undefined, { weekday: 'short' }).format(d),
-				long: new Intl.DateTimeFormat(undefined, { weekday: 'long' }).format(d)
+				short: new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(d),
+				long: new Intl.DateTimeFormat(locale, { weekday: 'long' }).format(d)
 			};
 		})
 	);
@@ -112,7 +118,7 @@
 		return disabled || (!!min && d < startOfDay(min)) || (!!max && d > startOfDay(max));
 	}
 	function dayLabel(d: Date): string {
-		return new Intl.DateTimeFormat(undefined, {
+		return new Intl.DateTimeFormat(locale, {
 			weekday: 'long',
 			day: 'numeric',
 			month: 'long',
@@ -245,7 +251,7 @@
 									dayState
 								)}
 							>
-								{day.getDate()}
+								{dayFmt.format(day)}
 							</button>
 						</td>
 					{/each}

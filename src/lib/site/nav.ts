@@ -43,6 +43,7 @@ export const nav: NavSection[] = [
 			{ title: 'Popover', href: '/popover' },
 			{ title: 'Progress', href: '/progress' },
 			{ title: 'RadioGroup', href: '/radio-group' },
+			{ title: 'SearchField', href: '/search-field' },
 			{ title: 'Select', href: '/select' },
 			{ title: 'Separator', href: '/separator' },
 			{ title: 'Sheet', href: '/sheet' },
@@ -52,6 +53,7 @@ export const nav: NavSection[] = [
 			{ title: 'Tabs', href: '/tabs' },
 			{ title: 'TextField', href: '/text-field' },
 			{ title: 'Toast', href: '/toast' },
+			{ title: 'ToggleButton', href: '/toggle-button' },
 			{ title: 'Toolbar', href: '/toolbar' },
 			{ title: 'Tooltip', href: '/tooltip' }
 		]

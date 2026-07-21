@@ -11,8 +11,10 @@
 
 // Components
 export { default as Button, buttonVariants } from './components/Button.svelte';
+export { default as ToggleButton, type ToggleButtonSize } from './components/ToggleButton.svelte';
 export { default as Checkbox } from './components/Checkbox.svelte';
 export { default as TextField } from './components/TextField.svelte';
+export { default as SearchField } from './components/SearchField.svelte';
 export { default as NumberField } from './components/NumberField.svelte';
 export { default as RadioGroup } from './components/RadioGroup.svelte';
 export { default as Radio } from './components/Radio.svelte';

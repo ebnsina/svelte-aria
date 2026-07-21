@@ -26,6 +26,8 @@
 		placeholder?: string;
 		/** Intl options for the trigger's date text. */
 		formatOptions?: Intl.DateTimeFormatOptions;
+		/** BCP-47 locale for the trigger text and the calendar (defaults to runtime). */
+		locale?: string;
 		label?: string;
 		/** Emits a hidden input (value as YYYY-MM-DD) so it posts with a form. */
 		name?: string;
@@ -43,6 +45,7 @@
 		disabled = false,
 		placeholder = 'Pick a date',
 		formatOptions = { dateStyle: 'medium' },
+		locale,
 		label,
 		name,
 		onChange,
@@ -61,7 +64,7 @@
 	const current = $derived(value ?? internal);
 
 	const formatted = $derived(
-		current ? new Intl.DateTimeFormat(undefined, formatOptions).format(current) : undefined
+		current ? new Intl.DateTimeFormat(locale, formatOptions).format(current) : undefined
 	);
 	const isoValue = $derived(
 		current
@@ -95,7 +98,7 @@
 		</PopoverTrigger>
 
 		<PopoverContent class="w-auto p-0">
-			<Calendar value={current} {min} {max} {weekStartsOn} onChange={handleSelect} />
+			<Calendar value={current} {min} {max} {weekStartsOn} {locale} onChange={handleSelect} />
 		</PopoverContent>
 	</Popover>
 
