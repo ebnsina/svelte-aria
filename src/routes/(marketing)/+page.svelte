@@ -481,7 +481,7 @@ state.toggle();`
 		<div aria-live="assertive" class="sr-only">{dnd.message}</div>
 
 		{#snippet dropLine()}
-			<div class="h-1 rounded-full bg-sa-accent" aria-hidden="true"></div>
+			<div class="h-0.5 rounded-full bg-sa-accent" aria-hidden="true"></div>
 		{/snippet}
 
 		<div class="mt-10 grid gap-4 md:grid-cols-3">

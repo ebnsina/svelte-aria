@@ -81,7 +81,7 @@
 				<div class="w-full max-w-sm">
 					<ul {...dnd.zoneProps('list')} class="flex flex-col gap-1.5 rounded-sa-lg p-1 data-[dropactive]:bg-sa-accent/5">
 						{#each items as item, i (item.id)}
-							{#if dnd.isDropLine('list', i)}<li class="h-1 rounded-full bg-sa-accent" aria-hidden="true"></li>{/if}
+							{#if dnd.isDropLine('list', i)}<li class="h-0.5 rounded-full bg-sa-accent" aria-hidden="true"></li>{/if}
 							<li
 								{...dnd.itemProps(item.id)}
 								class="flex cursor-grab items-center gap-2 rounded-sa bg-sa-field px-3 py-2.5 text-sm text-sa-fg shadow-sa-sm ring-1 ring-sa-hairline outline-none active:cursor-grabbing data-[dragging]:opacity-40 data-[grabbed]:-translate-y-0.5 data-[grabbed]:shadow-sa-md data-[grabbed]:ring-2 data-[grabbed]:ring-sa-accent"
@@ -90,7 +90,7 @@
 								{item.text}
 							</li>
 						{/each}
-						{#if dnd.isDropLine('list', items.length)}<li class="h-1 rounded-full bg-sa-accent" aria-hidden="true"></li>{/if}
+						{#if dnd.isDropLine('list', items.length)}<li class="h-0.5 rounded-full bg-sa-accent" aria-hidden="true"></li>{/if}
 					</ul>
 					<div aria-live="assertive" class="sr-only">{dnd.message}</div>
 					<p class="mt-3 text-xs text-sa-fg-muted">Drag to reorder, or focus a row and press Space then the arrow keys.</p>
