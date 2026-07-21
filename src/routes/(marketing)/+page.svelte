@@ -15,8 +15,8 @@
 		DatePicker,
 		SearchField,
 		ToggleButton,
-		List,
-		ListItem,
+		RadioGroup,
+		Radio,
 		Menu,
 		MenuTrigger,
 		MenuContent,
@@ -29,15 +29,13 @@
 		Bubble,
 		MessagePart,
 		Sources,
-		PromptInput,
-		Attachment,
+		ChatComposer,
 		Marker,
 		Terminal,
 		TerminalHeader,
 		TerminalLine,
 		TerminalInput
 	} from '$lib/index.js';
-	import { createAudioRecorder } from '@tanstack/ai-svelte';
 	import { art } from '$lib/site/media-art.js';
 	import {
 		ArrowRight,
@@ -68,10 +66,6 @@
 		Video,
 		AudioLines,
 		SquareTerminal,
-		CornerDownLeft,
-		Mic,
-		Square,
-		Check,
 		Play,
 		Download
 	} from '@lucide/svelte';
@@ -169,6 +163,9 @@
 
 	// ---- Section: accessibility (phone) ----------------------------------------
 	let permission = $state('read');
+
+	// ---- Section: interactions — a live keyboard demo (arrow keys select) ------
+	let flavor = $state('mint');
 
 	// ---- Section: international (genuinely reformats via Intl) ------------------
 	let locale = $state('en-US');
@@ -303,11 +300,9 @@ state.toggle();`
 		}
 	]);
 
-	// ---- Composer: identical wiring to the /ai-chat component -------------------
+	// ---- Composer: the shared ChatComposer (same as /chat and /ai-chat) ---------
 	let aiDraft = $state('');
 	let aiReplying = $state(false);
-	const aiModels = ['Fable 5 · High', 'Fable 5 · Standard', 'Sonnet 5', 'Haiku 4.5'];
-	let aiModel = $state(aiModels[0]);
 	const aiReplies = [
 		'The Bayt al-Hikma catalogue tracks a translation status per manuscript — filter the Optics field to `Translated` and Kitāb al-Manāẓir is the single match.',
 		'Ibn al-Haytham’s seven-volume treatise established the experimental method in optics; its Latin translation circulated as *De Aspectibus*.',
@@ -315,47 +310,15 @@ state.toggle();`
 	];
 	let aiRi = 0;
 
-	let aiFileInput = $state<HTMLInputElement>();
-	let aiAttachments = $state<{ name: string; size: string }[]>([]);
-	const fmtSize = (b: number) => (b < 1024 ? `${b} B` : b < 1_048_576 ? `${(b / 1024).toFixed(1)} KB` : `${(b / 1_048_576).toFixed(1)} MB`);
-	function onAiFilesChosen(e: Event) {
-		const files = (e.currentTarget as HTMLInputElement).files;
-		if (files) for (const f of files) aiAttachments.push({ name: f.name, size: fmtSize(f.size) });
-		(e.currentTarget as HTMLInputElement).value = '';
-	}
-
-	const aiRecorder = createAudioRecorder();
-	let aiMicError = $state(false);
-	async function toggleAiRecord() {
-		aiMicError = false;
-		try {
-			if (!aiRecorder.isRecording) await aiRecorder.start();
-			else {
-				await aiRecorder.stop();
-				pushAiUser('🎤 Voice message');
-				aiReply();
-			}
-		} catch {
-			aiMicError = true;
-		}
-	}
-
-	function pushAiUser(text: string) {
-		const atts = aiAttachments.map((a) => a.name).join(', ');
+	function handleAiSend(text: string, attachments: string[] = []) {
+		const atts = attachments.join(', ');
 		const content = atts ? `${text}${text ? '\n' : ''}📎 ${atts}` : text;
 		aiMessages.push({ id: crypto.randomUUID(), role: 'user', parts: [{ type: 'text', content }] });
-		aiAttachments = [];
-	}
-	function aiReply() {
 		aiReplying = true;
 		setTimeout(() => {
 			aiReplying = false;
 			aiMessages.push({ id: crypto.randomUUID(), role: 'assistant', parts: [{ type: 'text', content: aiReplies[aiRi++ % aiReplies.length] }] });
 		}, 700);
-	}
-	function handleAiSend(text: string) {
-		pushAiUser(text);
-		aiReply();
 	}
 
 	const aiSources = [
@@ -667,7 +630,7 @@ state.toggle();`
 	</div>
 
 	<Tabs bind:value={aiTab} orientation="vertical" class="mt-10 !block">
-		<div class="grid items-start gap-6 lg:grid-cols-[1.35fr_1fr]">
+		<div class="grid items-center gap-6 lg:grid-cols-[1.35fr_1fr]">
 			<!-- LEFT: preview of the selected component -->
 			<div class="min-w-0">
 				<TabPanel value="chat" class="!block outline-none">
@@ -716,36 +679,9 @@ state.toggle();`
 				{/if}
 			</div>
 
-			<!-- Same composer as the component: PromptInput + attach / model / mic / send. -->
+			<!-- The shared ChatComposer — identical to /chat and /ai-chat. -->
 			<div class="mt-auto p-4">
-				<input type="file" multiple bind:this={aiFileInput} onchange={onAiFilesChosen} class="hidden" />
-				<PromptInput bind:value={aiDraft} onSubmit={handleAiSend} disabled={aiReplying} placeholder="Ask about the catalogue…">
-					{#snippet leading()}
-						{#each aiAttachments as a, i (a.name + i)}
-							<Attachment name={a.name} size={a.size} onRemove={() => aiAttachments.splice(i, 1)} class="max-w-[13rem]" />
-						{/each}
-					{/snippet}
-					{#snippet toolbar(submit)}
-						<button type="button" onclick={() => aiFileInput?.click()} aria-label="Attach files" class="grid size-8 place-items-center rounded-full text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"><Plus class="size-4.5" /></button>
-						<Menu>
-							<MenuTrigger variant="ghost" size="sm" class="gap-1 text-sa-fg-muted">{aiModel} <ChevronDown class="size-3.5" /></MenuTrigger>
-							<MenuContent>
-								{#each aiModels as m (m)}
-									<MenuItem onSelect={() => (aiModel = m)} class={m === aiModel ? 'font-medium text-sa-fg' : ''}>
-										{m}{#if m === aiModel}<Check class="ml-auto size-4 text-sa-accent" />{/if}
-									</MenuItem>
-								{/each}
-							</MenuContent>
-						</Menu>
-						<div class="ml-auto flex items-center gap-1.5">
-							<button type="button" onclick={toggleAiRecord} aria-pressed={aiRecorder.isRecording} aria-label={aiRecorder.isRecording ? 'Stop recording' : 'Record voice'} class="grid size-8 place-items-center rounded-full transition-colors {aiRecorder.isRecording ? 'animate-pulse bg-sa-invalid/15 text-sa-invalid' : 'text-sa-fg-muted hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg'}">
-								{#if aiRecorder.isRecording}<Square class="size-4" />{:else}<Mic class="size-4.5" />{/if}
-							</button>
-							<button type="button" onclick={submit} disabled={!aiDraft.trim() || aiReplying} aria-label="Send" class="grid size-8 place-items-center rounded-full bg-sa-accent text-sa-accent-fg transition-opacity hover:opacity-90 disabled:opacity-40"><CornerDownLeft class="size-4" /></button>
-						</div>
-					{/snippet}
-				</PromptInput>
-				{#if aiMicError}<p class="mt-1.5 text-center text-xs text-sa-invalid">Microphone unavailable — allow access to record voice.</p>{/if}
+				<ChatComposer bind:value={aiDraft} disabled={aiReplying} onSubmit={handleAiSend} placeholder="Ask about the catalogue…" />
 			</div>
 		</div>
 				</TabPanel>
@@ -903,11 +839,12 @@ state.toggle();`
 				navigation throughout.
 			</p>
 			<div class="mt-5 flex-1 py-2">
-				<List class="text-sm">
-					<ListItem>Chocolate</ListItem>
-					<ListItem class="bg-sa-accent/10 text-sa-accent">Mint</ListItem>
-					<ListItem>Strawberry</ListItem>
-				</List>
+				<!-- Live: focus a radio and use ↑/↓ to move the selection. -->
+				<RadioGroup bind:value={flavor} aria-label="Pick a flavour" class="text-sm">
+					<Radio value="chocolate">Chocolate</Radio>
+					<Radio value="mint">Mint</Radio>
+					<Radio value="strawberry">Strawberry</Radio>
+				</RadioGroup>
 			</div>
 		</div>
 		<!-- Focus -->

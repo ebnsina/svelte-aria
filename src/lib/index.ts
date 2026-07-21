@@ -121,6 +121,7 @@ export { default as MessagePart } from './components/MessagePart.svelte';
 export { default as ToolCall } from './components/ToolCall.svelte';
 export { default as Sources } from './components/Sources.svelte';
 export { default as PromptInput } from './components/PromptInput.svelte';
+export { default as ChatComposer } from './components/ChatComposer.svelte';
 export { default as Bubble, bubbleVariants, type BubbleVariant } from './components/Bubble.svelte';
 export { default as Attachment } from './components/Attachment.svelte';
 export { default as Marker } from './components/Marker.svelte';

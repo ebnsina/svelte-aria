@@ -329,6 +329,16 @@
 			]
 		},
 		{
+			"name": "chat-composer",
+			"type": "registry:ui",
+			"description": "The full chat composer — textarea + attach chips + model menu + mic + send — assembled once on top of prompt-input so every chat surface matches.",
+			"dependencies": ["@lucide/svelte", "@tanstack/ai-svelte"],
+			"registryDependencies": ["prompt-input", "attachment", "menu"],
+			"files": [
+				{ "path": "src/lib/components/ChatComposer.svelte", "target": "{ui}/chat-composer.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "message-part",
 			"type": "registry:ui",
 			"description": "Renders one part of a chat/AI message (TanStack AI UIMessage.parts) by type; override via children.",

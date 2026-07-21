@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { MessageScroller, Message, Bubble, Attachment, Marker } from '$lib/index.js';
+	import { MessageScroller, Message, Bubble, Attachment, Marker, ChatComposer } from '$lib/index.js';
 	import {
-		Brain, Mic, ChevronDown, Copy, RefreshCw, ThumbsDown, Plus, CornerDownLeft,
+		Brain, ChevronDown, Copy, RefreshCw, ThumbsDown,
 		PanelLeft, Search, SquarePen, MessagesSquare, Folder, Layers, Clock, Settings2
 	} from '@lucide/svelte';
 	import DocsPage from '$lib/site/DocsPage.svelte';
@@ -35,11 +35,10 @@
 	];
 	let replyIdx = 0;
 
-	function send() {
-		const text = draft.trim();
-		if (!text || thinking) return;
-		messages.push({ id: nextId++, role: 'user', text });
-		draft = '';
+	function send(text: string, atts: string[] = []) {
+		if (!text.trim() || thinking) return;
+		const attachment = atts[0] ? { name: atts[0], size: '' } : undefined;
+		messages.push({ id: nextId++, role: 'user', text, attachment });
 		scroller?.scrollToBottom();
 		thinking = true;
 		setTimeout(() => {
@@ -56,12 +55,6 @@
 			if (m) m.text = partial;
 			scroller?.scrollToBottom(false);
 		});
-	}
-	function onComposerKey(e: KeyboardEvent) {
-		if (e.key === 'Enter' && !e.shiftKey) {
-			e.preventDefault();
-			send();
-		}
 	}
 
 	const sidebarNav = [
@@ -193,34 +186,9 @@
 					</div>
 				</MessageScroller>
 
-				<!-- Composer -->
+				<!-- Composer — the shared ChatComposer (same one /ai-chat and the landing use). -->
 				<div class="px-4 pb-4">
-					<div class="mx-auto max-w-2xl rounded-[1.25rem] border border-sa-hairline bg-sa-bg p-2 transition-[border-color,box-shadow] focus-within:border-sa-accent focus-within:ring-2 focus-within:ring-sa-accent/20">
-						<textarea
-							bind:value={draft}
-							onkeydown={onComposerKey}
-							rows="1"
-							placeholder="Write a message…"
-							aria-label="Message"
-							class="max-h-32 min-h-9 w-full resize-none bg-transparent px-2 py-1.5 text-sm text-sa-fg outline-none placeholder:text-sa-fg-muted"
-						></textarea>
-						<div class="flex items-center gap-1.5">
-							<button type="button" aria-label="Add content" class="grid size-8 place-items-center rounded-full text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg">
-								<Plus class="size-4.5" />
-							</button>
-							<button type="button" class="inline-flex items-center gap-1 rounded-sa-sm px-2 py-1 text-xs font-medium text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg">
-								Fable 5 <span class="text-sa-fg-muted">·</span> High <ChevronDown class="size-3.5" />
-							</button>
-							<div class="ml-auto flex items-center gap-1.5">
-								<button type="button" aria-label="Dictate" class="grid size-8 place-items-center rounded-full text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg">
-									<Mic class="size-4.5" />
-								</button>
-								<button type="button" onclick={send} disabled={!draft.trim() || thinking} aria-label="Send" class="grid size-8 place-items-center rounded-full bg-sa-accent text-sa-accent-fg transition-opacity hover:opacity-90 disabled:opacity-40">
-									<CornerDownLeft class="size-4" />
-								</button>
-							</div>
-						</div>
-					</div>
+					<ChatComposer bind:value={draft} disabled={thinking} onSubmit={send} class="mx-auto max-w-2xl" />
 					<p class="mt-1.5 text-center text-xs text-sa-fg-muted">Assistant can make mistakes. Please double-check responses.</p>
 				</div>
 			</div>
