@@ -22,7 +22,17 @@
 	const index = $derived(allLinks.findIndex((l) => l.href === path));
 	const prev = $derived(index > 0 ? allLinks[index - 1] : undefined);
 	const next = $derived(index >= 0 && index < allLinks.length - 1 ? allLinks[index + 1] : undefined);
+	const pageTitle = $derived(`${title} — svelte-aria`);
 </script>
+
+<svelte:head>
+	<title>{pageTitle}</title>
+	<meta name="description" content={description} />
+	<meta property="og:title" content={pageTitle} />
+	<meta property="og:description" content={description} />
+	<meta name="twitter:title" content={pageTitle} />
+	<meta name="twitter:description" content={description} />
+</svelte:head>
 
 <div class="mx-auto flex w-full max-w-6xl gap-12 px-4 py-10 lg:px-8">
 	<article class="min-w-0 flex-1">

@@ -1,0 +1,67 @@
+# svelte-aria
+
+> Accessible, headless-first UI components for Svelte 5. Rigorous keyboard, pointer, touch, focus, and ARIA behaviour with a Svelte-native API (runes, attachments, snippets). Distributed shadcn-style: a CLI copies the component source into your project, so you own and edit every line — no runtime dependency.
+
+Key facts for building with svelte-aria:
+
+- Stack: Svelte 5 (runes + attachments), Tailwind v4 (CSS-first), `clsx` + `tailwind-merge` (`cn`), `@lucide/svelte` icons.
+- Install: `npx svelte-aria init` (writes `components.json`, adds design tokens + Tailwind preset), then `npx svelte-aria add <name>` to copy a component and its dependencies into your project.
+- Import: components land in your project (e.g. `$lib/components/ui/button.svelte`); import from there, not from a package.
+- Controlled/uncontrolled: props take `value`/`checked`/etc. (with `bind:`) or `defaultValue`/`defaultChecked`; every stateful prop has an `on*` callback.
+- Styling: interaction state is exposed as `data-*` attributes (`data-pressed`, `data-hovered`, `data-focus-visible`, `data-selected`, `data-disabled`, `data-invalid`) — style declaratively with Tailwind `data-[...]` variants. Colours come from OKLCH design tokens (`--sa-*`), re-tintable from one variable.
+- Accessibility: each component is validated against the WAI-ARIA Authoring Practices (roles, keyboard, focus). Buttons use `onPress` (unified mouse/touch/keyboard press), not `onclick`.
+
+## Getting started
+
+- [Introduction](/): overview, philosophy, and a live tour of the components.
+- [Installation](/installation): CLI `init` / `add` / `list`, usage, and theming.
+
+## Components
+
+- [Accordion](/accordion): vertically stacked, collapsible disclosure sections (compound: Accordion / AccordionItem / AccordionTrigger / AccordionContent).
+- [Avatar](/avatar): user image with initials/icon fallback.
+- [Badge](/badge): small status/label pill (variants: primary, secondary, outline, destructive).
+- [BanglaCalendar](/bangla-calendar): month grid for the reformed Bangladesh Bangla Panjika, with headless Gregorian↔Bengali conversion helpers. Separate from the Intl-backed Calendar.
+- [Breadcrumb](/breadcrumb): hierarchical navigation trail.
+- [Button](/button): action trigger with a unified press model (`onPress`); variants + sizes (sm/md/lg/icon); `loading` state.
+- [Calendar](/calendar): month grid date picker; locale-aware via a `locale` prop (Intl).
+- [Checkbox](/checkbox): tri-state checkbox (checked / unchecked / indeterminate).
+- [Collapsible](/collapsible): single expand/collapse disclosure (compound).
+- [ComboBox](/combobox): text input with an autocomplete listbox popover.
+- [Command](/command): ⌘K command palette (compound: Command / CommandInput / CommandList / CommandGroup / CommandItem / CommandDialog).
+- [DataTable](/data-table): sortable/filterable/paginated tables via TanStack Table (`createSvelteTable` runes wrapper + `FlexRender`); pairs with the Table primitives.
+- [DatePicker](/date-picker): date field + calendar popover; `locale` + `formatOptions` (Intl).
+- [DateRangePicker](/date-range-picker): start/end range with a two-month range calendar.
+- [Dialog](/dialog): modal dialog with focus trap, scroll lock, and inert background (compound).
+- [HoverCard](/hover-card): hover/focus-triggered card popover with open/close intent delays.
+- [List](/list): simple divided list surface; rows are plain, links, or buttons (List / ListItem).
+- [Menu](/menu): dropdown menu with roving focus and type-ahead (compound); position-aware with `align`.
+- [NumberField](/number-field): numeric spinbutton with steppers; `locale` + `formatOptions` (Intl).
+- [Pagination](/pagination): page navigation with links.
+- [Popover](/popover): non-modal popover anchored to a trigger; `placement` + `align`, viewport-flip.
+- [Progress](/progress): determinate progress bar.
+- [RadioGroup](/radio-group): single-select radio group with roving focus (RadioGroup / Radio).
+- [SearchField](/search-field): search input (role=searchbox) with a leading icon + clear button; Escape clears, Enter submits.
+- [Select](/select): custom listbox select with a labelled trigger (compound); position-aware.
+- [Separator](/separator): horizontal/vertical divider.
+- [Sheet](/sheet): edge-anchored modal drawer (reuses the Dialog root; sliding content).
+- [Slider](/slider): range slider with keyboard support.
+- [Switch](/switch): on/off toggle (role=switch).
+- [Table](/table): semantic HTML table primitives (Table / TableHeader / TableBody / TableRow / TableHead / TableCell / TableCaption) with sortable headers (aria-sort).
+- [Tabs](/tabs): tabbed panels with roving focus (compound).
+- [TextField](/text-field): text input with label, description, and error message wiring; `prefix`/`suffix` slots.
+- [Toast](/toast): stacking, auto-dismissing notifications (`toast()` + `<Toaster />`).
+- [ToggleButton](/toggle-button): button that stays pressed/on (aria-pressed); same press/hover primitives as Button.
+- [Toolbar](/toolbar): grouped controls with roving focus (Toolbar / ToolbarSeparator).
+- [Tooltip](/tooltip): hover/focus tooltip anchored to a trigger.
+
+## Primitives
+
+- [Interactions](/interactions): the behaviour attachments — `createPress`, `createHover`, `createFocusVisible` — and how to compose them with `combineAttachments` to build your own accessible controls.
+- [Drag & drop](/drag-and-drop): `createSortable`, a headless drag-and-drop controller for reorderable lists/boards. Prop getters (`itemProps` / `zoneProps`), pointer + full keyboard (APG drag pattern), and a drop-target indicator.
+
+## Utilities & state
+
+- `cn(...)` — `clsx` + `tailwind-merge` class combiner.
+- `createToggleState`, `createSortable`, `createSvelteTable` — headless rune state machines.
+- `toBangla` / `fromBangla` / `banglaMonthLength` / `toBanglaDigits` — headless Bengali-calendar conversion.

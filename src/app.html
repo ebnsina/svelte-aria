@@ -3,8 +3,44 @@
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.svg" />
+		<link rel="mask-icon" href="%sveltekit.assets%/favicon.svg" color="#5457e5" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="text-scale" content="scale" />
+
+		<!-- Default metadata (per-page <svelte:head> overrides title/description/og). -->
+		<meta
+			name="description"
+			content="Accessible, headless-first components for Svelte 5 — rigorous keyboard, pointer, and focus behaviour, a Svelte-native API you own and re-style. Copy the source in with a CLI."
+		/>
+		<meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#15171c" media="(prefers-color-scheme: dark)" />
+		<meta name="apple-mobile-web-app-title" content="svelte-aria" />
+		<link rel="apple-touch-icon" href="%sveltekit.assets%/favicon.svg" />
+
+		<!-- Open Graph -->
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="svelte-aria" />
+		<meta property="og:title" content="svelte-aria — accessible components for Svelte 5" />
+		<meta
+			property="og:description"
+			content="Headless-first Svelte 5 components: keyboard, pointer & focus done right. Copy the source, own every line."
+		/>
+		<meta property="og:image" content="%sveltekit.assets%/og.svg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+
+		<!-- Twitter / X -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="svelte-aria — accessible components for Svelte 5" />
+		<meta
+			name="twitter:description"
+			content="Headless-first Svelte 5 components: keyboard, pointer & focus done right. Copy the source, own every line."
+		/>
+		<meta name="twitter:image" content="%sveltekit.assets%/og.svg" />
+		<meta name="twitter:creator" content="@ebns1na" />
+
+		<!-- LLM-first: a machine-readable index of the docs (llmstxt.org). -->
+		<link rel="alternate" type="text/markdown" href="%sveltekit.assets%/llms.txt" title="llms.txt" />
 		<script>
 			// Seed the theme before first paint to avoid a flash. Uses the saved
 			// choice, else the OS preference. The toggle updates data-theme + storage.
