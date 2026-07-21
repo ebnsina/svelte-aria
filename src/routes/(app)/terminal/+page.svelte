@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Terminal, TerminalLine, TerminalInput } from '$lib/index.js';
+	import { Terminal, TerminalHeader, TerminalLine, TerminalInput } from '$lib/index.js';
 	import { Bot } from '@lucide/svelte';
 	import DocsPage from '$lib/site/DocsPage.svelte';
 	import DemoCard from '$lib/site/DemoCard.svelte';
@@ -8,6 +8,8 @@
 	import PropsTable, { type PropRow } from '$lib/site/PropsTable.svelte';
 
 	const code = `<Terminal title="claude-code — ~/projects/app">
+  <TerminalHeader name="Claude Code" version="v2.0.24"
+    lines={['Sonnet 4.5 · Claude Max', '~/projects/app']} />
   <TerminalLine marker=">">add a loading state to Button</TerminalLine>
   <TerminalLine marker="●">Updated <span class="text-sa-fg">Button.svelte</span></TerminalLine>
   <TerminalLine marker="⎿" muted indent={1}>+ loading?: boolean;</TerminalLine>
@@ -27,6 +29,12 @@
 		{ name: 'muted', type: 'boolean', default: 'false', description: 'Dim the line (tool output, diffs); mutes the marker too.' },
 		{ name: 'indent', type: 'number', default: '0', description: 'Indent level (≈ 1rem each).' }
 	];
+	const headerProps: PropRow[] = [
+		{ name: 'name', type: 'string', description: 'Product name (shown bold).' },
+		{ name: 'version', type: 'string', description: 'Version string next to the name.' },
+		{ name: 'lines', type: 'string[]', description: 'Sub-lines (model, account, cwd, …).' },
+		{ name: 'icon', type: 'Snippet', description: 'A leading icon / mascot.' }
+	];
 	const inputProps: PropRow[] = [
 		{ name: 'value', type: 'string', default: "''", description: 'Text before the cursor.' },
 		{ name: 'prompt', type: 'string', default: "'>'", description: 'Prompt glyph.' }
@@ -44,16 +52,13 @@
 				<div class="w-full">
 					<Terminal title="claude-code — ~/projects/svelte-aria">
 						<div class="flex flex-col gap-4">
-							<div class="flex items-start gap-3">
-								<span class="grid size-8 shrink-0 place-items-center rounded-sa-sm bg-sa-accent/10 text-sa-accent ring-1 ring-sa-accent/20">
-									<Bot class="size-5" />
-								</span>
-								<div class="text-sa-fg-muted">
-									<div><span class="font-semibold text-sa-fg">Claude Code</span> v2.0.24</div>
-									<div>Sonnet 4.5 · Claude Max</div>
-									<div>~/projects/svelte-aria</div>
-								</div>
-							</div>
+							<TerminalHeader name="Claude Code" version="v2.0.24" lines={['Sonnet 4.5 · Claude Max', '~/projects/svelte-aria']}>
+								{#snippet icon()}
+									<span class="grid size-8 place-items-center rounded-sa-sm bg-sa-accent/10 text-sa-accent ring-1 ring-sa-accent/20">
+										<Bot class="size-5" />
+									</span>
+								{/snippet}
+							</TerminalHeader>
 
 							<TerminalLine marker=">">add a loading state to the Button component</TerminalLine>
 
@@ -84,6 +89,8 @@
 	<Section id="api" title="API">
 		<h3 class="mb-2 text-sm font-medium text-sa-fg">Terminal</h3>
 		<PropsTable rows={terminalProps} />
+		<h3 class="mb-2 mt-6 text-sm font-medium text-sa-fg">TerminalHeader</h3>
+		<PropsTable rows={headerProps} />
 		<h3 class="mb-2 mt-6 text-sm font-medium text-sa-fg">TerminalLine</h3>
 		<PropsTable rows={lineProps} />
 		<h3 class="mb-2 mt-6 text-sm font-medium text-sa-fg">TerminalInput</h3>

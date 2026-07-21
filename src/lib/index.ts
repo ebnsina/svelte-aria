@@ -123,6 +123,7 @@ export { default as Bubble, bubbleVariants, type BubbleVariant } from './compone
 export { default as Attachment } from './components/Attachment.svelte';
 export { default as Marker } from './components/Marker.svelte';
 export { default as Terminal } from './components/Terminal.svelte';
+export { default as TerminalHeader } from './components/TerminalHeader.svelte';
 export { default as TerminalLine } from './components/TerminalLine.svelte';
 export { default as TerminalInput } from './components/TerminalInput.svelte';
 

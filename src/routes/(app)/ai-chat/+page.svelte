@@ -1,7 +1,10 @@
 <script lang="ts">
-	import { createChat } from '@tanstack/ai-svelte';
-	import { MessageScroller, Message, Bubble, MessagePart, PromptInput, Marker } from '$lib/index.js';
-	import { Brain, Plus, Mic, ChevronDown, CornerDownLeft } from '@lucide/svelte';
+	import { createChat, createAudioRecorder } from '@tanstack/ai-svelte';
+	import {
+		MessageScroller, Message, Bubble, MessagePart, PromptInput, Marker, Attachment,
+		Menu, MenuTrigger, MenuContent, MenuItem
+	} from '$lib/index.js';
+	import { Brain, Plus, Mic, Square, ChevronDown, CornerDownLeft, Check } from '@lucide/svelte';
 	import DocsPage from '$lib/site/DocsPage.svelte';
 	import Section from '$lib/site/Section.svelte';
 	import CodeBlock from '$lib/site/CodeBlock.svelte';
@@ -32,15 +35,61 @@
 	];
 	let ri = 0;
 
-	function handleSend(text: string) {
-		chat.setMessages([...chat.messages, { id: crypto.randomUUID(), role: 'user', parts: [{ type: 'text', content: text }] }] as never);
+	// ---- Model selection: a real menu bound to state (updateForwardedProps in prod).
+	const models = ['Fable 5 · High', 'Fable 5 · Standard', 'Sonnet 5', 'Haiku 4.5'];
+	let model = $state(models[0]);
+	function pickModel(m: string) {
+		model = m;
+		// In production: chat.updateForwardedProps({ model: m })
+	}
+
+	// ---- File picker: the "+" opens a file input; chips show in the composer.
+	let fileInput = $state<HTMLInputElement>();
+	let attachments = $state<{ name: string; size: string }[]>([]);
+	const fmtSize = (b: number) => (b < 1024 ? `${b} B` : b < 1_048_576 ? `${(b / 1024).toFixed(1)} KB` : `${(b / 1_048_576).toFixed(1)} MB`);
+	function onFilesChosen(e: Event) {
+		const files = (e.currentTarget as HTMLInputElement).files;
+		if (files) for (const f of files) attachments.push({ name: f.name, size: fmtSize(f.size) });
+		(e.currentTarget as HTMLInputElement).value = '';
+	}
+
+	// ---- Voice input: TanStack AI's audio recorder (mic → part → sendMessage).
+	const recorder = createAudioRecorder();
+	let micError = $state(false);
+	async function toggleRecord() {
+		micError = false;
+		try {
+			if (!recorder.isRecording) {
+				await recorder.start();
+			} else {
+				await recorder.stop();
+				// In production: chat.sendMessage({ content: [rec.part] })
+				pushUser('🎤 Voice message');
+				reply();
+			}
+		} catch {
+			micError = true;
+		}
+	}
+
+	function pushUser(text: string) {
+		const atts = attachments.map((a) => a.name).join(', ');
+		const content = atts ? `${text}${text ? '\n' : ''}📎 ${atts}` : text;
+		chat.setMessages([...chat.messages, { id: crypto.randomUUID(), role: 'user', parts: [{ type: 'text', content }] }] as never);
+		attachments = [];
 		scroller?.scrollToBottom();
+	}
+	function reply() {
 		replying = true;
 		setTimeout(() => {
 			replying = false;
 			chat.setMessages([...chat.messages, { id: crypto.randomUUID(), role: 'assistant', parts: [{ type: 'text', content: replies[ri++ % replies.length] }] }] as never);
 			scroller?.scrollToBottom();
 		}, 900);
+	}
+	function handleSend(text: string) {
+		pushUser(text);
+		reply();
 	}
 
 	const code = `<script lang="ts">
@@ -126,16 +175,37 @@
 			</MessageScroller>
 
 			<div class="p-4">
+				<input type="file" multiple bind:this={fileInput} onchange={onFilesChosen} class="hidden" />
 				<PromptInput bind:value={draft} onSubmit={handleSend} disabled={replying} class="mx-auto max-w-2xl">
+					{#snippet leading()}
+						{#each attachments as a, i (a.name + i)}
+							<Attachment name={a.name} size={a.size} onRemove={() => attachments.splice(i, 1)} class="max-w-[13rem]" />
+						{/each}
+					{/snippet}
 					{#snippet toolbar(submit)}
-						<button type="button" aria-label="Add content" class="grid size-8 place-items-center rounded-full text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"><Plus class="size-4.5" /></button>
-						<button type="button" class="inline-flex items-center gap-1 rounded-sa-sm px-2 py-1 text-xs font-medium text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg">Fable 5 <span class="text-sa-fg-muted">·</span> High <ChevronDown class="size-3.5" /></button>
+						<!-- file picker -->
+						<button type="button" onclick={() => fileInput?.click()} aria-label="Attach files" class="grid size-8 place-items-center rounded-full text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"><Plus class="size-4.5" /></button>
+						<!-- model selection -->
+						<Menu>
+							<MenuTrigger variant="ghost" size="sm" class="gap-1 text-sa-fg-muted">{model} <ChevronDown class="size-3.5" /></MenuTrigger>
+							<MenuContent>
+								{#each models as m (m)}
+									<MenuItem onSelect={() => pickModel(m)} class={m === model ? 'font-medium text-sa-fg' : ''}>
+										{m}{#if m === model}<Check class="ml-auto size-4 text-sa-accent" />{/if}
+									</MenuItem>
+								{/each}
+							</MenuContent>
+						</Menu>
 						<div class="ml-auto flex items-center gap-1.5">
-							<button type="button" aria-label="Dictate" class="grid size-8 place-items-center rounded-full text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"><Mic class="size-4.5" /></button>
+							<!-- voice input (createAudioRecorder) -->
+							<button type="button" onclick={toggleRecord} aria-pressed={recorder.isRecording} aria-label={recorder.isRecording ? 'Stop recording' : 'Record voice'} class="grid size-8 place-items-center rounded-full transition-colors {recorder.isRecording ? 'animate-pulse bg-sa-invalid/15 text-sa-invalid' : 'text-sa-fg-muted hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg'}">
+								{#if recorder.isRecording}<Square class="size-4" />{:else}<Mic class="size-4.5" />{/if}
+							</button>
 							<button type="button" onclick={submit} disabled={!draft.trim() || replying} aria-label="Send" class="grid size-8 place-items-center rounded-full bg-sa-accent text-sa-accent-fg transition-opacity hover:opacity-90 disabled:opacity-40"><CornerDownLeft class="size-4" /></button>
 						</div>
 					{/snippet}
 				</PromptInput>
+				{#if micError}<p class="mt-1.5 text-center text-xs text-sa-invalid">Microphone unavailable — allow access to record voice.</p>{/if}
 			</div>
 		</div>
 	</Section>

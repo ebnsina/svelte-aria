@@ -318,6 +318,15 @@
 			]
 		},
 		{
+			"name": "terminal-header",
+			"type": "registry:ui",
+			"description": "The banner block of a Terminal session — configurable name / version / sub-lines + an icon slot.",
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/TerminalHeader.svelte", "target": "{ui}/terminal-header.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "terminal-line",
 			"type": "registry:ui",
 			"description": "One line of a Terminal session — a marker glyph + text, with muted/indent options.",

@@ -22,14 +22,12 @@ export const nav: NavSection[] = [
 		title: 'Components',
 		items: [
 			{ title: 'Accordion', href: '/accordion' },
-			{ title: 'AI Chat', href: '/ai-chat' },
 			{ title: 'Avatar', href: '/avatar' },
 			{ title: 'Badge', href: '/badge' },
 			{ title: 'BanglaCalendar', href: '/bangla-calendar' },
 			{ title: 'Breadcrumb', href: '/breadcrumb' },
 			{ title: 'Button', href: '/button' },
 			{ title: 'Calendar', href: '/calendar' },
-			{ title: 'Chat', href: '/chat' },
 			{ title: 'Checkbox', href: '/checkbox' },
 			{ title: 'Collapsible', href: '/collapsible' },
 			{ title: 'ComboBox', href: '/combobox' },
@@ -54,12 +52,19 @@ export const nav: NavSection[] = [
 			{ title: 'Switch', href: '/switch' },
 			{ title: 'Table', href: '/table' },
 			{ title: 'Tabs', href: '/tabs' },
-			{ title: 'Terminal', href: '/terminal' },
 			{ title: 'TextField', href: '/text-field' },
 			{ title: 'Toast', href: '/toast' },
 			{ title: 'ToggleButton', href: '/toggle-button' },
 			{ title: 'Toolbar', href: '/toolbar' },
 			{ title: 'Tooltip', href: '/tooltip' }
+		]
+	},
+	{
+		title: 'AI & Chat',
+		items: [
+			{ title: 'AI Chat', href: '/ai-chat' },
+			{ title: 'Chat', href: '/chat' },
+			{ title: 'Terminal', href: '/terminal' }
 		]
 	},
 	{
