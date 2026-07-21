@@ -66,6 +66,11 @@
 	const formatted = $derived(
 		current ? new Intl.DateTimeFormat(locale, formatOptions).format(current) : undefined
 	);
+	// Mark the content's language so the localised trigger text gets a
+	// script-appropriate font (our UI font is Latin-only); drop the -u- extension.
+	const langAttr = $derived(
+		locale ? locale.split('-u-')[0] : undefined
+	);
 	const isoValue = $derived(
 		current
 			? `${current.getFullYear()}-${String(current.getMonth() + 1).padStart(2, '0')}-${String(current.getDate()).padStart(2, '0')}`
@@ -80,7 +85,7 @@
 	}
 </script>
 
-<div class={cn('flex flex-col gap-1.5', className)}>
+<div lang={langAttr} class={cn('flex flex-col gap-1.5', className)}>
 	{#if label}
 		<span id={labelId} class="text-sm font-medium text-sa-fg">{label}</span>
 	{/if}

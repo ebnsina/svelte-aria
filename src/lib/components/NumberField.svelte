@@ -72,6 +72,10 @@
 	let text = $state('');
 	let focused = $state(false);
 
+	// Mark the content's language so a script-appropriate font is used for
+	// non-Latin numbering systems (our UI font is Latin-only). Drop the Unicode
+	// extension for the lang attribute.
+	const langAttr = $derived(locale ? locale.split('-u-')[0] : undefined);
 	const formatter = $derived(new Intl.NumberFormat(locale, formatOptions));
 	function fmt(n: number): string {
 		return formatter.format(n);
@@ -168,7 +172,7 @@
 	}
 </script>
 
-<div class={cn('flex flex-col gap-1.5', className)}>
+<div lang={langAttr} class={cn('flex flex-col gap-1.5', className)}>
 	{#if label}
 		<label for={id} class="text-sm font-medium text-sa-fg">{label}</label>
 	{/if}

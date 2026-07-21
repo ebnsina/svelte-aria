@@ -90,6 +90,11 @@
 
 	let gridEl = $state<HTMLElement>();
 
+	// Mark the content's language so the browser selects a script-appropriate font
+	// (our UI font is Latin-only) with correct glyph forms, and AT announces it in
+	// the right language. Drop the `-u-…` Unicode extension for the lang attribute.
+	const langAttr = $derived(locale ? locale.split('-u-')[0] : undefined);
+
 	const monthLabel = $derived(
 		new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(focused)
 	);
@@ -175,7 +180,7 @@
 	}
 </script>
 
-<div class={cn('inline-block w-max rounded-sa-lg bg-sa-field p-3 text-sa-fg', className)}>
+<div lang={langAttr} class={cn('inline-block w-max rounded-sa-lg bg-sa-field p-3 text-sa-fg', className)}>
 	<div class="mb-2 flex items-center justify-between gap-2 px-1">
 		<button
 			type="button"
