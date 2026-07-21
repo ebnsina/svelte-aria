@@ -61,7 +61,10 @@ export const nav: NavSection[] = [
 	},
 	{
 		title: 'Primitives',
-		items: [{ title: 'Interactions', href: '/interactions' }]
+		items: [
+			{ title: 'Interactions', href: '/interactions' },
+			{ title: 'Drag & drop', href: '/drag-and-drop' }
+		]
 	}
 ];
 

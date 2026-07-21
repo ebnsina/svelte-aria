@@ -79,6 +79,14 @@
 		},
 
 		{
+			"name": "sortable",
+			"type": "registry:state",
+			"description": "Headless drag-and-drop controller for reorderable lists/boards — pointer + keyboard, with prop getters and a drop-target indicator.",
+			"files": [
+				{ "path": "src/lib/state/sortable.svelte.ts", "target": "{lib}/state/sortable.svelte.ts", "type": "registry:state" }
+			]
+		},
+		{
 			"name": "toggle",
 			"type": "registry:state",
 			"description": "Controlled/uncontrolled boolean state machine (Switch/toggle buttons).",

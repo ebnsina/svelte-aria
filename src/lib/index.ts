@@ -158,6 +158,7 @@ export { computePosition, type Placement, type Align } from './utils/position.js
 
 // State machines
 export { createToggleState, type ToggleStateOptions } from './state/toggle.svelte.js';
+export { createSortable, type SortableOptions, type SortablePosition } from './state/sortable.svelte.js';
 export {
 	toast,
 	toaster,

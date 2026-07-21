@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { tick } from 'svelte';
 	import {
+		createSortable,
 		Button,
 		Badge,
 		Avatar,
@@ -188,12 +188,6 @@
 		}
 	]);
 
-	// Drag state: `dragId` is the pointer-dragged task; `grabbed` is the
-	// keyboard-picked task. Both move cards between/within columns.
-	let dragId = $state<number | null>(null);
-	let grabbedId = $state<number | null>(null);
-	let liveMsg = $state('');
-
 	function locateById(id: number): { c: number; t: number } | null {
 		for (let c = 0; c < board.length; c++) {
 			const t = board[c].tasks.findIndex((x) => x.id === id);
@@ -205,53 +199,26 @@
 		const from = locateById(id);
 		if (!from) return;
 		const [task] = board[from.c].tasks.splice(from.t, 1);
-		if (from.c === toCol && from.t < toIdx) toIdx--;
 		toIdx = Math.max(0, Math.min(toIdx, board[toCol].tasks.length));
 		board[toCol].tasks.splice(toIdx, 0, task);
 	}
-	function announceMove(id: number) {
-		const l = locateById(id);
-		if (!l) return;
-		liveMsg = `${board[l.c].tasks[l.t].title}, ${board[l.c].title}, position ${l.t + 1} of ${board[l.c].tasks.length}.`;
-	}
-	// pointer (native HTML5 DnD)
-	function onDrop(toCol: number, toIdx: number) {
-		if (dragId != null) moveTask(dragId, toCol, toIdx);
-		dragId = null;
-	}
-	// keyboard
-	async function onCardKey(e: KeyboardEvent, id: number) {
-		if (e.key === ' ' || e.key === 'Enter') {
-			e.preventDefault();
-			if (grabbedId == null) {
-				grabbedId = id;
-				const l = locateById(id)!;
-				liveMsg = `Picked up ${board[l.c].tasks[l.t].title}. Use arrow keys to move between columns and positions, space to drop, escape to cancel.`;
-			} else {
-				grabbedId = null;
-				announceMove(id);
-			}
-			return;
+
+	// The reusable headless drag-and-drop controller drives the board. Columns are
+	// keyed by their index; the controller reads live positions via `find` and
+	// mutates through `onMove`.
+	const dnd = createSortable({
+		find: (id) => {
+			const l = locateById(id as number);
+			return l ? { container: String(l.c), index: l.t } : null;
+		},
+		onMove: (id, to) => moveTask(id as number, Number(to.container), to.index),
+		containers: () => board.map((_, i) => String(i)),
+		size: (c) => board[Number(c)].tasks.length,
+		label: (id) => {
+			const l = locateById(id as number);
+			return l ? `${board[l.c].tasks[l.t].title} (${board[l.c].title})` : 'task';
 		}
-		if (grabbedId !== id) return;
-		const l = locateById(id)!;
-		let moved = true;
-		if (e.key === 'ArrowLeft' && l.c > 0) moveTask(id, l.c - 1, l.t);
-		else if (e.key === 'ArrowRight' && l.c < board.length - 1) moveTask(id, l.c + 1, l.t);
-		else if (e.key === 'ArrowUp' && l.t > 0) moveTask(id, l.c, l.t - 1);
-		else if (e.key === 'ArrowDown' && l.t < board[l.c].tasks.length - 1) moveTask(id, l.c, l.t + 1);
-		else if (e.key === 'Escape') {
-			grabbedId = null;
-			liveMsg = 'Move cancelled.';
-			moved = false;
-		} else moved = false;
-		if (moved) {
-			e.preventDefault();
-			await tick();
-			document.getElementById(`kanban-${id}`)?.focus();
-			announceMove(id);
-		}
-	}
+	});
 
 	// ---- Section: customizable -------------------------------------------------
 	const customCards = [
@@ -510,49 +477,31 @@ state.toggle();`
 			</p>
 		</div>
 
-		<!-- polite live region for the keyboard drag-and-drop -->
-		<div aria-live="assertive" class="sr-only">{liveMsg}</div>
+		<!-- assertive live region for the keyboard drag-and-drop -->
+		<div aria-live="assertive" class="sr-only">{dnd.message}</div>
+
+		{#snippet dropLine()}
+			<div class="h-1 rounded-full bg-sa-accent" aria-hidden="true"></div>
+		{/snippet}
 
 		<div class="mt-10 grid gap-4 md:grid-cols-3">
 			{#each board as col, ci (col.title)}
 				<div
-					class="flex flex-col rounded-sa-lg bg-sa-field p-4 shadow-sa-sm ring-1 ring-sa-hairline transition-colors"
-					class:ring-sa-accent={dragId != null}
-					ondragover={(e) => e.preventDefault()}
-					ondrop={(e) => {
-						e.preventDefault();
-						onDrop(ci, board[ci].tasks.length);
-					}}
+					{...dnd.zoneProps(String(ci))}
 					role="group"
 					aria-label="{col.title} — {col.tasks.length} tasks"
+					class="flex flex-col rounded-sa-lg bg-sa-field p-4 shadow-sa-sm ring-1 ring-sa-hairline transition-colors data-[dnd-active]:ring-sa-accent/40 data-[dropactive]:bg-sa-accent/5 data-[dropactive]:ring-sa-accent"
 				>
 					<div class="mb-3 flex items-baseline justify-between">
 						<h3 class="text-sm font-semibold text-sa-fg">{col.title}</h3>
 						<span class="text-xs text-sa-fg-muted">{col.tasks.length} {col.tasks.length === 1 ? 'task' : 'tasks'}</span>
 					</div>
-					<div class="flex min-h-16 flex-col gap-3">
+					<div class="flex min-h-16 flex-col gap-2">
 						{#each col.tasks as task, ti (task.id)}
+							{#if dnd.isDropLine(String(ci), ti)}{@render dropLine()}{/if}
 							<div
-								id={`kanban-${task.id}`}
-								role="button"
-								tabindex="0"
-								draggable="true"
-								aria-roledescription="Draggable task"
+								{...dnd.itemProps(task.id)}
 								aria-label="{task.title}, in {col.title}"
-								data-grabbed={grabbedId === task.id || undefined}
-								data-dragging={dragId === task.id || undefined}
-								ondragstart={(e) => {
-									dragId = task.id;
-									if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
-								}}
-								ondragend={() => (dragId = null)}
-								ondragover={(e) => e.preventDefault()}
-								ondrop={(e) => {
-									e.preventDefault();
-									e.stopPropagation();
-									onDrop(ci, ti);
-								}}
-								onkeydown={(e) => onCardKey(e, task.id)}
 								class="cursor-grab rounded-sa bg-sa-bg p-3 shadow-sa-sm ring-1 ring-sa-hairline transition-[box-shadow,transform,opacity] outline-none active:cursor-grabbing data-[dragging]:opacity-40 data-[grabbed]:-translate-y-0.5 data-[grabbed]:shadow-sa-md data-[grabbed]:ring-2 data-[grabbed]:ring-sa-accent"
 							>
 								<div class="flex items-start justify-between gap-2">
@@ -566,6 +515,7 @@ state.toggle();`
 								</div>
 							</div>
 						{/each}
+						{#if dnd.isDropLine(String(ci), col.tasks.length)}{@render dropLine()}{/if}
 					</div>
 				</div>
 			{/each}
