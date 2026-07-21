@@ -244,6 +244,62 @@
 			]
 		},
 		{
+			"name": "message-scroller",
+			"type": "registry:ui",
+			"description": "A conversation scroll container that auto-follows new/streamed messages and shows a jump-to-latest control (role=log).",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/MessageScroller.svelte", "target": "{ui}/message-scroller.svelte", "type": "registry:ui" }
+			]
+		},
+		{
+			"name": "message",
+			"type": "registry:ui",
+			"description": "A conversation row: avatar + header / content / footer, mirrored with align='end'.",
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/Message.svelte", "target": "{ui}/message.svelte", "type": "registry:ui" }
+			]
+		},
+		{
+			"name": "bubble",
+			"type": "registry:ui",
+			"description": "A message surface with variants (assistant/user/outline/plain).",
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/Bubble.svelte", "target": "{ui}/bubble.svelte", "type": "registry:ui" }
+			]
+		},
+		{
+			"name": "attachment",
+			"type": "registry:ui",
+			"description": "A file/image chip with metadata, upload state, and separately-clickable actions.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/Attachment.svelte", "target": "{ui}/attachment.svelte", "type": "registry:ui" }
+			]
+		},
+		{
+			"name": "marker",
+			"type": "registry:ui",
+			"description": "Conversation status/notes — separator, note, or live status pill.",
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/Marker.svelte", "target": "{ui}/marker.svelte", "type": "registry:ui" }
+			]
+		},
+		{
+			"name": "terminal",
+			"type": "registry:ui",
+			"description": "A window-chromed monospace surface for terminal/CLI mockups.",
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/Terminal.svelte", "target": "{ui}/terminal.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "list",
 			"type": "registry:ui",
 			"description": "A simple divided list surface — List + ListItem (plain, link, or button rows).",

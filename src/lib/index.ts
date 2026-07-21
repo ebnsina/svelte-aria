@@ -114,6 +114,14 @@ export { default as SheetClose } from './components/DialogClose.svelte';
 export { default as List } from './components/List.svelte';
 export { default as ListItem } from './components/ListItem.svelte';
 
+// Chat / AI
+export { default as MessageScroller } from './components/MessageScroller.svelte';
+export { default as Message } from './components/Message.svelte';
+export { default as Bubble, bubbleVariants, type BubbleVariant } from './components/Bubble.svelte';
+export { default as Attachment } from './components/Attachment.svelte';
+export { default as Marker } from './components/Marker.svelte';
+export { default as Terminal } from './components/Terminal.svelte';
+
 // Table
 export { default as Table } from './components/Table.svelte';
 export { default as TableHeader } from './components/TableHeader.svelte';
