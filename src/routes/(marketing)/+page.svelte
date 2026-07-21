@@ -614,6 +614,7 @@ state.toggle();`
 					<SelectItem value="fr-FR">French (France)</SelectItem>
 					<SelectItem value="ja-JP">Japanese (Japan)</SelectItem>
 					<SelectItem value="ar-EG">Arabic (Egypt)</SelectItem>
+					<SelectItem value="bn-BD">Bengali (Bangladesh)</SelectItem>
 				</SelectContent>
 			</Select>
 			<Select bind:value={calSystem} label="Calendar">
@@ -629,6 +630,7 @@ state.toggle();`
 				<SelectContent>
 					<SelectItem value="latn">Latin</SelectItem>
 					<SelectItem value="arab">Arabic-Indic</SelectItem>
+					<SelectItem value="beng">Bengali</SelectItem>
 					<SelectItem value="hanidec">Han decimal</SelectItem>
 				</SelectContent>
 			</Select>
