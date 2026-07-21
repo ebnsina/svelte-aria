@@ -24,8 +24,21 @@
 		Tabs,
 		TabList,
 		Tab,
-		TabPanel
+		TabPanel,
+		Message,
+		Bubble,
+		MessagePart,
+		Sources,
+		PromptInput,
+		Attachment,
+		Marker,
+		Terminal,
+		TerminalHeader,
+		TerminalLine,
+		TerminalInput
 	} from '$lib/index.js';
+	import { createAudioRecorder } from '@tanstack/ai-svelte';
+	import { art } from '$lib/site/media-art.js';
 	import {
 		ArrowRight,
 		Search,
@@ -48,7 +61,19 @@
 		TestTube,
 		Wifi,
 		BatteryFull,
-		Signal
+		Signal,
+		Brain,
+		MessagesSquare,
+		Image as ImageIcon,
+		Video,
+		AudioLines,
+		SquareTerminal,
+		CornerDownLeft,
+		Mic,
+		Square,
+		Check,
+		Play,
+		Download
 	} from '@lucide/svelte';
 	import CodeBlock from '$lib/site/CodeBlock.svelte';
 	import { nav } from '$lib/site/nav.js';
@@ -257,6 +282,108 @@ const state = createToggleState({ onChange });
 state.toggle();`
 		}
 	];
+
+	// ---- Section: AI components ------------------------------------------------
+	// The same conversation the /ai-chat page renders — driven through the exact
+	// same Message / Bubble / MessagePart / Sources pipeline AND the same PromptInput
+	// composer, so the landing and the component look and behave identically. The
+	// seed shows every part type: thinking, tool-call, text.
+	type Part = { type: string; [key: string]: unknown };
+	type Msg = { id: string; role: 'user' | 'assistant'; parts: Part[] };
+	let aiMessages = $state<Msg[]>([
+		{ id: 'u1', role: 'user', parts: [{ type: 'text', content: 'Which optics manuscripts have we translated?' }] },
+		{
+			id: 'a1',
+			role: 'assistant',
+			parts: [
+				{ type: 'thinking', content: 'The catalogue tracks a translation status per work. I’ll search the Optics field filtered to translated manuscripts.' },
+				{ type: 'tool-call', id: 't1', name: 'search_catalogue', input: { field: 'Optics', status: 'Translated' }, state: 'output-available', output: '1 match — Kitāb al-Manāẓir (Ibn al-Haytham)' },
+				{ type: 'text', content: 'كتاب المناظر (Kitāb al-Manāẓir) — the Book of Optics by Ibn al-Haytham — is our one translated optics manuscript, shelved at O-114.' }
+			]
+		}
+	]);
+
+	// ---- Composer: identical wiring to the /ai-chat component -------------------
+	let aiDraft = $state('');
+	let aiReplying = $state(false);
+	const aiModels = ['Fable 5 · High', 'Fable 5 · Standard', 'Sonnet 5', 'Haiku 4.5'];
+	let aiModel = $state(aiModels[0]);
+	const aiReplies = [
+		'The Bayt al-Hikma catalogue tracks a translation status per manuscript — filter the Optics field to `Translated` and Kitāb al-Manāẓir is the single match.',
+		'Ibn al-Haytham’s seven-volume treatise established the experimental method in optics; its Latin translation circulated as *De Aspectibus*.',
+		'Every date and number in the catalogue formats against the reader’s locale — Gregorian or Hijri, Latin or Arabic-Indic digits — from one BCP-47 tag.'
+	];
+	let aiRi = 0;
+
+	let aiFileInput = $state<HTMLInputElement>();
+	let aiAttachments = $state<{ name: string; size: string }[]>([]);
+	const fmtSize = (b: number) => (b < 1024 ? `${b} B` : b < 1_048_576 ? `${(b / 1024).toFixed(1)} KB` : `${(b / 1_048_576).toFixed(1)} MB`);
+	function onAiFilesChosen(e: Event) {
+		const files = (e.currentTarget as HTMLInputElement).files;
+		if (files) for (const f of files) aiAttachments.push({ name: f.name, size: fmtSize(f.size) });
+		(e.currentTarget as HTMLInputElement).value = '';
+	}
+
+	const aiRecorder = createAudioRecorder();
+	let aiMicError = $state(false);
+	async function toggleAiRecord() {
+		aiMicError = false;
+		try {
+			if (!aiRecorder.isRecording) await aiRecorder.start();
+			else {
+				await aiRecorder.stop();
+				pushAiUser('🎤 Voice message');
+				aiReply();
+			}
+		} catch {
+			aiMicError = true;
+		}
+	}
+
+	function pushAiUser(text: string) {
+		const atts = aiAttachments.map((a) => a.name).join(', ');
+		const content = atts ? `${text}${text ? '\n' : ''}📎 ${atts}` : text;
+		aiMessages.push({ id: crypto.randomUUID(), role: 'user', parts: [{ type: 'text', content }] });
+		aiAttachments = [];
+	}
+	function aiReply() {
+		aiReplying = true;
+		setTimeout(() => {
+			aiReplying = false;
+			aiMessages.push({ id: crypto.randomUUID(), role: 'assistant', parts: [{ type: 'text', content: aiReplies[aiRi++ % aiReplies.length] }] });
+		}, 700);
+	}
+	function handleAiSend(text: string) {
+		pushAiUser(text);
+		aiReply();
+	}
+
+	const aiSources = [
+		{
+			title: 'Kitāb al-Manāẓir — catalogue entry',
+			url: 'https://bayt-al-hikma.example/manuscripts/kitab-al-manazir',
+			snippet: 'Seven-volume treatise on optics; Latin translation completed, shelf O-114.'
+		},
+		{
+			title: 'Translation register — Optics',
+			url: 'https://bayt-al-hikma.example/registers/optics'
+		}
+	];
+	// The right column is a vertical tablist; selecting a tab swaps the left
+	// preview and re-points the "View docs" button at that component's page.
+	let aiTab = $state('chat');
+	const aiTabs = [
+		{ id: 'chat', icon: MessagesSquare, title: 'Chat', body: 'Streaming replies, tool calls, reasoning, and cited sources.', href: '/ai-chat' },
+		{ id: 'image', icon: ImageIcon, title: 'Image', body: 'A prompt-to-grid variation surface.', href: '/ai-image' },
+		{ id: 'video', icon: Video, title: 'Video', body: 'Render progress and a scrubable player.', href: '/ai-video' },
+		{ id: 'audio', icon: AudioLines, title: 'Audio', body: 'Voice synthesis with a waveform.', href: '/ai-audio' },
+		{ id: 'terminal', icon: SquareTerminal, title: 'Terminal', body: 'A composable agent/CLI transcript.', href: '/terminal' }
+	];
+	const activeTab = $derived(aiTabs.find((t) => t.id === aiTab) ?? aiTabs[0]);
+	// Static preview media (deterministic gradients / waveform), SSR-safe.
+	const aiImageTiles = ['a', 'b', 'c', 'd'].map((s) => art('optics-' + s));
+	const aiVideoPoster = art('neon-city');
+	const aiBars = Array.from({ length: 48 }, (_, i) => 25 + Math.round(60 * Math.abs(Math.sin(i * 0.7) * Math.cos(i * 0.29))));
 </script>
 
 <svelte:head>
@@ -521,6 +648,210 @@ state.toggle();`
 			{/each}
 		</div>
 	</div>
+</section>
+
+<!-- ======================= AI COMPONENTS ======================= -->
+<section class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
+	<div class="max-w-2xl">
+		<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">
+			Build <span class="text-sa-accent">AI experiences</span>, accessibly.
+		</h2>
+		<p class="mt-4 text-lg text-sa-fg-muted">
+			A complete kit for AI apps — streaming chat with tool calls, reasoning, and cited sources, plus
+			image, video, audio, and terminal surfaces. Every part is keyboard-navigable, screen-reader
+			announced, and styled off the same tokens as the rest.
+		</p>
+		<a href="/ai-chat" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
+			Explore AI components <ArrowRight class="size-4" />
+		</a>
+	</div>
+
+	<Tabs bind:value={aiTab} orientation="vertical" class="mt-10 !block">
+		<div class="grid items-start gap-6 lg:grid-cols-[1.35fr_1fr]">
+			<!-- LEFT: preview of the selected component -->
+			<div class="min-w-0">
+				<TabPanel value="chat" class="!block outline-none">
+		<!-- live chat snapshot, built from the real components -->
+		<div class="flex flex-col overflow-hidden rounded-sa-lg bg-sa-field shadow-sa-sm ring-1 ring-sa-hairline">
+			<div class="flex items-center gap-2.5 border-b border-sa-hairline px-4 py-3">
+				<span class="grid size-7 place-items-center rounded-full bg-sa-accent text-sa-accent-fg"><Brain class="size-4" /></span>
+				<div>
+					<p class="text-sm font-semibold text-sa-fg">Bayt al-Hikma assistant</p>
+					<p class="text-xs text-sa-fg-muted">createChat() · streaming-ready</p>
+				</div>
+			</div>
+
+			<!-- Rendered exactly like the /ai-chat component: assistant parts flow
+			     full-width through MessagePart; the user turn is an outline bubble. -->
+			<div class="flex flex-col gap-6 p-4">
+				{#each aiMessages as m (m.id)}
+					{#if m.role === 'assistant'}
+						<div class="flex flex-col gap-1.5">
+							{#each m.parts as part, pi (pi)}
+								<MessagePart {part} />
+							{/each}
+							{#if m.id === 'a1'}
+								<Sources sources={aiSources} class="mt-1" />
+							{/if}
+						</div>
+					{:else}
+						<Message align="end" aria-label="Your message">
+							<Bubble variant="outline" class="bg-sa-subtle">
+								{#each m.parts as part, pi (pi)}
+									<MessagePart {part} />
+								{/each}
+							</Bubble>
+						</Message>
+					{/if}
+				{/each}
+				{#if aiReplying}
+					<Marker variant="status">
+						<span class="flex gap-1">
+							<span class="size-1.5 animate-bounce rounded-full bg-sa-fg-muted [animation-delay:-0.3s]"></span>
+							<span class="size-1.5 animate-bounce rounded-full bg-sa-fg-muted [animation-delay:-0.15s]"></span>
+							<span class="size-1.5 animate-bounce rounded-full bg-sa-fg-muted"></span>
+						</span>
+						Thinking…
+					</Marker>
+				{/if}
+			</div>
+
+			<!-- Same composer as the component: PromptInput + attach / model / mic / send. -->
+			<div class="mt-auto p-4">
+				<input type="file" multiple bind:this={aiFileInput} onchange={onAiFilesChosen} class="hidden" />
+				<PromptInput bind:value={aiDraft} onSubmit={handleAiSend} disabled={aiReplying} placeholder="Ask about the catalogue…">
+					{#snippet leading()}
+						{#each aiAttachments as a, i (a.name + i)}
+							<Attachment name={a.name} size={a.size} onRemove={() => aiAttachments.splice(i, 1)} class="max-w-[13rem]" />
+						{/each}
+					{/snippet}
+					{#snippet toolbar(submit)}
+						<button type="button" onclick={() => aiFileInput?.click()} aria-label="Attach files" class="grid size-8 place-items-center rounded-full text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"><Plus class="size-4.5" /></button>
+						<Menu>
+							<MenuTrigger variant="ghost" size="sm" class="gap-1 text-sa-fg-muted">{aiModel} <ChevronDown class="size-3.5" /></MenuTrigger>
+							<MenuContent>
+								{#each aiModels as m (m)}
+									<MenuItem onSelect={() => (aiModel = m)} class={m === aiModel ? 'font-medium text-sa-fg' : ''}>
+										{m}{#if m === aiModel}<Check class="ml-auto size-4 text-sa-accent" />{/if}
+									</MenuItem>
+								{/each}
+							</MenuContent>
+						</Menu>
+						<div class="ml-auto flex items-center gap-1.5">
+							<button type="button" onclick={toggleAiRecord} aria-pressed={aiRecorder.isRecording} aria-label={aiRecorder.isRecording ? 'Stop recording' : 'Record voice'} class="grid size-8 place-items-center rounded-full transition-colors {aiRecorder.isRecording ? 'animate-pulse bg-sa-invalid/15 text-sa-invalid' : 'text-sa-fg-muted hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg'}">
+								{#if aiRecorder.isRecording}<Square class="size-4" />{:else}<Mic class="size-4.5" />{/if}
+							</button>
+							<button type="button" onclick={submit} disabled={!aiDraft.trim() || aiReplying} aria-label="Send" class="grid size-8 place-items-center rounded-full bg-sa-accent text-sa-accent-fg transition-opacity hover:opacity-90 disabled:opacity-40"><CornerDownLeft class="size-4" /></button>
+						</div>
+					{/snippet}
+				</PromptInput>
+				{#if aiMicError}<p class="mt-1.5 text-center text-xs text-sa-invalid">Microphone unavailable — allow access to record voice.</p>{/if}
+			</div>
+		</div>
+				</TabPanel>
+
+				<TabPanel value="image" class="!block outline-none">
+					<div class="overflow-hidden rounded-sa-lg bg-sa-field shadow-sa-sm ring-1 ring-sa-hairline">
+						<div class="flex items-center justify-between border-b border-sa-hairline px-4 py-3">
+							<span class="text-sm font-semibold text-sa-fg">Image generation</span>
+							<span class="text-xs text-sa-fg-muted">4 variations · 1:1</span>
+						</div>
+						<div class="grid grid-cols-2 gap-3 p-4">
+							{#each aiImageTiles as src, i (i)}
+								<div class="group relative aspect-square overflow-hidden rounded-sa ring-1 ring-sa-hairline">
+									<img {src} alt="Optics manuscript, variation {i + 1}" class="size-full object-cover" />
+									<span aria-hidden="true" class="absolute inset-0 flex items-end justify-end bg-gradient-to-t from-black/40 to-transparent p-2 opacity-0 transition-opacity group-hover:opacity-100">
+										<span class="grid size-7 place-items-center rounded-full bg-black/50 text-white"><Download class="size-4" /></span>
+									</span>
+								</div>
+							{/each}
+						</div>
+					</div>
+				</TabPanel>
+
+				<TabPanel value="video" class="!block outline-none">
+					<div class="overflow-hidden rounded-sa-lg bg-sa-field shadow-sa-sm ring-1 ring-sa-hairline">
+						<div class="flex items-center justify-between border-b border-sa-hairline px-4 py-3">
+							<span class="text-sm font-semibold text-sa-fg">Video generation</span>
+							<span class="text-xs text-sa-fg-muted">16:9 · 15s</span>
+						</div>
+						<div class="p-4">
+							<div class="relative aspect-video overflow-hidden rounded-sa bg-sa-bg ring-1 ring-sa-hairline">
+								<img src={aiVideoPoster} alt="Generated video poster" class="size-full object-cover" />
+								<span aria-hidden="true" class="absolute inset-0 grid place-items-center">
+									<span class="grid size-14 place-items-center rounded-full bg-black/50 text-white backdrop-blur-sm"><Play class="size-6 translate-x-0.5" /></span>
+								</span>
+								<div aria-hidden="true" class="absolute inset-x-0 bottom-0 flex items-center gap-2 bg-gradient-to-t from-black/60 to-transparent p-3 text-white">
+									<Play class="size-4" />
+									<div class="h-1 flex-1 overflow-hidden rounded-full bg-white/30"><div class="h-full w-1/3 bg-white"></div></div>
+									<span class="font-mono text-xs">0:05 / 0:15</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</TabPanel>
+
+				<TabPanel value="audio" class="!block outline-none">
+					<div class="rounded-sa-lg bg-sa-field p-4 shadow-sa-sm ring-1 ring-sa-hairline">
+						<div class="mb-4 flex items-center justify-between">
+							<span class="text-sm font-semibold text-sa-fg">Voice synthesis</span>
+							<span class="text-xs text-sa-fg-muted">Rachel · calm</span>
+						</div>
+						<div class="flex items-center gap-3 rounded-sa border border-sa-hairline bg-sa-bg p-3">
+							<span aria-hidden="true" class="grid size-10 shrink-0 place-items-center rounded-full bg-sa-accent text-sa-accent-fg"><Play class="size-5 translate-x-0.5" /></span>
+							<div class="flex h-10 flex-1 items-center gap-[2px]">
+								{#each aiBars as h, i (i)}
+									<span class="flex-1 rounded-full {i < 18 ? 'bg-sa-accent' : 'bg-sa-gray-300'}" style="height: {h}%"></span>
+								{/each}
+							</div>
+							<span class="shrink-0 font-mono text-xs text-sa-fg-muted">0:01 / 0:04</span>
+						</div>
+					</div>
+				</TabPanel>
+
+				<TabPanel value="terminal" class="!block outline-none">
+					<Terminal title="bayt-al-hikma — zsh">
+						<TerminalHeader name="svelte-aria" version="v0.1.0" lines={['Model: catalogue-agent', 'cwd: ~/bayt-al-hikma']}>
+							{#snippet icon()}<SquareTerminal class="size-5 text-sa-accent" />{/snippet}
+						</TerminalHeader>
+						<div class="mt-3 flex flex-col gap-1">
+							<TerminalLine marker=">">index the optics manuscripts</TerminalLine>
+							<TerminalLine marker="●">Scanning the catalogue…</TerminalLine>
+							<TerminalLine marker="⎿" muted indent={1}>1 translated · 2 copying · 1 original</TerminalLine>
+							<TerminalLine marker="●">Done — 4 works indexed.</TerminalLine>
+						</div>
+						<TerminalInput prompt=">" class="mt-3" />
+					</Terminal>
+				</TabPanel>
+			</div>
+
+			<!-- RIGHT: the tablist drives the preview; the button opens its docs -->
+			<div class="flex flex-col gap-3">
+				<TabList aria-label="AI components" class="gap-3 border-r-0">
+					{#each aiTabs as t (t.id)}
+						{@const Icon = t.icon}
+						<Tab
+							value={t.id}
+							class="m-0 w-full gap-3.5 rounded-sa-lg border-r-0 bg-sa-field p-4 text-left whitespace-normal shadow-sa-sm ring-1 ring-sa-hairline hover:bg-[var(--sa-highlight-hover)] data-[state=active]:bg-sa-accent/8 data-[state=active]:ring-sa-accent"
+						>
+							<span class="grid size-10 shrink-0 place-items-center rounded-sa bg-sa-subtle text-sa-accent ring-1 ring-sa-hairline"><Icon class="size-5" /></span>
+							<span class="min-w-0 flex-1">
+								<span class="block font-medium text-sa-fg">{t.title}</span>
+								<span class="block truncate text-sm font-normal text-sa-fg-muted">{t.body}</span>
+							</span>
+						</Tab>
+					{/each}
+				</TabList>
+				<a
+					href={activeTab.href}
+					class="group inline-flex items-center justify-center gap-1.5 rounded-sa bg-sa-accent px-4 py-2.5 text-sm font-medium text-sa-accent-fg transition-opacity hover:opacity-90"
+				>
+					View {activeTab.title} docs
+					<ArrowRight class="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+				</a>
+			</div>
+		</div>
+	</Tabs>
 </section>
 
 <!-- ======================= INTERACTIONS ======================= -->
