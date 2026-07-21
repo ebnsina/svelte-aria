@@ -5,6 +5,7 @@
 	import { Sun, Moon, Monitor, ArrowUpRight } from '@lucide/svelte';
 	import { theme } from '$lib/site/theme.svelte.js';
 	import Logo from '$lib/site/Logo.svelte';
+	import Footer from '$lib/site/Footer.svelte';
 
 	const { children } = $props();
 
@@ -57,4 +58,6 @@
 	</header>
 
 	{@render children()}
+
+	<Footer />
 </div>

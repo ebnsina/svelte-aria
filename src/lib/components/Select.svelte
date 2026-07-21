@@ -66,6 +66,8 @@
 		placement?: Placement;
 		align?: Align;
 		disabled?: boolean;
+		/** A visible label, associated with the trigger for assistive tech. */
+		label?: string;
 		/** Emits a hidden input so the value posts with a form. */
 		name?: string;
 		children: Snippet;
@@ -82,6 +84,7 @@
 		placement = 'bottom',
 		align = 'start',
 		disabled = false,
+		label,
 		name,
 		children
 	}: SelectProps = $props();
@@ -173,6 +176,10 @@
 		}
 	});
 </script>
+
+{#if label}
+	<label for={`${id}-trigger`} class="mb-1.5 block text-sm font-medium text-sa-fg">{label}</label>
+{/if}
 
 {@render children()}
 

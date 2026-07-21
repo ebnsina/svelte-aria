@@ -5,394 +5,628 @@
 		Avatar,
 		Switch,
 		Checkbox,
-		Slider,
 		Select,
 		SelectTrigger,
 		SelectContent,
 		SelectItem,
 		Calendar,
-		Separator,
+		NumberField,
+		DatePicker,
+		TextField,
+		List,
+		ListItem,
+		Menu,
+		MenuTrigger,
+		MenuContent,
+		MenuItem,
 		Tabs,
 		TabList,
 		Tab,
-		TabPanel,
-		Progress
+		TabPanel
 	} from '$lib/index.js';
 	import {
 		ArrowRight,
-		Accessibility,
+		Search,
+		Sun,
+		Droplets,
+		Star,
+		MoreHorizontal,
+		SlidersHorizontal,
+		Plus,
+		Fingerprint,
+		MousePointer2,
 		Keyboard,
-		Palette,
-		Feather,
-		Terminal,
-		Moon,
-		Check,
+		Focus,
 		ShieldCheck,
-		Zap,
-		MousePointerClick,
-		Sparkles
+		Smartphone,
+		TestTube,
+		Wifi,
+		BatteryFull,
+		Signal
 	} from '@lucide/svelte';
 	import CodeBlock from '$lib/site/CodeBlock.svelte';
 	import { nav } from '$lib/site/nav.js';
 
-	const components = nav.find((s) => s.title === 'Components')?.items ?? [];
+	const componentCount = nav.find((s) => s.title === 'Components')?.items.length ?? 45;
+	const go = (href: string) => (location.href = href);
 
-	const install = `npx svelte-aria init
-npx svelte-aria add button dialog select calendar`;
+	// ---- Hero showcase (plant table) -------------------------------------------
+	type Plant = { name: string; sci: string; sun: string; water: 'Minimum' | 'Average'; checked: boolean; starred: boolean };
+	let plants = $state<Plant[]>([
+		{ name: 'Agapanthus', sci: 'Agapanthus praecox', sun: 'Full sun', water: 'Minimum', checked: true, starred: true },
+		{ name: 'Aloe', sci: 'Aloe vera', sun: 'Full sun', water: 'Minimum', checked: true, starred: false },
+		{ name: 'Blue Jacaranda', sci: 'Jacaranda mimosifolia', sun: 'Full sun', water: 'Minimum', checked: false, starred: false },
+		{ name: 'Chinese Money Plant', sci: 'Pilea peperomioides', sun: 'Part sun', water: 'Average', checked: false, starred: false },
+		{ name: 'Christmas Bush', sci: 'Ceratopetalum', sun: 'Full sun', water: 'Average', checked: false, starred: false }
+	]);
+	let search = $state('');
+	const allChecked = $derived(plants.every((p) => p.checked));
+	function toggleAll(v: boolean) {
+		plants = plants.map((p) => ({ ...p, checked: v }));
+	}
 
-	const trust = [
-		{ icon: ShieldCheck, label: 'WAI-ARIA validated' },
-		{ icon: Zap, label: 'Zero runtime deps' },
-		{ icon: MousePointerClick, label: 'Copy-paste source' }
+	const leftCallouts = [
+		{ label: 'SearchField', href: '/text-field' },
+		{ label: 'Checkbox', href: '/checkbox' },
+		{ label: 'Table', href: '/data-table' },
+		{ label: 'ToggleButton', href: '/switch' }
+	];
+	const rightCallouts = [
+		{ label: 'Tooltip', href: '/tooltip' },
+		{ label: 'Menu', href: '/menu' },
+		{ label: 'Badge', href: '/badge' },
+		{ label: 'Popover', href: '/popover' }
 	];
 
-	const features = [
+	// ---- Section: styles -------------------------------------------------------
+	let styleTab = $state('tailwind');
+	const tailwindCode = `<Button
+  class="bg-sa-accent text-sa-accent-fg
+    data-[pressed]:bg-sa-accent-pressed
+    data-[hovered]:opacity-95
+    data-[disabled]:opacity-50"
+>
+  Save changes
+</Button>`;
+	const tokensCode = `:root {
+  --sa-tint: var(--sa-indigo); /* re-tint everything */
+  --sa-radius: 8px;
+}
+
+:root[data-theme='dark'] {
+  --sa-field: oklch(0.21 0.01 265);
+  --sa-hairline: oklch(1 0 0 / 0.08);
+}`;
+	const dataAttrCode = `<!-- Interaction state is exposed as data-* -->
+<div
+  data-pressed={pressed}
+  data-hovered={hovered}
+  data-focus-visible={focusVisible}
+  class="data-[pressed]:scale-95
+    data-[focus-visible]:outline-2"
+>
+  <!-- style declaratively, no bespoke classes -->
+</div>`;
+
+	// ---- Section: accessibility (phone) ----------------------------------------
+	let permission = $state('read');
+
+	// ---- Section: international -------------------------------------------------
+	let locale = $state('en-US');
+	let calSystem = $state('gregorian');
+	let numbering = $state('latin');
+	let numberFmt = $state('decimal');
+	let intlDate = $state<Date>(new Date(2026, 6, 21));
+	let intlNumber = $state(1234);
+
+	// ---- Section: kanban -------------------------------------------------------
+	const board = [
 		{
-			icon: Accessibility,
-			title: 'Accessible by default',
-			body: 'Every component is validated against the WAI-ARIA Authoring Practices — roles, keyboard, and focus management, edge cases included.'
+			title: 'Open',
+			count: 4,
+			tasks: [
+				{ id: 101, title: 'Button alignment issue', body: 'Buttons in the Settings menu are misaligned on smaller screens.', who: 'Gilberto Miguel' },
+				{ id: 102, title: 'Login page redesign', body: 'Requesting a redesign of the login page to improve UX.', who: 'Maia Pettegree' },
+				{ id: 104, title: 'Dark mode support', body: 'Implement a dark mode option for accessibility and preference.', who: 'Ana Silva' }
+			]
 		},
 		{
-			icon: Keyboard,
-			title: 'Pointer, touch & keyboard',
-			body: 'A unified press model handles mouse, touch, pen, and keyboard, with correct focus-visible rings and virtual-cursor support.'
+			title: 'In Progress',
+			count: 2,
+			tasks: [
+				{ id: 103, title: 'Database connection error', body: 'Intermittent connection errors when accessing the database.', who: 'Mike Johnson' },
+				{ id: 110, title: 'Two-factor authentication', body: 'Add 2FA support for improved account security.', who: 'Maia Pettegree' }
+			]
 		},
 		{
-			icon: Feather,
-			title: 'Svelte 5 native',
-			body: 'Built on runes, attachments, and snippets — composable behaviour with no prop-spreading ceremony.'
-		},
-		{
-			icon: Terminal,
-			title: 'Copy-paste, not a black box',
-			body: 'A CLI copies the source into your project. Own every line, edit anything — no version lock-in.'
-		},
-		{
-			icon: Palette,
-			title: 'Re-tintable theming',
-			body: 'An OKLCH token system re-tints the whole palette from one variable. Style with Tailwind, inline and editable.'
-		},
-		{
-			icon: Moon,
-			title: 'Light & dark, built in',
-			body: 'Explicit light/dark themes seeded before paint — no flash — plus high-contrast support out of the box.'
+			title: 'Closed',
+			count: 1,
+			tasks: [{ id: 106, title: 'Performance optimization', body: 'Reduce load times across the application shell.', who: 'Sarah Lee' }]
 		}
 	];
 
-	// Live showcase state
-	let notifications = $state(true);
-	let volume = $state(70);
-	let plan = $state('pro');
-	let newsletter = $state(true);
-	let tab = $state('preview');
-	let cal = $state<Date>(new Date());
-	const go = (href: string) => (location.href = href);
+	// ---- Section: customizable -------------------------------------------------
+	const customCards = [
+		{
+			title: 'Copy, don’t install',
+			body: 'The CLI copies the source straight into your project. No black box, no version lock-in — own every line.',
+			code: `npx svelte-aria add button
+
+// It's yours now — edit anything.
+import Button from '$lib/ui/button.svelte';`
+		},
+		{
+			title: 'Compose behaviour',
+			body: 'Interaction primitives are Svelte attachments. Combine press, hover, and focus to build your own controls.',
+			code: `import { createPress, combineAttachments }
+  from 'svelte-aria';
+
+const press = createPress({ onPress });
+<div {@attach combineAttachments(press, hover)} />`
+		},
+		{
+			title: 'Style with data-*',
+			body: 'State lands on the DOM as data-attributes, so styling stays declarative and the styled layer is swappable.',
+			code: `<button
+  class="data-[pressed]:scale-95
+    data-[hovered]:bg-sa-subtle
+    data-[focus-visible]:outline-2"
+/>`
+		},
+		{
+			title: 'Drop to state machines',
+			body: 'Need full control? Rune-based state machines run without any DOM, ready to drive a bespoke render.',
+			code: `import { createToggleState } from 'svelte-aria';
+
+const state = createToggleState({ onChange });
+state.toggle();`
+		}
+	];
 </script>
 
 <svelte:head>
-	<title>Svelte ARIA — accessible components, done right</title>
+	<title>Svelte ARIA — accessible components, in your own style</title>
 </svelte:head>
 
-<!-- ================= HERO ================= -->
-<section class="relative overflow-hidden">
-	<!-- Dotted grid + accent glow backdrop -->
-	<div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-		<div
-			class="absolute inset-0 opacity-50"
-			style="background-image: radial-gradient(var(--sa-hairline) 1px, transparent 1px); background-size: 22px 22px; mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 75%); -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 75%);"
-		></div>
-		<div
-			class="absolute top-[-18%] left-1/2 h-[30rem] w-[64rem] -translate-x-1/2 rounded-full opacity-50 blur-3xl"
-			style="background: radial-gradient(closest-side, oklch(from var(--sa-tint) 62% c h / 0.30), transparent)"
-		></div>
+<!-- ======================= HERO ======================= -->
+<section class="mx-auto max-w-6xl px-4 pt-20 pb-16 text-center lg:px-8 lg:pt-28">
+	<h1 class="mx-auto max-w-4xl text-4xl font-semibold tracking-tight text-balance text-sa-fg sm:text-5xl lg:text-[3.5rem] lg:leading-[1.06]">
+		Craft world-class accessible components, in <span class="text-sa-accent">your own style.</span>
+	</h1>
+	<p class="mx-auto mt-6 max-w-2xl text-lg text-pretty text-sa-fg-muted">
+		{componentCount} components with built-in behaviour, adaptive pointer &amp; touch interactions, top-tier
+		accessibility, and complete keyboard support out of the box — ready for your styles.
+	</p>
+	<div class="mt-9 flex flex-wrap justify-center gap-3">
+		<Button size="lg" onPress={() => go('/installation')}>
+			Get started
+			<ArrowRight class="size-4" />
+		</Button>
+		<Button size="lg" variant="outline" onPress={() => go('/button')}>Explore components</Button>
 	</div>
 
-	<div class="mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 lg:grid-cols-2 lg:gap-10 lg:py-24 lg:px-8">
-		<!-- Left: copy -->
-		<div>
-			<span
-				class="inline-flex items-center gap-2 rounded-full bg-sa-field/80 px-3 py-1 text-xs font-medium text-sa-fg-muted ring-1 ring-sa-hairline backdrop-blur"
-			>
-				<Sparkles class="size-3.5 text-sa-accent" />
-				{components.length} accessible components
-			</span>
-
-			<h1 class="mt-5 text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-[3.75rem] lg:leading-[1.05]">
-				Accessible Svelte components,
-				<span
-					class="bg-gradient-to-r from-sa-accent to-[oklch(from_var(--sa-tint)_72%_c_calc(h+40))] bg-clip-text text-transparent"
-					>done right.</span
-				>
-			</h1>
-
-			<p class="mt-5 max-w-xl text-lg text-pretty text-sa-fg-muted">
-				Headless-first components with rigorous keyboard, pointer, and focus behaviour — a
-				Svelte-native API you own and re-style. Copy the source in, ship accessible UI.
-			</p>
-
-			<div class="mt-8 flex flex-wrap gap-3">
-				<Button size="lg" onPress={() => go('/installation')}>
-					Get started
-					<ArrowRight class="size-4" />
-				</Button>
-				<Button size="lg" variant="outline" onPress={() => go('/button')}>Browse components</Button>
-			</div>
-
-			<!-- Trust row -->
-			<ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-sa-fg-muted">
-				{#each trust as t (t.label)}
-					{@const Icon = t.icon}
-					<li class="inline-flex items-center gap-1.5">
-						<Icon class="size-4 text-sa-accent" />
-						{t.label}
-					</li>
-				{/each}
-			</ul>
+	<!-- Annotated product showcase -->
+	<div class="relative mx-auto mt-20 max-w-3xl">
+		<!-- left callouts -->
+		<div class="absolute top-6 right-full bottom-6 hidden w-44 flex-col justify-around pr-5 lg:flex">
+			{#each leftCallouts as c (c.label)}
+				<a href={c.href} class="group flex items-center justify-end gap-2">
+					<span class="font-mono text-xs text-sa-fg-muted transition-colors group-hover:text-sa-accent">{c.label}</span>
+					<span class="h-px w-7 shrink-0 bg-sa-hairline transition-colors group-hover:bg-sa-accent"></span>
+					<span class="size-1.5 shrink-0 rounded-full bg-sa-hairline transition-colors group-hover:bg-sa-accent"></span>
+				</a>
+			{/each}
+		</div>
+		<!-- right callouts -->
+		<div class="absolute top-6 bottom-6 left-full hidden w-44 flex-col justify-around pl-5 lg:flex">
+			{#each rightCallouts as c (c.label)}
+				<a href={c.href} class="group flex items-center gap-2">
+					<span class="size-1.5 shrink-0 rounded-full bg-sa-hairline transition-colors group-hover:bg-sa-accent"></span>
+					<span class="h-px w-7 shrink-0 bg-sa-hairline transition-colors group-hover:bg-sa-accent"></span>
+					<span class="font-mono text-xs text-sa-fg-muted transition-colors group-hover:text-sa-accent">{c.label}</span>
+				</a>
+			{/each}
 		</div>
 
-		<!-- Right: floating showcase -->
-		<div class="relative lg:pl-6">
-			<!-- soft glow behind the card -->
-			<div
-				aria-hidden="true"
-				class="pointer-events-none absolute -inset-6 -z-10 rounded-[2rem] opacity-60 blur-2xl"
-				style="background: radial-gradient(60% 60% at 70% 20%, oklch(from var(--sa-tint) 62% c h / 0.22), transparent)"
-			></div>
-
-			<!-- floating accent chip for depth -->
-			<div
-				class="absolute -top-4 -left-4 z-10 hidden items-center gap-2 rounded-full bg-sa-field px-3 py-1.5 text-xs font-medium text-sa-fg shadow-sa-md ring-1 ring-sa-hairline sm:inline-flex"
-			>
-				<span class="grid size-4 place-items-center rounded-full bg-sa-accent text-sa-accent-fg">
-					<Check class="size-3" strokeWidth={3} />
-				</span>
-				Keyboard ready
+		<!-- the "app" -->
+		<div class="overflow-hidden rounded-sa-lg bg-sa-field text-left shadow-sa-md ring-1 ring-sa-hairline">
+			<!-- window chrome -->
+			<div class="flex items-center gap-2 border-b border-sa-hairline px-4 py-3">
+				<span class="size-3 rounded-full bg-sa-hairline"></span>
+				<span class="size-3 rounded-full bg-sa-hairline"></span>
+				<span class="size-3 rounded-full bg-sa-hairline"></span>
 			</div>
-
-			<div class="rounded-sa-lg bg-sa-field p-6 shadow-sa-md ring-1 ring-sa-hairline" role="group" aria-label="Live component preview">
-				<div class="flex items-center gap-3">
-					<Avatar alt="Ada Lovelace" size="lg" />
-					<div class="min-w-0 flex-1">
-						<div class="flex items-center gap-2">
-							<span class="truncate font-semibold text-sa-fg">Ada Lovelace</span>
-							<Badge variant="secondary"><Check />Pro</Badge>
-						</div>
-						<span class="text-sm text-sa-fg-muted">Workspace settings</span>
-					</div>
+			<!-- toolbar -->
+			<div class="flex items-center gap-2 px-4 py-3">
+				<div class="flex-1">
+					<TextField bind:value={search} placeholder="Search plants" aria-label="Search plants">
+						{#snippet prefix()}
+							<Search class="size-4 text-sa-fg-muted" />
+						{/snippet}
+					</TextField>
 				</div>
-
-				<Separator class="my-5" />
-
-				<div class="flex flex-col gap-5">
-					<Switch bind:checked={notifications}>Email notifications</Switch>
-
-					<div>
-						<div class="mb-2 flex items-center justify-between">
-							<span class="text-sm font-medium text-sa-fg">Volume</span>
-							<span class="text-sm tabular-nums text-sa-fg-muted">{volume}%</span>
-						</div>
-						<Slider bind:value={volume} aria-label="Volume" />
-					</div>
-
-					<div class="flex flex-col gap-1.5">
-						<span class="text-sm font-medium text-sa-fg">Plan</span>
-						<Select bind:value={plan}>
-							<SelectTrigger />
-							<SelectContent>
-								<SelectItem value="free">Free</SelectItem>
-								<SelectItem value="pro">Pro</SelectItem>
-								<SelectItem value="team">Team</SelectItem>
-							</SelectContent>
-						</Select>
-					</div>
-
-					<Button class="w-full" onPress={() => go('/button')}>Save changes</Button>
-				</div>
+				<Button variant="outline" size="icon" aria-label="Filter"><SlidersHorizontal class="size-4" /></Button>
+				<Button size="icon" aria-label="Add plant"><Plus class="size-4" /></Button>
 			</div>
+			<!-- table -->
+			<table class="w-full border-collapse text-sm">
+				<thead>
+					<tr class="border-y border-sa-hairline bg-sa-subtle/50 text-xs text-sa-fg-muted">
+						<th class="w-10 py-2 pl-4"><Checkbox checked={allChecked} onChange={toggleAll} aria-label="Select all" /></th>
+						<th class="w-8"></th>
+						<th class="py-2 text-left font-medium">Name</th>
+						<th class="hidden py-2 text-left font-medium sm:table-cell">Sunlight</th>
+						<th class="hidden py-2 text-left font-medium sm:table-cell">Watering</th>
+						<th class="w-10"></th>
+					</tr>
+				</thead>
+				<tbody>
+					{#each plants as p, i (p.name)}
+						<tr class="border-b border-sa-hairline last:border-0 transition-colors hover:bg-[var(--sa-highlight-hover)] data-[selected]:bg-sa-accent/8" data-selected={p.checked || undefined}>
+							<td class="py-2.5 pl-4"><Checkbox bind:checked={plants[i].checked} aria-label="Select {p.name}" /></td>
+							<td>
+								<button
+									type="button"
+									onclick={() => (plants[i].starred = !plants[i].starred)}
+									aria-label="Star {p.name}"
+									aria-pressed={p.starred}
+									class="grid size-7 place-items-center rounded-sa-sm text-sa-fg-muted transition-colors hover:text-sa-accent"
+								>
+									<Star class="size-4 {p.starred ? 'fill-sa-accent text-sa-accent' : ''}" />
+								</button>
+							</td>
+							<td class="py-2.5">
+								<div class="flex items-center gap-2.5">
+									<Avatar alt={p.name} size="sm" />
+									<div class="min-w-0">
+										<div class="truncate font-medium text-sa-fg">{p.name}</div>
+										<div class="truncate text-xs text-sa-fg-muted italic">{p.sci}</div>
+									</div>
+								</div>
+							</td>
+							<td class="hidden sm:table-cell">
+								<Badge variant="secondary"><Sun class="text-sa-accent" />{p.sun}</Badge>
+							</td>
+							<td class="hidden sm:table-cell">
+								<Badge variant="outline"><Droplets class="text-sa-fg-muted" />{p.water}</Badge>
+							</td>
+							<td class="pr-3">
+								<Menu>
+									<MenuTrigger variant="ghost" size="icon" aria-label="Actions for {p.name}">
+										<MoreHorizontal class="size-4" />
+									</MenuTrigger>
+									<MenuContent>
+										<MenuItem>View details</MenuItem>
+										<MenuItem>Edit</MenuItem>
+										<MenuItem>Duplicate</MenuItem>
+										<MenuItem>Remove</MenuItem>
+									</MenuContent>
+								</Menu>
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
 		</div>
 	</div>
 </section>
 
-<!-- ================= BENTO SHOWCASE ================= -->
-<section class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-20">
+<!-- ======================= STYLES ======================= -->
+<section class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
 	<div class="max-w-2xl">
-		<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">A peek inside</h2>
-		<p class="mt-3 text-lg text-sa-fg-muted">
-			Real, interactive components — every one keyboard-complete and themed. Go ahead, click around.
+		<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">
+			Styled — and <span class="text-sa-accent">yours to restyle.</span>
+		</h2>
+		<p class="mt-4 text-lg text-sa-fg-muted">
+			Components ship styled, but nothing is locked down. Restyle with Tailwind utilities, re-tint the
+			whole palette from one token, or style declaratively off the <code class="rounded-sa-sm bg-sa-subtle px-1.5 py-0.5 text-[0.85em] text-sa-fg">data-*</code>
+			state each part exposes.
 		</p>
+		<a href="/interactions" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
+			Learn more <ArrowRight class="size-4" />
+		</a>
 	</div>
 
-	<div class="mt-10 grid auto-rows-min gap-4 sm:grid-cols-2 lg:grid-cols-3">
-		<!-- Calendar (tall) -->
-		<div class="row-span-2 flex flex-col rounded-sa-lg bg-sa-field p-5 shadow-sa-sm ring-1 ring-sa-hairline">
-			<span class="mb-3 text-xs font-medium text-sa-fg-muted">Calendar</span>
-			<div class="grid flex-1 place-items-center">
-				<Calendar bind:value={cal} class="ring-1 ring-sa-hairline" />
-			</div>
-		</div>
-
-		<!-- Buttons -->
-		<div class="rounded-sa-lg bg-sa-field p-5 shadow-sa-sm ring-1 ring-sa-hairline">
-			<span class="mb-3 block text-xs font-medium text-sa-fg-muted">Button</span>
-			<div class="flex flex-wrap gap-2">
-				<Button size="sm">Primary</Button>
-				<Button size="sm" variant="secondary">Secondary</Button>
-				<Button size="sm" variant="outline">Outline</Button>
-				<Button size="sm" variant="ghost">Ghost</Button>
-				<Button size="sm" variant="destructive">Delete</Button>
-				<Button size="sm" loading>Saving</Button>
-			</div>
-		</div>
-
-		<!-- Badges + Progress -->
-		<div class="rounded-sa-lg bg-sa-field p-5 shadow-sa-sm ring-1 ring-sa-hairline">
-			<span class="mb-3 block text-xs font-medium text-sa-fg-muted">Badge &amp; Progress</span>
-			<div class="flex flex-wrap items-center gap-2">
-				<Badge>New</Badge>
-				<Badge variant="secondary"><Check />Verified</Badge>
-				<Badge variant="outline">v0.1</Badge>
-				<Badge variant="destructive">Beta</Badge>
-			</div>
-			<div class="mt-4">
-				<Progress value={68} label="Upload" showValue />
-			</div>
-		</div>
-
-		<!-- Form controls -->
-		<div class="rounded-sa-lg bg-sa-field p-5 shadow-sa-sm ring-1 ring-sa-hairline">
-			<span class="mb-3 block text-xs font-medium text-sa-fg-muted">Switch &amp; Checkbox</span>
-			<div class="flex flex-col gap-3">
-				<Switch bind:checked={newsletter}>Weekly newsletter</Switch>
-				<Checkbox defaultChecked>Enable analytics</Checkbox>
-				<Checkbox>Share usage data</Checkbox>
-			</div>
-		</div>
-
-		<!-- Tabs -->
-		<div class="rounded-sa-lg bg-sa-field p-5 shadow-sa-sm ring-1 ring-sa-hairline">
-			<span class="mb-3 block text-xs font-medium text-sa-fg-muted">Tabs</span>
-			<Tabs bind:value={tab}>
-				<TabList aria-label="Preview tabs">
-					<Tab value="preview">Preview</Tab>
-					<Tab value="code">Code</Tab>
-					<Tab value="usage">Usage</Tab>
+	<div class="mt-10 grid items-start gap-6 lg:grid-cols-[1.5fr_1fr]">
+		<div class="rounded-sa-lg bg-sa-field p-2 shadow-sa-sm ring-1 ring-sa-hairline">
+			<Tabs bind:value={styleTab}>
+				<TabList aria-label="Styling approaches" class="px-2 pt-1">
+					<Tab value="tailwind">Tailwind</Tab>
+					<Tab value="tokens">Tokens</Tab>
+					<Tab value="data">Data attributes</Tab>
 				</TabList>
-				<TabPanel value="preview"><p class="pt-3 text-sm text-sa-fg-muted">Live, themeable preview.</p></TabPanel>
-				<TabPanel value="code"><p class="pt-3 text-sm text-sa-fg-muted">Self-contained source.</p></TabPanel>
-				<TabPanel value="usage"><p class="pt-3 text-sm text-sa-fg-muted">Import and go.</p></TabPanel>
+				<TabPanel value="tailwind"><CodeBlock code={tailwindCode} lang="svelte" filename="Button.svelte" flush /></TabPanel>
+				<TabPanel value="tokens"><CodeBlock code={tokensCode} lang="css" filename="theme.css" flush /></TabPanel>
+				<TabPanel value="data"><CodeBlock code={dataAttrCode} lang="svelte" filename="Pressable.svelte" flush /></TabPanel>
 			</Tabs>
 		</div>
+
+		<div class="flex flex-col gap-5 rounded-sa-lg bg-sa-field p-6 shadow-sa-sm ring-1 ring-sa-hairline">
+			<span class="text-xs font-medium text-sa-fg-muted">Live preview</span>
+			<DatePicker label="Date planted" placeholder="mm/dd/yyyy" />
+			<Button class="w-full">Save changes</Button>
+			<div class="flex items-center justify-between">
+				<span class="text-sm font-medium text-sa-fg">Notifications</span>
+				<Switch defaultChecked aria-label="Notifications" />
+			</div>
+		</div>
 	</div>
 </section>
 
-<!-- ================= FEATURES ================= -->
+<!-- ======================= ADVANCED FEATURES (kanban) ======================= -->
 <section class="border-y border-sa-hairline bg-sa-subtle/40">
-	<div class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-20">
+	<div class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
 		<div class="max-w-2xl">
 			<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">
-				Behaviour you'd rather not rebuild
+				<span class="text-sa-accent">Advanced features</span> for ambitious apps.
 			</h2>
-			<p class="mt-3 text-lg text-sa-fg-muted">
-				The hard parts — interaction, accessibility, theming — handled correctly, so you can focus on
-				your product.
+			<p class="mt-4 text-lg text-sa-fg-muted">
+				Make your app feel native with rich interactions that adapt to device, platform, and user —
+				roving focus, type-ahead, keyboard multi-selection, form validation, and sortable data tables.
 			</p>
+			<a href="/data-table" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
+				Learn more <ArrowRight class="size-4" />
+			</a>
 		</div>
 
-		<div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{#each features as feature (feature.title)}
-				{@const Icon = feature.icon}
-				<div
-					class="group relative overflow-hidden rounded-sa-lg bg-sa-field p-6 shadow-sa-sm ring-1 ring-sa-hairline transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-sa-md motion-reduce:hover:translate-y-0"
-				>
-					<!-- accent wash on hover -->
-					<div
-						aria-hidden="true"
-						class="pointer-events-none absolute -top-16 -right-16 size-40 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100"
-						style="background: radial-gradient(closest-side, oklch(from var(--sa-tint) 62% c h / 0.18), transparent)"
-					></div>
-					<div
-						class="mb-4 grid size-11 place-items-center rounded-sa bg-sa-subtle text-sa-accent ring-1 ring-sa-hairline transition-transform duration-200 group-hover:scale-105 motion-reduce:group-hover:scale-100"
-					>
-						<Icon class="size-5" />
+		<div class="mt-10 grid gap-4 md:grid-cols-3">
+			{#each board as col (col.title)}
+				<div class="flex flex-col rounded-sa-lg bg-sa-field p-4 shadow-sa-sm ring-1 ring-sa-hairline">
+					<div class="mb-3 flex items-baseline justify-between">
+						<h3 class="text-sm font-semibold text-sa-fg">{col.title}</h3>
+						<span class="text-xs text-sa-fg-muted">{col.count} {col.count === 1 ? 'task' : 'tasks'}</span>
 					</div>
-					<h3 class="font-semibold text-sa-fg">{feature.title}</h3>
-					<p class="mt-1.5 text-sm leading-relaxed text-sa-fg-muted">{feature.body}</p>
+					<div class="flex flex-col gap-3">
+						{#each col.tasks as task (task.id)}
+							<article class="rounded-sa bg-sa-bg p-3 shadow-sa-sm ring-1 ring-sa-hairline">
+								<div class="flex items-start justify-between gap-2">
+									<h4 class="text-sm font-medium text-sa-fg">{task.title}</h4>
+									<span class="shrink-0 font-mono text-xs text-sa-fg-muted">#{task.id}</span>
+								</div>
+								<p class="mt-1 text-xs leading-relaxed text-sa-fg-muted">{task.body}</p>
+								<div class="mt-3 flex items-center gap-2">
+									<Avatar alt={task.who} size="sm" />
+									<span class="text-xs text-sa-fg-muted">{task.who}</span>
+								</div>
+							</article>
+						{/each}
+					</div>
 				</div>
 			{/each}
 		</div>
 	</div>
 </section>
 
-<!-- ================= COMPONENT GALLERY ================= -->
-<section class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-20">
-	<div class="flex flex-wrap items-end justify-between gap-4">
+<!-- ======================= INTERACTIONS ======================= -->
+<section class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
+	<div class="max-w-2xl">
+		<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">
+			High-quality <span class="text-sa-accent">interactions</span> on every device.
+		</h2>
+		<p class="mt-4 text-lg text-sa-fg-muted">
+			A great experience for every user, whatever their device. Components are tuned for mouse, touch,
+			keyboard, and screen-reader interaction, with a meticulous attention to detail.
+		</p>
+		<a href="/interactions" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
+			Learn more <ArrowRight class="size-4" />
+		</a>
+	</div>
+
+	<div class="mt-10 grid gap-4 sm:grid-cols-2">
+		<!-- Touch -->
+		<div class="flex flex-col rounded-sa-lg bg-sa-field p-6 shadow-sa-sm ring-1 ring-sa-hairline">
+			<div class="mb-3 inline-flex size-10 items-center justify-center rounded-sa bg-sa-subtle text-sa-accent ring-1 ring-sa-hairline"><Fingerprint class="size-5" /></div>
+			<h3 class="font-semibold text-sa-fg">Touch optimized</h3>
+			<p class="mt-1.5 text-sm leading-relaxed text-sa-fg-muted">
+				Micro-interactions like drag-off-to-cancel, long-press, scroll locking, and multi-touch handling
+				make your app feel native.
+			</p>
+			<div class="mt-5 grid flex-1 place-items-center py-2"><Switch defaultChecked aria-label="Demo toggle" /></div>
+		</div>
+		<!-- Mouse -->
+		<div class="flex flex-col rounded-sa-lg bg-sa-field p-6 shadow-sa-sm ring-1 ring-sa-hairline">
+			<div class="mb-3 inline-flex size-10 items-center justify-center rounded-sa bg-sa-subtle text-sa-accent ring-1 ring-sa-hairline"><MousePointer2 class="size-5" /></div>
+			<h3 class="font-semibold text-sa-fg">Mouse enhanced</h3>
+			<p class="mt-1.5 text-sm leading-relaxed text-sa-fg-muted">
+				Hover states apply only with a real pointer — no sticky touch states. Double-click, scroll wheel,
+				and cursor feedback enhance desktop.
+			</p>
+			<div class="mt-5 flex flex-1 items-center justify-center gap-2 py-2">
+				<Button size="icon" variant="outline" aria-label="One"><SlidersHorizontal class="size-4" /></Button>
+				<Button size="icon" variant="outline" aria-label="Two"><Search class="size-4" /></Button>
+				<Button size="icon" variant="outline" aria-label="Three"><Plus class="size-4" /></Button>
+			</div>
+		</div>
+		<!-- Keyboard -->
+		<div class="flex flex-col rounded-sa-lg bg-sa-field p-6 shadow-sa-sm ring-1 ring-sa-hairline">
+			<div class="mb-3 inline-flex size-10 items-center justify-center rounded-sa bg-sa-subtle text-sa-accent ring-1 ring-sa-hairline"><Keyboard class="size-5" /></div>
+			<h3 class="font-semibold text-sa-fg">Keyboard friendly</h3>
+			<p class="mt-1.5 text-sm leading-relaxed text-sa-fg-muted">
+				First-class keyboard support — arrow-key navigation, type-ahead, selection modifiers, and landmark
+				navigation throughout.
+			</p>
+			<div class="mt-5 flex-1 py-2">
+				<List class="text-sm">
+					<ListItem>Chocolate</ListItem>
+					<ListItem class="bg-sa-accent/10 text-sa-accent">Mint</ListItem>
+					<ListItem>Strawberry</ListItem>
+				</List>
+			</div>
+		</div>
+		<!-- Focus -->
+		<div class="flex flex-col rounded-sa-lg bg-sa-field p-6 shadow-sa-sm ring-1 ring-sa-hairline">
+			<div class="mb-3 inline-flex size-10 items-center justify-center rounded-sa bg-sa-subtle text-sa-accent ring-1 ring-sa-hairline"><Focus class="size-5" /></div>
+			<h3 class="font-semibold text-sa-fg">Focus managed</h3>
+			<p class="mt-1.5 text-sm leading-relaxed text-sa-fg-muted">
+				Focus is contained within overlays, restored on close, and moved when items are removed. Focus
+				rings appear only for keyboard users.
+			</p>
+			<div class="mt-5 grid flex-1 place-items-center py-2">
+				<Button variant="outline">Focusable</Button>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- ======================= ACCESSIBILITY ======================= -->
+<section class="border-y border-sa-hairline bg-sa-subtle/40">
+	<div class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
 		<div class="max-w-2xl">
 			<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">
-				{components.length} components, and counting
+				<span class="text-sa-accent">Accessibility</span> that's truly first-class.
 			</h2>
-			<p class="mt-3 text-lg text-sa-fg-muted">
-				Forms, overlays, navigation, dates, and feedback — each one keyboard-complete and themed.
+			<p class="mt-4 text-lg text-sa-fg-muted">
+				Accessibility is a top priority, not an afterthought. Every component is built to work across a
+				wide variety of devices and assistive technologies.
 			</p>
 		</div>
-		<Button variant="outline" onPress={() => go('/installation')}>
+
+		<div class="mt-10 grid items-center gap-8 lg:grid-cols-2">
+			<div class="flex flex-col gap-3">
+				{#each [{ icon: ShieldCheck, title: 'ARIA semantics', body: 'Roles and keyboard behaviour follow the WAI-ARIA Authoring Practices, built on real-world testing and device support.' }, { icon: Smartphone, title: 'Mobile ready', body: 'Behaviours work without a keyboard, so touch screen-reader users get full access — including hidden dismiss buttons in dialogs.' }, { icon: TestTube, title: 'Tested. Like, really.', body: 'Components are validated against the canonical accessible pattern for each one — roles, keyboard, and focus management, edge cases included.' }] as f (f.title)}
+					{@const Icon = f.icon}
+					<div class="flex gap-4 rounded-sa-lg bg-sa-field p-5 shadow-sa-sm ring-1 ring-sa-hairline">
+						<div class="inline-flex size-10 shrink-0 items-center justify-center rounded-sa bg-sa-subtle text-sa-accent ring-1 ring-sa-hairline"><Icon class="size-5" /></div>
+						<div>
+							<h3 class="font-semibold text-sa-fg">{f.title}</h3>
+							<p class="mt-1 text-sm leading-relaxed text-sa-fg-muted">{f.body}</p>
+						</div>
+					</div>
+				{/each}
+			</div>
+
+			<!-- phone mockup -->
+			<div class="flex justify-center">
+				<div class="w-full max-w-[17rem] rounded-[2.25rem] bg-sa-bg p-2.5 shadow-sa-md ring-1 ring-sa-hairline">
+					<div class="overflow-hidden rounded-[1.75rem] bg-sa-field ring-1 ring-sa-hairline">
+						<div class="flex items-center justify-between px-6 py-2.5 text-xs font-medium text-sa-fg">
+							<span>9:36</span>
+							<span class="flex items-center gap-1.5"><Signal class="size-3.5" /><Wifi class="size-3.5" /><BatteryFull class="size-4" /></span>
+						</div>
+						<div class="flex min-h-72 flex-col justify-center gap-2 px-6 py-8">
+							<Select bind:value={permission} label="Permissions">
+								<SelectTrigger />
+								<SelectContent>
+									<SelectItem value="read">Read Only</SelectItem>
+									<SelectItem value="edit">Edit</SelectItem>
+									<SelectItem value="admin">Admin</SelectItem>
+								</SelectContent>
+							</Select>
+						</div>
+						<div class="flex justify-center pb-2"><span class="h-1 w-28 rounded-full bg-sa-hairline"></span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- ======================= INTERNATIONAL ======================= -->
+<section class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
+	<div class="max-w-2xl">
+		<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">
+			Ready for an <span class="text-sa-accent">international</span> audience.
+		</h2>
+		<p class="mt-4 text-lg text-sa-fg-muted">
+			Date and number controls format and parse against the active locale, with calendar grids that
+			respect the first day of the week — internationalization considered from the start.
+		</p>
+		<a href="/calendar" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
+			Learn more <ArrowRight class="size-4" />
+		</a>
+	</div>
+
+	<div class="mt-10 grid gap-6 rounded-sa-lg bg-sa-field p-6 shadow-sa-sm ring-1 ring-sa-hairline lg:grid-cols-[minmax(0,14rem)_1fr_minmax(0,14rem)]">
+		<div class="flex flex-col gap-4">
+			<Select bind:value={locale} label="Locale">
+				<SelectTrigger />
+				<SelectContent>
+					<SelectItem value="en-US">English (United States)</SelectItem>
+					<SelectItem value="fr-FR">French (France)</SelectItem>
+					<SelectItem value="ja-JP">Japanese (Japan)</SelectItem>
+					<SelectItem value="ar-EG">Arabic (Egypt)</SelectItem>
+				</SelectContent>
+			</Select>
+			<Select bind:value={calSystem} label="Calendar">
+				<SelectTrigger />
+				<SelectContent>
+					<SelectItem value="gregorian">Gregorian</SelectItem>
+					<SelectItem value="buddhist">Buddhist</SelectItem>
+					<SelectItem value="hebrew">Hebrew</SelectItem>
+				</SelectContent>
+			</Select>
+			<Select bind:value={numbering} label="Numbering system">
+				<SelectTrigger />
+				<SelectContent>
+					<SelectItem value="latin">Latin</SelectItem>
+					<SelectItem value="arab">Arabic-Indic</SelectItem>
+					<SelectItem value="hanidec">Han decimal</SelectItem>
+				</SelectContent>
+			</Select>
+		</div>
+
+		<div class="grid place-items-center border-y border-sa-hairline py-4 lg:border-x lg:border-y-0">
+			<Calendar bind:value={intlDate} />
+		</div>
+
+		<div class="flex flex-col gap-4">
+			<Select bind:value={numberFmt} label="Number format">
+				<SelectTrigger />
+				<SelectContent>
+					<SelectItem value="decimal">Decimal</SelectItem>
+					<SelectItem value="currency">Currency</SelectItem>
+					<SelectItem value="percent">Percent</SelectItem>
+				</SelectContent>
+			</Select>
+			<NumberField bind:value={intlNumber} label="Number" />
+			<DatePicker bind:value={intlDate} label="Date" />
+		</div>
+	</div>
+</section>
+
+<!-- ======================= CUSTOMIZABLE ======================= -->
+<section class="border-t border-sa-hairline bg-sa-subtle/40">
+	<div class="mx-auto max-w-6xl px-4 py-16 lg:px-8 lg:py-24">
+		<div class="max-w-2xl">
+			<h2 class="text-3xl font-semibold tracking-tight text-sa-fg sm:text-4xl">
+				<span class="text-sa-accent">Customizable</span> to the core.
+			</h2>
+			<p class="mt-4 text-lg text-sa-fg-muted">
+				Start with ready-made components, compose your own patterns from the interaction primitives, or
+				drop all the way down to the rune-based state machines. Mix and match as needed.
+			</p>
+			<a href="/interactions" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
+				Learn more <ArrowRight class="size-4" />
+			</a>
+		</div>
+
+		<div class="mt-10 grid gap-4 md:grid-cols-2">
+			{#each customCards as card (card.title)}
+				<div class="flex flex-col overflow-hidden rounded-sa-lg bg-sa-field shadow-sa-sm ring-1 ring-sa-hairline">
+					<div class="p-6 pb-4">
+						<h3 class="font-semibold text-sa-fg">{card.title}</h3>
+						<p class="mt-1.5 text-sm leading-relaxed text-sa-fg-muted">{card.body}</p>
+					</div>
+					<div class="mt-auto"><CodeBlock code={card.code} lang="svelte" flush /></div>
+				</div>
+			{/each}
+		</div>
+	</div>
+</section>
+
+<!-- ======================= CTA ======================= -->
+<section class="mx-auto max-w-6xl px-4 py-20 text-center lg:px-8">
+	<h2 class="mx-auto max-w-2xl text-3xl font-semibold tracking-tight text-balance text-sa-fg sm:text-4xl">
+		Build your next Svelte app on a solid foundation.
+	</h2>
+	<p class="mx-auto mt-4 max-w-xl text-lg text-sa-fg-muted">
+		Install the CLI, add the components you need, and make them yours.
+	</p>
+	<div class="mt-8 flex flex-wrap justify-center gap-3">
+		<Button size="lg" onPress={() => go('/installation')}>
 			Get started
 			<ArrowRight class="size-4" />
 		</Button>
-	</div>
-
-	<ul class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-		{#each components as c (c.href)}
-			<li>
-				<a
-					href={c.href}
-					class="group flex items-center justify-between rounded-sa bg-sa-field px-4 py-3 text-sm font-medium text-sa-fg shadow-sa-sm ring-1 ring-sa-hairline transition-[transform,box-shadow,color] duration-150 hover:-translate-y-0.5 hover:text-sa-accent hover:shadow-sa-md motion-reduce:hover:translate-y-0"
-				>
-					{c.title}
-					<ArrowRight
-						class="size-3.5 -translate-x-1 text-sa-fg-muted opacity-0 transition-[transform,opacity,color] group-hover:translate-x-0 group-hover:text-sa-accent group-hover:opacity-100"
-					/>
-				</a>
-			</li>
-		{/each}
-	</ul>
-</section>
-
-<!-- ================= CTA ================= -->
-<section class="mx-auto max-w-6xl px-4 pb-20 lg:px-8">
-	<div
-		class="relative overflow-hidden rounded-[1.5rem] bg-sa-field p-10 text-center shadow-sa-md ring-1 ring-sa-hairline sm:p-16"
-	>
-		<div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
-			<div
-				class="absolute inset-0 opacity-50"
-				style="background-image: radial-gradient(var(--sa-hairline) 1px, transparent 1px); background-size: 22px 22px; mask-image: radial-gradient(ellipse 70% 80% at 50% 100%, black, transparent 70%); -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 100%, black, transparent 70%);"
-			></div>
-			<div
-				class="absolute bottom-[-40%] left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full opacity-40 blur-3xl"
-				style="background: radial-gradient(closest-side, oklch(from var(--sa-tint) 62% c h / 0.28), transparent)"
-			></div>
-		</div>
-
-		<div class="mb-5 inline-flex rounded-sa-lg bg-sa-subtle p-2.5 text-sa-accent ring-1 ring-sa-hairline">
-			<Sparkles class="size-5" />
-		</div>
-		<h2 class="mx-auto max-w-2xl text-3xl font-semibold tracking-tight text-balance text-sa-fg sm:text-4xl">
-			Build your next Svelte app on a solid foundation
-		</h2>
-		<p class="mx-auto mt-4 max-w-xl text-lg text-sa-fg-muted">
-			Install the CLI, add the components you need, and make them yours.
-		</p>
-		<div class="mx-auto mt-8 max-w-md text-left">
-			<CodeBlock code={install} lang="bash" filename="Terminal" />
-		</div>
-		<div class="mt-6 flex flex-wrap justify-center gap-3">
-			<Button size="lg" onPress={() => go('/installation')}>
-				Get started
-				<ArrowRight class="size-4" />
-			</Button>
-			<Button size="lg" variant="outline" onPress={() => go('https://github.com/ebnsina/svelte-aria')}>
-				GitHub
-			</Button>
-		</div>
+		<Button size="lg" variant="outline" onPress={() => go('https://github.com/ebnsina/svelte-aria')}>GitHub</Button>
 	</div>
 </section>

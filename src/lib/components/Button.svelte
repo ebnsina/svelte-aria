@@ -17,7 +17,7 @@
 	import { cn } from '../utils/cn.js';
 
 	export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';
-	export type ButtonSize = 'sm' | 'md' | 'lg';
+	export type ButtonSize = 'sm' | 'md' | 'lg' | 'icon';
 
 	const base =
 		'relative inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-sa ' +
@@ -38,7 +38,8 @@
 	const sizeClasses: Record<ButtonSize, string> = {
 		sm: 'h-7 gap-1 px-3 text-xs',
 		md: 'h-8 px-4 text-sm',
-		lg: 'h-10 px-6 text-base'
+		lg: 'h-10 px-6 text-base',
+		icon: 'size-8 [&_svg]:size-4'
 	};
 
 	/** variants class resolver — style any element as a button. */
