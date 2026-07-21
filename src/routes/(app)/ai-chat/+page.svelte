@@ -21,7 +21,17 @@
 		connection: { async *connect() {} },
 		initialMessages: [
 			{ id: '1', role: 'user', parts: [{ type: 'text', content: 'In one line: what does the focus-visible ring do?' }] },
-			{ id: '2', role: 'assistant', parts: [{ type: 'text', content: 'One global rule draws a 2px accent outline only when the browser flags :focus-visible — so keyboard users get a ring and mouse users don’t.' }] }
+			{ id: '2', role: 'assistant', parts: [{ type: 'text', content: 'One global rule draws a 2px accent outline only when the browser flags :focus-visible — so keyboard users get a ring and mouse users don’t.' }] },
+			{ id: '3', role: 'user', parts: [{ type: 'text', content: 'Does the Button still pass a11y checks after the loading change?' }] },
+			{
+				id: '4',
+				role: 'assistant',
+				parts: [
+					{ type: 'thinking', content: 'They want to confirm the loading state didn’t regress accessibility. I’ll run the check task and read the result.' },
+					{ type: 'tool-call', id: 't1', name: 'run_command', input: { command: 'npm run check' }, state: 'output-available', output: '4288 files\n0 errors, 0 warnings' },
+					{ type: 'text', content: 'Yes — 0 errors, 0 warnings. The button stays focusable, announces `aria-busy`, and matches the WAI-ARIA button pattern.' }
+				]
+			}
 		]
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	} as any);
@@ -132,8 +142,9 @@
 		{ id: 'api', title: 'Components' }
 	];
 	const props: PropRow[] = [
-		{ name: 'MessagePart', type: '{ part, children? }', description: 'Renders one UIMessage part by type (text / reasoning / fallback); override via children.' },
-		{ name: 'PromptInput', type: '{ value, onSubmit, disabled, toolbar }', description: 'Composable composer — Enter to send; compose the toolbar (its snippet receives submit()).' },
+		{ name: 'MessagePart', type: '{ part, children? }', description: 'Renders one UIMessage part by type — text / thinking (collapsible) / tool-call / fallback; override via children.' },
+		{ name: 'ToolCall', type: '{ part, defaultOpen, children? }', description: 'A tool-call part: name, live status, and collapsible input/output. Override the output via children.' },
+		{ name: 'PromptInput', type: '{ value, onSubmit, disabled, leading, toolbar }', description: 'Composable composer — Enter to send; compose the toolbar (its snippet receives submit()).' },
 		{ name: 'MessageScroller / Message / Bubble', type: 'chat primitives', description: 'Reused to lay out the conversation.' }
 	];
 </script>

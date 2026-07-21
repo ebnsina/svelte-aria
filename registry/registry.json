@@ -300,6 +300,16 @@
 			]
 		},
 		{
+			"name": "tool-call",
+			"type": "registry:ui",
+			"description": "Renders a TanStack AI tool-call message part — name, live status (running/done/error), and collapsible input/output.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/ToolCall.svelte", "target": "{ui}/tool-call.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "prompt-input",
 			"type": "registry:ui",
 			"description": "A composable chat composer — Enter to send, with a toolbar snippet that receives submit().",
