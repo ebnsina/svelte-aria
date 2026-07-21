@@ -22,6 +22,8 @@
 	--sa-turquoise: oklch(0.5 0.081146 205.114);
 	--sa-cyan: oklch(0.4 0.142107 243.926);
 	--sa-green: oklch(0.5 0.121276 155.372);
+	/* Brand lime — the identity hue; also selectable as a docs accent. */
+	--sa-lime: oklch(0.88 0.21 128);
 	--sa-blue: oklch(0.5 0.22049 266.315);
 	--sa-indigo: oklch(1 0.25049 284.23);
 	--sa-purple: oklch(0.7 0.223324 302);

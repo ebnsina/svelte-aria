@@ -1,0 +1,123 @@
+name: Bug report
+description: Report a reproducible defect in a svelte-aria component or behaviour.
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Thanks for taking the time to file a bug. svelte-aria aims for rigorous,
+        correct interaction behaviour, so a clear, minimal reproduction is the
+        single most valuable thing you can give us. Please fill in every
+        required field — reports without a reproduction usually can't be acted
+        on and may be closed.
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected component(s)
+      description: Which component or surface does this affect? Pick the closest match, or "Other / not sure".
+      multiple: true
+      options:
+        - Button
+        - Checkbox
+        - Switch
+        - Radio
+        - TextField
+        - SearchField
+        - NumberField
+        - Select
+        - ComboBox
+        - Command
+        - Dialog
+        - Sheet
+        - Popover
+        - Tooltip
+        - HoverCard
+        - Menu
+        - Tabs
+        - Toolbar
+        - Accordion
+        - Calendar
+        - RangeCalendar
+        - DatePicker
+        - DataTable
+        - Drag and drop
+        - AI / chat surfaces
+        - Tokens / theming
+        - CLI / registry
+        - Other / not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear and concise description of the actual behaviour, including any console errors.
+      placeholder: When I open the Select with the keyboard, focus jumps to the page body instead of the first option…
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: What did you expect to happen? Where relevant, reference the accessible pattern you expected to match.
+      placeholder: Arrow-down should move virtual focus (aria-activedescendant) to the first option while DOM focus stays on the trigger…
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: >-
+        Step-by-step instructions, and ideally a link to a minimal REPL /
+        StackBlitz that reproduces the issue. Strip it down to the smallest
+        possible case. "It happens in my app" is not reproducible.
+      placeholder: |
+        1. Render <Select> with three options
+        2. Focus the trigger and press Enter
+        3. Press ArrowDown
+        4. Observe…
+
+        REPL: https://svelte.dev/repl/…
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Fill in your versions and platform. Call out mobile explicitly — touch and pointer behaviour differ.
+      value: |
+        - svelte-aria version:
+        - Svelte version:
+        - Browser + version:
+        - OS / device (note iOS / Android / desktop):
+        - Mobile / touch involved? (yes / no):
+      render: markdown
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: a11y-impact
+    attributes:
+      label: Accessibility impact
+      description: Does this bug affect accessibility? Check all that apply — a11y regressions are treated as high priority.
+      options:
+        - label: Breaks keyboard navigation (arrow keys, Tab, Enter/Space, Esc, roving/virtual focus)
+        - label: Affects screen reader output (roles, names, states, live-region announcements)
+        - label: Breaks focus management (focus trap, focus restore, initial focus, focus visibility)
+        - label: No accessibility impact that I'm aware of
+
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: I have provided a minimal reproduction (steps and/or a REPL/StackBlitz link).
+          required: true

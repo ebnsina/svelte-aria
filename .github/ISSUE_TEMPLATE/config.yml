@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions & usage help (Discussions Q&A)
+    url: https://github.com/ebnsina/svelte-aria/discussions/categories/q-a
+    about: >-
+      Have a "how do I…" question, need help wiring up a component, or unsure
+      whether something is a bug? Ask in Discussions Q&A — issues are reserved
+      for confirmed, reproducible defects.
+  - name: Ideas & feature brainstorming (Discussions Ideas)
+    url: https://github.com/ebnsina/svelte-aria/discussions/categories/ideas
+    about: >-
+      Open-ended ideas, new component proposals, or API brainstorming that
+      isn't yet a concrete request? Start a thread in Discussions Ideas so it
+      can be shaped before it becomes a tracked feature request.

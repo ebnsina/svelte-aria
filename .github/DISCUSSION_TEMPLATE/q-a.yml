@@ -1,0 +1,44 @@
+title: "[Q&A] "
+labels: [question]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Looking for help using svelte-aria? Give us enough context to answer in
+        one round: what you're trying to build, what you've already tried, and a
+        small code snippet. If it turns out to be a reproducible defect, we'll
+        point you to a bug report.
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: What are you trying to do?
+      description: Describe the outcome you're after, not just the error.
+      placeholder: I want a DatePicker that only allows dates within the current Hijri month…
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you tried?
+      description: Approaches, props, or workarounds you've already attempted and what happened.
+    validations:
+      required: true
+
+  - type: textarea
+    id: snippet
+    attributes:
+      label: Code snippet
+      description: A minimal snippet showing your setup. This will be automatically formatted as code.
+      render: svelte
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      value: |
+        - svelte-aria version:
+        - Svelte version:
+        - Browser + OS (note mobile / touch):
+      render: markdown

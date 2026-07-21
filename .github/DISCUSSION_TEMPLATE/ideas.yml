@@ -1,0 +1,36 @@
+title: "[Idea] "
+labels: [idea]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Have an idea for svelte-aria? This is the place to think out loud before
+        it becomes a formal feature request. Describe the idea, the real use
+        case behind it, and a rough sketch of how it might work.
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What would you like svelte-aria to do?
+      placeholder: A headless <Timeline> primitive for rendering annotated event sequences…
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: The use case
+      description: What real problem does this solve, and who benefits? Concrete scenarios help.
+      placeholder: >-
+        Building a Bayt al-Hikma manuscript catalogue where each item shows a
+        provenance timeline of scribes and owners…
+    validations:
+      required: true
+
+  - type: textarea
+    id: api-sketch
+    attributes:
+      label: Rough API sketch
+      description: A loose idea of the component, props, or snippets. Nothing needs to be final.
+      render: svelte

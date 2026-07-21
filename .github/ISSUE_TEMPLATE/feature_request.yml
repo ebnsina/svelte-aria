@@ -1,0 +1,55 @@
+name: Feature request
+description: Propose a new component, API, or capability for svelte-aria.
+title: "feat: "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Thanks for helping shape svelte-aria. If your idea is still open-ended
+        or exploratory, consider starting a Discussion first so it can be
+        refined. Use this form when you have a concrete, well-scoped request.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / motivation
+      description: What are you trying to do, and what's getting in the way? Describe the underlying need, not just the solution.
+      placeholder: >-
+        I need a multi-select ComboBox for tagging manuscripts in a catalogue
+        UI, but there's currently no way to keep more than one selection…
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API or solution
+      description: Sketch the component, props, snippets, or behaviour you have in mind. Pseudo-code is welcome.
+      placeholder: |
+        <ComboBox multiple>
+          {#snippet tag(item)}…{/snippet}
+        </ComboBox>
+
+  - type: input
+    id: apg-pattern
+    attributes:
+      label: Related WAI-ARIA APG pattern
+      description: If this maps to a known accessible pattern, name it (and link the APG page). Leave blank if none applies.
+      placeholder: Combobox — https://www.w3.org/WAI/ARIA/apg/patterns/combobox/
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What workarounds or other approaches have you tried or ruled out, and why?
+
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have searched existing issues and discussions and this is not a duplicate.
+          required: true
+        - label: I understand every widget must match its WAI-ARIA APG pattern (keyboard, focus, roles) to be accepted.
+          required: true

@@ -1,0 +1,84 @@
+name: Accessibility report
+description: Report a divergence from the WAI-ARIA Authoring Practices Guide (APG).
+title: "a11y: "
+labels: [accessibility]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        svelte-aria treats its WAI-ARIA APG baseline as a contract: every widget
+        is expected to match the roles, keyboard support, focus management, and
+        ARIA state of its authoritative pattern. Use this form to report a
+        specific divergence so it can be reconciled.
+
+  - type: input
+    id: component
+    attributes:
+      label: Component
+      description: Which component diverges from its pattern?
+      placeholder: Menu
+    validations:
+      required: true
+
+  - type: input
+    id: apg-pattern
+    attributes:
+      label: APG pattern / URL it should match
+      description: Link the authoritative WAI-ARIA APG pattern this component is expected to follow.
+      placeholder: https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/
+    validations:
+      required: true
+
+  - type: dropdown
+    id: divergence-area
+    attributes:
+      label: What diverges?
+      description: Which aspect of the pattern is not met? Select all that apply.
+      multiple: true
+      options:
+        - Roles (wrong or missing role / accessible name)
+        - Keyboard support (arrow keys, Tab, Enter/Space, Esc, Home/End, typeahead)
+        - Focus management (roving vs virtual focus, trap, restore, initial focus)
+        - ARIA state (aria-expanded / aria-selected / aria-current / aria-activedescendant / aria-invalid …)
+        - Live-region announcements
+    validations:
+      required: true
+
+  - type: input
+    id: assistive-tech
+    attributes:
+      label: Assistive technology used
+      description: Screen reader + browser + OS you tested with (or "keyboard only" if no SR).
+      placeholder: VoiceOver + Safari on macOS 15 / NVDA + Firefox on Windows 11
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour (per the APG)
+      description: What should happen, according to the pattern?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: What actually happens? Include what the screen reader announced, if relevant.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Steps and, ideally, a minimal REPL / StackBlitz link.
+
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Before submitting
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true

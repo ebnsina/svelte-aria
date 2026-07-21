@@ -16,6 +16,7 @@ export interface Accent {
 }
 
 export const ACCENTS: Accent[] = [
+	{ name: 'Lime', token: 'lime' },
 	{ name: 'Indigo', token: 'indigo' },
 	{ name: 'Blue', token: 'blue' },
 	{ name: 'Cyan', token: 'cyan' },

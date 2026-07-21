@@ -22,10 +22,17 @@
  *   </div>
  *   <div aria-live="assertive" class="sr-only">{dnd.message}</div>
  *
- * Pointer: native HTML5 drag between/within containers, with `dnd.dropTarget`
- * exposed for an insertion indicator. Keyboard (APG drag pattern): focus an item,
- * Space/Enter to pick up, arrows to move across containers and positions,
- * Space/Enter to drop, Escape to cancel — announced through `dnd.message`.
+ * Pointer: unified **Pointer Events** (mouse, touch and pen alike), so dragging
+ * works on touch devices — native HTML5 drag never fires from a touch, which is
+ * why iOS/Android needed this. A drag begins once the pointer moves past a small
+ * threshold; the live drop target is hit-tested with `elementFromPoint` against
+ * the `data-sortable-id` items and `data-dropzone` containers. `itemProps` sets
+ * `touch-action: none` so a touch-drag isn't stolen by page scrolling — put the
+ * spread on a drag *handle* if items must also scroll.
+ *
+ * Keyboard (APG drag pattern): focus an item, Space/Enter to pick up, arrows to
+ * move across containers and positions, Space/Enter to drop, Escape to cancel —
+ * announced through `dnd.message`.
  */
 import { tick } from 'svelte';
 
@@ -49,11 +56,22 @@ export interface SortableOptions {
 	label?: (id: string | number) => string;
 }
 
+/** Movement (px) before a press turns into a drag — filters out taps and clicks. */
+const DRAG_ACTIVATION_DISTANCE = 5;
+
 export function createSortable(options: SortableOptions) {
 	let draggingId = $state<string | number | null>(null);
 	let grabbedId = $state<string | number | null>(null);
 	let dropTarget = $state<SortablePosition | null>(null);
 	let message = $state('');
+
+	// Non-reactive pointer bookkeeping for the in-flight gesture.
+	let pointerId: number | null = null;
+	let pointerItemId: string | number | null = null;
+	let startX = 0;
+	let startY = 0;
+	let dragActive = false;
+	let captureEl: HTMLElement | null = null;
 
 	function reset() {
 		draggingId = null;
@@ -86,6 +104,101 @@ export function createSortable(options: SortableOptions) {
 		await tick();
 		document.querySelector<HTMLElement>(`[data-sortable-id="${CSS.escape(String(id))}"]`)?.focus();
 	}
+
+	// ---- Pointer drag (mouse + touch + pen) ----------------------------------
+
+	// Resolve a DOM `data-sortable-id` string back to *this* controller's id type
+	// (consumer ids may be numbers), returning its live position or null.
+	function positionOfSortable(raw: string): SortablePosition | null {
+		return options.find(raw) ?? (/^-?\d+$/.test(raw) ? options.find(Number(raw)) : null);
+	}
+
+	// Hit-test the point under the pointer to a raw insertion target: over an item
+	// → before/after it by its vertical midpoint; over an empty zone → its end.
+	function hitTest(x: number, y: number): SortablePosition | null {
+		const el = document.elementFromPoint(x, y) as HTMLElement | null;
+		if (!el) return null;
+		const itemEl = el.closest<HTMLElement>('[data-sortable-id]');
+		if (itemEl) {
+			const p = positionOfSortable(itemEl.getAttribute('data-sortable-id')!);
+			if (p) {
+				const r = itemEl.getBoundingClientRect();
+				return { container: p.container, index: y > r.top + r.height / 2 ? p.index + 1 : p.index };
+			}
+		}
+		const zoneEl = el.closest<HTMLElement>('[data-dropzone]');
+		if (zoneEl) {
+			const c = zoneEl.getAttribute('data-dropzone')!;
+			if (options.containers().includes(c)) return { container: c, index: options.size(c) };
+		}
+		return null;
+	}
+
+	function activateDrag() {
+		dragActive = true;
+		draggingId = pointerItemId;
+		grabbedId = null; // a pointer drag supersedes any keyboard pick-up
+		const p = pointerItemId != null ? options.find(pointerItemId) : null;
+		dropTarget = p ? { container: p.container, index: p.index } : null;
+	}
+
+	function endPointer(commit: boolean) {
+		if (captureEl && pointerId != null) {
+			try {
+				captureEl.releasePointerCapture(pointerId);
+			} catch {
+				/* capture may already be gone */
+			}
+		}
+		if (dragActive) {
+			if (commit) commitDrop();
+			else reset();
+		}
+		pointerId = null;
+		pointerItemId = null;
+		dragActive = false;
+		captureEl = null;
+	}
+
+	function onItemPointerDown(e: PointerEvent, id: string | number) {
+		if (pointerId !== null) return; // already tracking a gesture
+		if (e.pointerType === 'mouse' && e.button !== 0) return; // primary button only
+		pointerId = e.pointerId;
+		pointerItemId = id;
+		startX = e.clientX;
+		startY = e.clientY;
+		dragActive = false;
+		captureEl = e.currentTarget as HTMLElement;
+		// Capture keeps move/up events flowing to this element across containers.
+		try {
+			captureEl.setPointerCapture(e.pointerId);
+		} catch {
+			/* not capturable (rare) — window still receives the events */
+		}
+	}
+
+	function onItemPointerMove(e: PointerEvent) {
+		if (e.pointerId !== pointerId) return;
+		if (!dragActive) {
+			if (Math.hypot(e.clientX - startX, e.clientY - startY) <= DRAG_ACTIVATION_DISTANCE) return;
+			activateDrag();
+		}
+		e.preventDefault();
+		const t = hitTest(e.clientX, e.clientY);
+		if (t) dropTarget = t;
+	}
+
+	function onItemPointerUp(e: PointerEvent) {
+		if (e.pointerId !== pointerId) return;
+		endPointer(true);
+	}
+
+	function onItemPointerCancel(e: PointerEvent) {
+		if (e.pointerId !== pointerId) return;
+		endPointer(false);
+	}
+
+	// ---- Keyboard drag (APG pattern) -----------------------------------------
 
 	function onItemKeydown(e: KeyboardEvent, id: string | number) {
 		if (e.key === ' ' || e.key === 'Enter') {
@@ -148,32 +261,19 @@ export function createSortable(options: SortableOptions) {
 		/** Props for a draggable item element (spread onto it). */
 		itemProps(id: string | number) {
 			return {
-				draggable: true,
 				role: 'button',
 				tabindex: 0,
 				'aria-roledescription': 'Draggable item',
 				'data-sortable-id': String(id),
 				'data-grabbed': grabbedId === id || undefined,
 				'data-dragging': draggingId === id || undefined,
-				ondragstart: (e: DragEvent) => {
-					draggingId = id;
-					grabbedId = null;
-					if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
-				},
-				ondragend: reset,
-				ondragover: (e: DragEvent) => {
-					if (draggingId == null) return;
-					e.preventDefault();
-					e.stopPropagation();
-					const p = options.find(id);
-					if (!p) return;
-					const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
-					dropTarget = { container: p.container, index: e.clientY > r.top + r.height / 2 ? p.index + 1 : p.index };
-				},
-				ondrop: (e: DragEvent) => {
-					e.preventDefault();
-					commitDrop();
-				},
+				// touch-action:none so a touch-drag isn't hijacked by scrolling; no text
+				// selection while dragging with a mouse.
+				style: 'touch-action: none; -webkit-user-select: none; user-select: none;',
+				onpointerdown: (e: PointerEvent) => onItemPointerDown(e, id),
+				onpointermove: onItemPointerMove,
+				onpointerup: onItemPointerUp,
+				onpointercancel: onItemPointerCancel,
 				onkeydown: (e: KeyboardEvent) => onItemKeydown(e, id)
 			};
 		},
@@ -183,17 +283,7 @@ export function createSortable(options: SortableOptions) {
 			return {
 				'data-dropzone': container,
 				'data-dropactive': dropTarget?.container === container || undefined,
-				'data-dnd-active': draggingId !== null || undefined,
-				ondragover: (e: DragEvent) => {
-					if (draggingId == null) return;
-					e.preventDefault();
-					dropTarget = { container, index: options.size(container) };
-				},
-				ondrop: (e: DragEvent) => {
-					e.preventDefault();
-					if (draggingId != null && dropTarget) options.onMove(draggingId, dropTarget);
-					reset();
-				}
+				'data-dnd-active': draggingId !== null || undefined
 			};
 		}
 	};
