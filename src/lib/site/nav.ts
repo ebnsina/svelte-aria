@@ -63,6 +63,7 @@ export const nav: NavSection[] = [
 		title: 'AI & Chat',
 		items: [
 			{ title: 'AI Chat', href: '/ai-chat' },
+			{ title: 'AI Media', href: '/ai-media' },
 			{ title: 'Chat', href: '/chat' },
 			{ title: 'Terminal', href: '/terminal' }
 		]

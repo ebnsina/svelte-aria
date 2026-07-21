@@ -7,6 +7,7 @@
 	import DocsPage from '$lib/site/DocsPage.svelte';
 	import Section from '$lib/site/Section.svelte';
 	import PropsTable, { type PropRow } from '$lib/site/PropsTable.svelte';
+	import { streamWords } from '$lib/site/stream.js';
 
 	type ChatMsg = {
 		id: number;
@@ -43,9 +44,18 @@
 		thinking = true;
 		setTimeout(() => {
 			thinking = false;
-			messages.push({ id: nextId++, role: 'assistant', time: 'just now', text: replies[replyIdx++ % replies.length] });
-			scroller?.scrollToBottom();
-		}, 1100);
+			streamReply(replies[replyIdx++ % replies.length]);
+		}, 900);
+	}
+	// Stream the reply in word by word instead of an instant jump.
+	function streamReply(full: string) {
+		const id = nextId++;
+		messages.push({ id, role: 'assistant', time: 'just now', text: '' });
+		streamWords(full, (partial) => {
+			const m = messages.find((x) => x.id === id);
+			if (m) m.text = partial;
+			scroller?.scrollToBottom(false);
+		});
 	}
 	function onComposerKey(e: KeyboardEvent) {
 		if (e.key === 'Enter' && !e.shiftKey) {

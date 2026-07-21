@@ -10,6 +10,7 @@
 	import CodeBlock from '$lib/site/CodeBlock.svelte';
 	import Callout from '$lib/site/Callout.svelte';
 	import PropsTable, { type PropRow } from '$lib/site/PropsTable.svelte';
+	import { streamWords } from '$lib/site/stream.js';
 
 	// A real @tanstack/ai-svelte chat instance. In production you pass a streaming
 	// `connection` (e.g. fetchServerSentEvents('/api/chat')) and call
@@ -83,9 +84,19 @@
 		replying = true;
 		setTimeout(() => {
 			replying = false;
-			chat.setMessages([...chat.messages, { id: crypto.randomUUID(), role: 'assistant', parts: [{ type: 'text', content: replies[ri++ % replies.length] }] }] as never);
-			scroller?.scrollToBottom();
-		}, 900);
+			streamAssistant(replies[ri++ % replies.length]);
+		}, 700);
+	}
+	// Add an empty assistant message, then stream the text into it word by word.
+	function streamAssistant(full: string) {
+		const id = crypto.randomUUID();
+		chat.setMessages([...chat.messages, { id, role: 'assistant', parts: [{ type: 'text', content: '' }] }] as never);
+		streamWords(full, (partial) => {
+			const msgs = chat.messages.slice();
+			msgs[msgs.length - 1] = { id, role: 'assistant', parts: [{ type: 'text', content: partial }] };
+			chat.setMessages(msgs as never);
+			scroller?.scrollToBottom(false);
+		});
 	}
 	function handleSend(text: string) {
 		pushUser(text);
@@ -147,14 +158,14 @@
 					{#each chat.messages as m (m.id)}
 						{#if m.role === 'assistant'}
 							<div class="flex flex-col gap-1.5">
-								{#each m.parts as part (part)}
+								{#each m.parts as part, pi (pi)}
 									<MessagePart {part} />
 								{/each}
 							</div>
 						{:else}
 							<Message align="end" aria-label="Your message">
 								<Bubble variant="outline" class="bg-sa-subtle">
-									{#each m.parts as part (part)}
+									{#each m.parts as part, pi (pi)}
 										<MessagePart {part} />
 									{/each}
 								</Bubble>
