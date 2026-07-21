@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import {
 		Button,
 		Badge,
@@ -162,11 +163,12 @@
 				: { maximumFractionDigits: 2 }
 	);
 
-	// ---- Section: kanban -------------------------------------------------------
-	const board = [
+	// ---- Section: kanban (accessible drag & drop) ------------------------------
+	type Task = { id: number; title: string; body: string; who: string };
+	type Column = { title: string; tasks: Task[] };
+	let board = $state<Column[]>([
 		{
 			title: 'Open',
-			count: 4,
 			tasks: [
 				{ id: 101, title: 'Button alignment issue', body: 'Buttons in the Settings menu are misaligned on smaller screens.', who: 'Al-Kindi' },
 				{ id: 102, title: 'Login page redesign', body: 'Requesting a redesign of the login page to improve UX.', who: 'Al-Razi' },
@@ -175,7 +177,6 @@
 		},
 		{
 			title: 'In Progress',
-			count: 2,
 			tasks: [
 				{ id: 103, title: 'Database connection error', body: 'Intermittent connection errors when accessing the database.', who: 'Al-Farabi' },
 				{ id: 110, title: 'Two-factor authentication', body: 'Add 2FA support for improved account security.', who: 'Al-Razi' }
@@ -183,10 +184,74 @@
 		},
 		{
 			title: 'Closed',
-			count: 1,
 			tasks: [{ id: 106, title: 'Performance optimization', body: 'Reduce load times across the application shell.', who: 'Ibn Rushd' }]
 		}
-	];
+	]);
+
+	// Drag state: `dragId` is the pointer-dragged task; `grabbed` is the
+	// keyboard-picked task. Both move cards between/within columns.
+	let dragId = $state<number | null>(null);
+	let grabbedId = $state<number | null>(null);
+	let liveMsg = $state('');
+
+	function locateById(id: number): { c: number; t: number } | null {
+		for (let c = 0; c < board.length; c++) {
+			const t = board[c].tasks.findIndex((x) => x.id === id);
+			if (t !== -1) return { c, t };
+		}
+		return null;
+	}
+	function moveTask(id: number, toCol: number, toIdx: number) {
+		const from = locateById(id);
+		if (!from) return;
+		const [task] = board[from.c].tasks.splice(from.t, 1);
+		if (from.c === toCol && from.t < toIdx) toIdx--;
+		toIdx = Math.max(0, Math.min(toIdx, board[toCol].tasks.length));
+		board[toCol].tasks.splice(toIdx, 0, task);
+	}
+	function announceMove(id: number) {
+		const l = locateById(id);
+		if (!l) return;
+		liveMsg = `${board[l.c].tasks[l.t].title}, ${board[l.c].title}, position ${l.t + 1} of ${board[l.c].tasks.length}.`;
+	}
+	// pointer (native HTML5 DnD)
+	function onDrop(toCol: number, toIdx: number) {
+		if (dragId != null) moveTask(dragId, toCol, toIdx);
+		dragId = null;
+	}
+	// keyboard
+	async function onCardKey(e: KeyboardEvent, id: number) {
+		if (e.key === ' ' || e.key === 'Enter') {
+			e.preventDefault();
+			if (grabbedId == null) {
+				grabbedId = id;
+				const l = locateById(id)!;
+				liveMsg = `Picked up ${board[l.c].tasks[l.t].title}. Use arrow keys to move between columns and positions, space to drop, escape to cancel.`;
+			} else {
+				grabbedId = null;
+				announceMove(id);
+			}
+			return;
+		}
+		if (grabbedId !== id) return;
+		const l = locateById(id)!;
+		let moved = true;
+		if (e.key === 'ArrowLeft' && l.c > 0) moveTask(id, l.c - 1, l.t);
+		else if (e.key === 'ArrowRight' && l.c < board.length - 1) moveTask(id, l.c + 1, l.t);
+		else if (e.key === 'ArrowUp' && l.t > 0) moveTask(id, l.c, l.t - 1);
+		else if (e.key === 'ArrowDown' && l.t < board[l.c].tasks.length - 1) moveTask(id, l.c, l.t + 1);
+		else if (e.key === 'Escape') {
+			grabbedId = null;
+			liveMsg = 'Move cancelled.';
+			moved = false;
+		} else moved = false;
+		if (moved) {
+			e.preventDefault();
+			await tick();
+			document.getElementById(`kanban-${id}`)?.focus();
+			announceMove(id);
+		}
+	}
 
 	// ---- Section: customizable -------------------------------------------------
 	const customCards = [
@@ -248,25 +313,38 @@ state.toggle();`
 		<Button size="lg" variant="outline" onPress={() => go('/button')}>Explore components</Button>
 	</div>
 
+	<!-- Hand-drawn-style annotation arrow (points down-right toward the card). -->
+	{#snippet arrow(flip: boolean)}
+		<svg
+			width="56"
+			height="30"
+			viewBox="0 0 56 30"
+			fill="none"
+			aria-hidden="true"
+			class="shrink-0 {flip ? '-scale-x-100' : ''}"
+		>
+			<path d="M3 6C19 2 38 5 50 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+			<path d="M50 22L40 21M50 22L47 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+		</svg>
+	{/snippet}
+
 	<!-- Annotated product showcase -->
 	<div class="relative mx-auto mt-20 max-w-3xl">
 		<!-- left callouts -->
-		<div class="absolute top-6 right-full bottom-6 hidden w-44 flex-col justify-around pr-5 lg:flex">
+		<div class="absolute top-4 right-full bottom-4 hidden w-52 flex-col justify-around pr-2 lg:flex">
 			{#each leftCallouts as c (c.label)}
-				<a href={c.href} class="group flex items-center justify-end gap-2">
-					<span class="font-mono text-xs text-sa-fg-muted transition-colors group-hover:text-sa-accent">{c.label}</span>
-					<span class="h-px w-7 shrink-0 bg-sa-hairline transition-colors group-hover:bg-sa-accent"></span>
-					<span class="size-1.5 shrink-0 rounded-full bg-sa-hairline transition-colors group-hover:bg-sa-accent"></span>
+				<a href={c.href} class="group flex items-center justify-end gap-1.5 text-sa-fg-muted transition-colors hover:text-sa-accent">
+					<span class="font-mono text-xs">{c.label}</span>
+					{@render arrow(false)}
 				</a>
 			{/each}
 		</div>
 		<!-- right callouts -->
-		<div class="absolute top-6 bottom-6 left-full hidden w-44 flex-col justify-around pl-5 lg:flex">
+		<div class="absolute top-4 bottom-4 left-full hidden w-52 flex-col justify-around pl-2 lg:flex">
 			{#each rightCallouts as c (c.label)}
-				<a href={c.href} class="group flex items-center gap-2">
-					<span class="size-1.5 shrink-0 rounded-full bg-sa-hairline transition-colors group-hover:bg-sa-accent"></span>
-					<span class="h-px w-7 shrink-0 bg-sa-hairline transition-colors group-hover:bg-sa-accent"></span>
-					<span class="font-mono text-xs text-sa-fg-muted transition-colors group-hover:text-sa-accent">{c.label}</span>
+				<a href={c.href} class="group flex items-center gap-1.5 text-sa-fg-muted transition-colors hover:text-sa-accent">
+					{@render arrow(true)}
+					<span class="font-mono text-xs">{c.label}</span>
 				</a>
 			{/each}
 		</div>
@@ -426,18 +504,57 @@ state.toggle();`
 			<a href="/data-table" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
 				Learn more <ArrowRight class="size-4" />
 			</a>
+			<p class="mt-3 text-sm text-sa-fg-muted">
+				Drag a card between columns — or focus one and press <kbd class="rounded-sa-sm bg-sa-subtle px-1.5 py-0.5 text-xs text-sa-fg ring-1 ring-sa-hairline">Space</kbd>
+				to pick it up and move it with the arrow keys.
+			</p>
 		</div>
 
+		<!-- polite live region for the keyboard drag-and-drop -->
+		<div aria-live="assertive" class="sr-only">{liveMsg}</div>
+
 		<div class="mt-10 grid gap-4 md:grid-cols-3">
-			{#each board as col (col.title)}
-				<div class="flex flex-col rounded-sa-lg bg-sa-field p-4 shadow-sa-sm ring-1 ring-sa-hairline">
+			{#each board as col, ci (col.title)}
+				<div
+					class="flex flex-col rounded-sa-lg bg-sa-field p-4 shadow-sa-sm ring-1 ring-sa-hairline transition-colors"
+					class:ring-sa-accent={dragId != null}
+					ondragover={(e) => e.preventDefault()}
+					ondrop={(e) => {
+						e.preventDefault();
+						onDrop(ci, board[ci].tasks.length);
+					}}
+					role="group"
+					aria-label="{col.title} — {col.tasks.length} tasks"
+				>
 					<div class="mb-3 flex items-baseline justify-between">
 						<h3 class="text-sm font-semibold text-sa-fg">{col.title}</h3>
-						<span class="text-xs text-sa-fg-muted">{col.count} {col.count === 1 ? 'task' : 'tasks'}</span>
+						<span class="text-xs text-sa-fg-muted">{col.tasks.length} {col.tasks.length === 1 ? 'task' : 'tasks'}</span>
 					</div>
-					<div class="flex flex-col gap-3">
-						{#each col.tasks as task (task.id)}
-							<article class="rounded-sa bg-sa-bg p-3 shadow-sa-sm ring-1 ring-sa-hairline">
+					<div class="flex min-h-16 flex-col gap-3">
+						{#each col.tasks as task, ti (task.id)}
+							<div
+								id={`kanban-${task.id}`}
+								role="button"
+								tabindex="0"
+								draggable="true"
+								aria-roledescription="Draggable task"
+								aria-label="{task.title}, in {col.title}"
+								data-grabbed={grabbedId === task.id || undefined}
+								data-dragging={dragId === task.id || undefined}
+								ondragstart={(e) => {
+									dragId = task.id;
+									if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
+								}}
+								ondragend={() => (dragId = null)}
+								ondragover={(e) => e.preventDefault()}
+								ondrop={(e) => {
+									e.preventDefault();
+									e.stopPropagation();
+									onDrop(ci, ti);
+								}}
+								onkeydown={(e) => onCardKey(e, task.id)}
+								class="cursor-grab rounded-sa bg-sa-bg p-3 shadow-sa-sm ring-1 ring-sa-hairline transition-[box-shadow,transform,opacity] outline-none active:cursor-grabbing data-[dragging]:opacity-40 data-[grabbed]:-translate-y-0.5 data-[grabbed]:shadow-sa-md data-[grabbed]:ring-2 data-[grabbed]:ring-sa-accent"
+							>
 								<div class="flex items-start justify-between gap-2">
 									<h4 class="text-sm font-medium text-sa-fg">{task.title}</h4>
 									<span class="shrink-0 font-mono text-xs text-sa-fg-muted">#{task.id}</span>
@@ -447,7 +564,7 @@ state.toggle();`
 									<Avatar alt={task.who} size="sm" />
 									<span class="text-xs text-sa-fg-muted">{task.who}</span>
 								</div>
-							</article>
+							</div>
 						{/each}
 					</div>
 				</div>
@@ -566,7 +683,7 @@ state.toggle();`
 					<span aria-hidden="true" class="absolute top-[10.5rem] -right-[2px] h-16 w-[3px] rounded-r-sm bg-black"></span>
 
 					<!-- frame + bezel -->
-					<div class="w-[16.5rem] rounded-[2.9rem] bg-black p-[10px] shadow-[0_20px_50px_-12px_rgb(0_0_0/0.45)]">
+					<div class="w-[15rem] rounded-[2.9rem] bg-black p-[10px] shadow-[0_20px_50px_-12px_rgb(0_0_0/0.45)]">
 						<div class="relative overflow-hidden rounded-[2.3rem] bg-sa-bg">
 							<!-- dynamic island -->
 							<div aria-hidden="true" class="absolute top-2.5 left-1/2 z-10 h-[26px] w-[5.5rem] -translate-x-1/2 rounded-full bg-black"></div>
@@ -578,7 +695,7 @@ state.toggle();`
 							</div>
 
 							<!-- app content -->
-							<div class="flex min-h-80 flex-col gap-2 px-6 pt-10 pb-6">
+							<div class="flex min-h-[27rem] flex-col gap-2 px-6 pt-10 pb-6">
 								<p class="mb-2 text-lg font-semibold text-sa-fg">Sharing</p>
 								<Select bind:value={permission} label="Permissions">
 									<SelectTrigger />

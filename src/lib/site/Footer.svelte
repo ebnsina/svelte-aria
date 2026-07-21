@@ -90,10 +90,13 @@
 		<div class="mt-12 flex flex-col items-start justify-between gap-4 border-t border-sa-hairline pt-6 text-sm text-sa-fg-muted sm:flex-row sm:items-center">
 			<p>© {year} svelte-aria. Released under the MIT License.</p>
 			<p class="inline-flex items-center gap-1.5">
-				Built with
-				<span class="font-medium text-sa-fg">Svelte 5</span>
-				·
-				<span class="font-medium text-sa-fg">Tailwind</span>
+				Made in Bangladesh 🇧🇩 by
+				<a
+					href="https://x.com/ebns1na"
+					class="font-medium text-sa-fg underline-offset-2 transition-colors hover:text-sa-accent hover:underline"
+				>
+					Ebn Sina
+				</a>
 			</p>
 		</div>
 	</div>

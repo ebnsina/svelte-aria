@@ -21,6 +21,18 @@ export { default as Radio } from './components/Radio.svelte';
 export { default as Switch } from './components/Switch.svelte';
 export { default as Slider } from './components/Slider.svelte';
 export { default as Calendar } from './components/Calendar.svelte';
+export { default as BanglaCalendar } from './components/BanglaCalendar.svelte';
+export {
+	toBangla,
+	fromBangla,
+	banglaMonthLength,
+	toBanglaDigits,
+	BANGLA_MONTHS,
+	BANGLA_MONTHS_LATIN,
+	BANGLA_WEEKDAYS,
+	BANGLA_WEEKDAYS_SHORT,
+	type BanglaDate
+} from './utils/bangla-calendar.js';
 export { default as DatePicker } from './components/DatePicker.svelte';
 export { default as RangeCalendar, type DateRange } from './components/RangeCalendar.svelte';
 export { default as DateRangePicker } from './components/DateRangePicker.svelte';

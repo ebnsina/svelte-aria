@@ -11,10 +11,20 @@
 
 	const show = 'scale-100 rotate-0 opacity-100';
 	const hide = 'scale-90 -rotate-90 opacity-0';
+
+	// The header blends into the hero at the top (transparent, borderless) and
+	// fades in a translucent blurred backdrop once the page scrolls.
+	let scrolled = $state(false);
 </script>
 
+<svelte:window onscroll={() => (scrolled = window.scrollY > 8)} />
+
 <div class="sa-marketing min-h-screen bg-sa-bg">
-	<header class="sticky top-0 z-40 border-b border-sa-hairline bg-[color-mix(in_oklch,var(--sa-background-color),transparent_20%)] backdrop-blur-md">
+	<header
+		class="sticky top-0 z-40 transition-[background-color,box-shadow] duration-300 {scrolled
+			? 'bg-[color-mix(in_oklch,var(--sa-background-color),transparent_25%)] shadow-sa-sm backdrop-blur-md'
+			: 'bg-transparent'}"
+	>
 		<div class="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 lg:px-8">
 			<a href="/" class="rounded-sa-sm" aria-label="Svelte ARIA — home">
 				<Logo />

@@ -225,6 +225,17 @@
 			]
 		},
 		{
+			"name": "bangla-calendar",
+			"type": "registry:ui",
+			"description": "A month grid for the reformed Bangladesh Bangla Panjika, with headless Gregorian↔Bengali conversion helpers. Sits alongside the Intl-backed Calendar.",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn", "id"],
+			"files": [
+				{ "path": "src/lib/components/BanglaCalendar.svelte", "target": "{ui}/bangla-calendar.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/utils/bangla-calendar.ts", "target": "{utils}/bangla-calendar.ts", "type": "registry:lib" }
+			]
+		},
+		{
 			"name": "list",
 			"type": "registry:ui",
 			"description": "A simple divided list surface — List + ListItem (plain, link, or button rows).",
