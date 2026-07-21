@@ -98,7 +98,7 @@
 	bind:this={el}
 	role="toolbar"
 	aria-orientation={orientation}
-	aria-label={ariaLabel}
+	aria-label={ariaLabel ?? (ariaLabelledby ? undefined : 'Toolbar')}
 	aria-labelledby={ariaLabelledby}
 	onkeydown={onKeydown}
 	onfocusin={onFocusin}

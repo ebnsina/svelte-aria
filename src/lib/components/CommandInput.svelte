@@ -13,7 +13,12 @@
 	interface Props extends Omit<HTMLInputAttributes, 'value' | 'class'> {
 		class?: string;
 	}
-	let { class: className, placeholder = 'Type a command or search…', ...rest }: Props = $props();
+	let {
+		class: className,
+		placeholder = 'Type a command or search…',
+		'aria-label': ariaLabel,
+		...rest
+	}: Props = $props();
 
 	const cmd = getContext<CommandContext>(COMMAND_KEY);
 	if (!cmd) throw new Error('<CommandInput> must be used inside a <Command>.');
@@ -52,6 +57,8 @@
 		type="text"
 		role="combobox"
 		aria-expanded="true"
+		aria-autocomplete="list"
+		aria-label={ariaLabel ?? placeholder}
 		aria-controls={cmd.listId}
 		aria-activedescendant={cmd.activeValue !== undefined ? cmd.optionId(cmd.activeValue) : undefined}
 		autocomplete="off"

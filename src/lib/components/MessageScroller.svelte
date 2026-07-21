@@ -2,8 +2,9 @@
   MessageScroller — a conversation scroll container. Owns scroll behaviour without
   dictating message content: it auto-follows streamed/new messages while you're at
   the bottom, and surfaces a "jump to latest" control once you scroll up. The
-  viewport is a live log (role="log", aria-live) so assistive tech announces new
-  turns. Call `scrollToBottom()` on the instance to force-follow.
+  viewport is a live log (role="log", implicitly polite) that announces *added* turns
+  only (aria-relevant="additions") so streamed tokens don't re-read the whole history.
+  Call `scrollToBottom()` on the instance to force-follow.
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
@@ -53,8 +54,7 @@
 		onscroll={measure}
 		role="log"
 		aria-label={label}
-		aria-live="polite"
-		aria-relevant="additions text"
+		aria-relevant="additions"
 		class="h-full overflow-y-auto overscroll-contain"
 	>
 		{@render children()}

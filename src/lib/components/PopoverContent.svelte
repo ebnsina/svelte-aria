@@ -20,13 +20,30 @@
 	};
 	import { cn } from '../utils/cn.js';
 
-	let { class: className, children }: { class?: string; children: Snippet } = $props();
+	let {
+		class: className,
+		'aria-label': ariaLabel,
+		'aria-labelledby': ariaLabelledby,
+		initialFocus,
+		children
+	}: {
+		class?: string;
+		'aria-label'?: string;
+		'aria-labelledby'?: string;
+		/** CSS selector for the element to focus on open (else the first focusable). */
+		initialFocus?: string;
+		children: Snippet;
+	} = $props();
 
 	const popover = getContext<PopoverContext>(POPOVER_KEY);
 	if (!popover) throw new Error('<PopoverContent> must be used inside a <Popover>.');
 
+	// A dialog needs an accessible name. Default to the trigger's label; callers can
+	// override with aria-label / aria-labelledby.
+	const labelledby = $derived(ariaLabel ? undefined : (ariaLabelledby ?? popover.triggerId));
+
 	const FOCUSABLE =
-		'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+		'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[contenteditable]:not([contenteditable="false"]),[tabindex]:not([tabindex="-1"])';
 
 	let contentEl = $state<HTMLElement>();
 	let x = $state(0);
@@ -63,7 +80,8 @@
 	$effect(() => {
 		if (!popover.open || !contentEl) return;
 		const trigger = popover.anchor;
-		const first = contentEl.querySelector<HTMLElement>(FOCUSABLE);
+		const preferred = initialFocus ? contentEl.querySelector<HTMLElement>(initialFocus) : null;
+		const first = preferred ?? contentEl.querySelector<HTMLElement>(FOCUSABLE);
 		(first ?? contentEl).focus();
 
 		const onKeydown = (e: KeyboardEvent) => {
@@ -92,6 +110,8 @@
 		bind:this={contentEl}
 		id={popover.contentId}
 		role="dialog"
+		aria-label={ariaLabel}
+		aria-labelledby={labelledby}
 		tabindex="-1"
 		style="left: {x}px; top: {y}px"
 		class={cn(

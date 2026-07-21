@@ -197,6 +197,7 @@
 			{placeholder}
 			{disabled}
 			readonly={readOnly}
+			aria-readonly={readOnly || undefined}
 			value={text}
 			aria-label={label ? undefined : ariaLabel}
 			aria-valuenow={current ?? undefined}

@@ -129,6 +129,18 @@
 		else anchorEl.removeAttribute('aria-describedby');
 	});
 
+	// APG: Escape dismisses the tooltip. The anchor's own keydown covers the
+	// focused case; a document listener also dismisses a hover-opened (unfocused)
+	// tooltip.
+	$effect(() => {
+		if (!isOpen) return;
+		const onKeydown = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') hide();
+		};
+		document.addEventListener('keydown', onKeydown);
+		return () => document.removeEventListener('keydown', onKeydown);
+	});
+
 	// Position the bubble while open; reposition on scroll / resize.
 	$effect(() => {
 		if (!isOpen || !floatingEl || !anchorEl) return;

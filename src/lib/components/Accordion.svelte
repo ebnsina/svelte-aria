@@ -75,6 +75,25 @@
 		}
 	}
 
+	// APG-recommended header navigation: Up/Down move between headers, Home/End
+	// jump to the first/last. Enter/Space toggling is native to the button.
+	function onKeydown(e: KeyboardEvent) {
+		if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) return;
+		const root = e.currentTarget as HTMLElement;
+		const headers = Array.from(
+			root.querySelectorAll<HTMLElement>('[data-accordion-trigger]:not([disabled])')
+		);
+		const at = headers.indexOf(document.activeElement as HTMLElement);
+		if (at === -1) return; // focus isn't on a header — let the event pass through
+		e.preventDefault();
+		let i: number;
+		if (e.key === 'Home') i = 0;
+		else if (e.key === 'End') i = headers.length - 1;
+		else if (e.key === 'ArrowDown') i = (at + 1) % headers.length;
+		else i = (at - 1 + headers.length) % headers.length;
+		headers[i].focus();
+	}
+
 	setContext<AccordionContext>(ACCORDION_KEY, {
 		get disabled() {
 			return disabled;
@@ -90,6 +109,8 @@
 	});
 </script>
 
-<div class={cn('divide-y divide-sa-hairline border-y border-sa-hairline', className)}>
+<!-- The headers are the focusable controls; the container only delegates their arrow keys. -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div class={cn('divide-y divide-sa-hairline border-y border-sa-hairline', className)} onkeydown={onKeydown}>
 	{@render children()}
 </div>

@@ -17,7 +17,13 @@
 	interface Props extends Omit<HTMLInputAttributes, 'value' | 'class'> {
 		class?: string;
 	}
-	let { class: className, placeholder, ...rest }: Props = $props();
+	let {
+		class: className,
+		placeholder,
+		'aria-label': ariaLabel,
+		'aria-labelledby': ariaLabelledby,
+		...rest
+	}: Props = $props();
 
 	const combo = getContext<ComboBoxContext>(COMBOBOX_KEY);
 	if (!combo) throw new Error('<ComboBoxInput> must be used inside a <ComboBox>.');
@@ -83,6 +89,8 @@
 		aria-activedescendant={combo.open && combo.activeValue !== undefined
 			? combo.optionId(combo.activeValue)
 			: undefined}
+		aria-labelledby={ariaLabelledby}
+		aria-label={ariaLabel ?? (ariaLabelledby ? undefined : placeholder)}
 		{placeholder}
 		disabled={combo.disabled}
 		value={combo.inputValue}

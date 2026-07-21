@@ -37,6 +37,7 @@
 		aria-controls={item.contentId}
 		aria-disabled={cannotCollapse || undefined}
 		disabled={item.disabled}
+		data-accordion-trigger
 		data-state={item.open ? 'open' : 'closed'}
 		onclick={() => !cannotCollapse && accordion.toggle(item.value)}
 		class={cn(

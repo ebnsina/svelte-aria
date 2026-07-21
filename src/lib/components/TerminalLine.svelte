@@ -23,7 +23,7 @@
 	style={indent ? `padding-left:${indent}rem` : undefined}
 >
 	{#if marker}
-		<span class="shrink-0 {muted ? 'text-sa-fg-muted' : 'text-sa-accent'}">{marker}</span>
+		<span aria-hidden="true" class="shrink-0 {muted ? 'text-sa-fg-muted' : 'text-sa-accent'}">{marker}</span>
 	{/if}
 	<span class="min-w-0">{@render children()}</span>
 </div>

@@ -84,7 +84,14 @@
 	{/if}
 
 	{#if uploading}
-		<div class="absolute inset-x-0 bottom-0 h-0.5 bg-sa-subtle">
+		<div
+			class="absolute inset-x-0 bottom-0 h-0.5 bg-sa-subtle"
+			role="progressbar"
+			aria-label="Upload progress for {name}"
+			aria-valuenow={Math.round(progress ?? 0)}
+			aria-valuemin={0}
+			aria-valuemax={100}
+		>
 			<div class="h-full bg-sa-accent transition-[width] duration-200" style="width: {progress}%"></div>
 		</div>
 	{/if}

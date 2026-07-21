@@ -8,6 +8,7 @@
 	import type { Snippet } from 'svelte';
 	import { Wrench, ChevronDown, Check, Loader, TriangleAlert } from '@lucide/svelte';
 	import { cn } from '../utils/cn.js';
+	import { useId } from '../utils/id.js';
 
 	interface ToolPart {
 		type: string;
@@ -28,10 +29,12 @@
 	}
 	let { part, defaultOpen = false, class: className, children }: Props = $props();
 
+	const panelId = useId('toolcall');
 	// svelte-ignore state_referenced_locally
 	let open = $state(defaultOpen);
-	const done = $derived(part.output !== undefined && !part.error);
 	const errored = $derived(!!part.error || part.state === 'error');
+	const done = $derived(part.output !== undefined && !part.error);
+	const status = $derived(errored ? 'Failed' : done ? 'Complete' : 'Running');
 	const stringify = (v: unknown) => (typeof v === 'string' ? v : JSON.stringify(v, null, 2));
 	const input = $derived(part.input !== undefined ? stringify(part.input) : (part.arguments ?? ''));
 </script>
@@ -41,22 +44,26 @@
 		type="button"
 		onclick={() => (open = !open)}
 		aria-expanded={open}
+		aria-controls={panelId}
 		class="flex w-full items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-[var(--sa-highlight-hover)]"
 	>
 		<Wrench class="size-4 shrink-0 text-sa-accent" aria-hidden="true" />
 		<span class="truncate font-medium text-sa-fg">{part.name ?? 'tool'}</span>
-		{#if errored}
-			<TriangleAlert class="size-4 shrink-0 text-sa-invalid" aria-label="Failed" />
-		{:else if done}
-			<Check class="size-4 shrink-0 text-sa-accent" aria-label="Complete" />
-		{:else}
-			<Loader class="size-3.5 shrink-0 animate-spin text-sa-fg-muted" aria-label="Running" />
-		{/if}
+		<!-- Live region so a screen reader hears running → complete/failed transitions. -->
+		<span role="status" class="contents">
+			{#if errored}
+				<TriangleAlert role="img" class="size-4 shrink-0 text-sa-invalid" aria-label={status} />
+			{:else if done}
+				<Check role="img" class="size-4 shrink-0 text-sa-accent" aria-label={status} />
+			{:else}
+				<Loader role="img" class="size-3.5 shrink-0 animate-spin text-sa-fg-muted motion-reduce:animate-none" aria-label={status} />
+			{/if}
+		</span>
 		<ChevronDown class="ml-auto size-4 shrink-0 text-sa-fg-muted transition-transform {open ? 'rotate-180' : ''}" aria-hidden="true" />
 	</button>
 
 	{#if open}
-		<div class="flex flex-col gap-2 border-t border-sa-hairline p-3 font-mono text-xs">
+		<div id={panelId} class="flex flex-col gap-2 border-t border-sa-hairline p-3 font-mono text-xs">
 			{#if input}
 				<div>
 					<p class="mb-1 text-sa-fg-muted">input</p>

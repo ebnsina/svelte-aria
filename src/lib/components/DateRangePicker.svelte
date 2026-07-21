@@ -85,7 +85,7 @@
 			<CalendarIcon class="size-4 shrink-0 text-sa-fg-muted" aria-hidden="true" />
 		</PopoverTrigger>
 
-		<PopoverContent class="w-auto p-0">
+		<PopoverContent class="w-auto p-0" aria-label="Choose a date range" initialFocus="[data-key][tabindex='0']">
 			<RangeCalendar value={current} {min} {max} {weekStartsOn} onChange={handleChange} />
 		</PopoverContent>
 	</Popover>

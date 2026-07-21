@@ -14,7 +14,7 @@
 </script>
 
 <div class={cn('flex items-center gap-2 rounded-sa border border-sa-hairline px-3 py-2', className)}>
-	<span class="shrink-0 text-sa-accent">{prompt}</span>
+	<span aria-hidden="true" class="shrink-0 text-sa-accent">{prompt}</span>
 	{#if value}<span class="text-sa-fg">{value}</span>{/if}
-	<span class="inline-block h-4 w-[0.55ch] animate-pulse bg-sa-fg align-text-bottom"></span>
+	<span aria-hidden="true" class="inline-block h-4 w-[0.55ch] animate-pulse bg-sa-fg align-text-bottom motion-reduce:animate-none"></span>
 </div>

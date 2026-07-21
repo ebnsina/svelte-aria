@@ -43,6 +43,7 @@
 					<div class="min-w-0 flex-1">
 						<p class="flex items-center gap-1 truncate text-sm font-medium text-sa-fg">
 							<span class="truncate">{s.title}</span>
+							<span class="sr-only">(opens in a new tab)</span>
 							<ArrowUpRight class="size-3.5 shrink-0 text-sa-fg-muted opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
 						</p>
 						<p class="truncate text-xs text-sa-accent">{domain(s.url)}</p>

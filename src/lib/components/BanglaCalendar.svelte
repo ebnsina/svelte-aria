@@ -176,7 +176,7 @@
 				<tr>
 					{#each week as cell, d (d)}
 						{@const isSelected = !!cell && !!selected && sameDay(cell.greg, selected)}
-						<td class="p-0 text-center" role={cell ? 'gridcell' : undefined} aria-selected={cell ? isSelected : undefined}>
+						<td class="p-0 text-center" role={cell ? 'gridcell' : 'presentation'} aria-selected={cell ? isSelected : undefined}>
 							{#if cell}
 								{@const isToday = sameDay(cell.greg, today)}
 								{@const isFocused = sameDay(cell.greg, focused)}
@@ -185,6 +185,7 @@
 									{disabled}
 									tabindex={isFocused ? 0 : -1}
 									aria-label={dayLabel(cell.greg, cell.bday)}
+									aria-current={isToday ? 'date' : undefined}
 									data-selected={isSelected || undefined}
 									data-today={isToday || undefined}
 									onclick={() => select(cell.greg)}

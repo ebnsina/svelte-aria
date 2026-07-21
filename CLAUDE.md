@@ -131,6 +131,68 @@ press · hover · focusVisible   toggle           Button/Checkbox/TextField/Spin
 - `docs/` and `data/` are **gitignored** (internal planning only — keep the
   public repo clean). Never commit plans/roadmaps/secrets.
 
+## WAI-ARIA readiness (audited 2026-07-21)
+
+Every widget was audited against its W3C **WAI-ARIA APG** pattern (roles,
+keyboard, focus management, ARIA state) and the gaps fixed. Treat this as the
+baseline: when you touch or add a component, keep it at ✅ and re-audit against
+the APG pattern named below. **All widgets are ✅ Ready** as of the audit.
+
+**Conventions that make the set conformant (keep these invariants):**
+
+- **Focus model per role.** Real roving DOM focus for `menu`/`toolbar`/`tablist`
+  /accordion headers/calendar grid (one tab stop, `tabindex` 0/-1, arrow keys in
+  `TabList`/`Toolbar`/`Accordion`/`Calendar`). Virtual focus via
+  `aria-activedescendant` (options stay `tabindex=-1`, DOM focus stays on the
+  input) for `listbox`/`combobox` (`Select`, `ComboBox`, `Command`). Don't mix
+  the two within one widget.
+- **Modal vs non-modal overlays.** Modals (`Dialog`, `Sheet`, `CommandDialog`)
+  trap Tab via `focus-scope.ts`, set sibling `inert` + scroll-lock, restore focus
+  to the trigger, and dismiss on Esc/backdrop. Non-modal (`Popover`, `Tooltip`,
+  `HoverCard`) move focus in but **don't** trap, and dismiss on Esc + outside
+  press. `focus-scope.ts` / `PopoverContent` share one `FOCUSABLE` selector —
+  it includes `[contenteditable]`; keep them in sync.
+- **Every `role="dialog"` needs an accessible name.** `PopoverContent` defaults
+  `aria-labelledby` to its trigger and accepts `aria-label`/`aria-labelledby` +
+  an `initialFocus` selector (date pickers pass `aria-label` + focus the grid's
+  active day `[data-key][tabindex='0']`). Same rule for `role="toolbar"` —
+  `Toolbar` falls back to `aria-label="Toolbar"`.
+- **Live regions never steal focus.** Streaming/updating content announces via
+  `role="log"`/`status`/`alert` + `aria-live`, and only scrolls. `MessageScroller`
+  uses `aria-relevant="additions"` (not `…text`) so streamed tokens don't re-read
+  the whole history. `ToolCall` wraps its running→done/error icon in `role="status"`
+  and gives the status icons `role="img"`. `Toaster`: `role="alert"` (assertive)
+  for errors, `role="status"` (polite) otherwise.
+- **Native semantics first.** `Checkbox`/`Switch`/`Radio`/`TextField`/`SearchField`
+  are real inputs (native role + keyboard). Error path is uniform across fields:
+  `aria-invalid` + `role="alert"` message + `aria-describedby` swap to the error.
+  `NumberField` overrides role to `spinbutton`, so it must also set
+  `aria-readonly` when read-only (native `readonly` alone won't convey).
+- **Decorative glyphs/icons get `aria-hidden`** (terminal markers/prompt/cursor,
+  chevrons, separators, breadcrumb/pagination dividers), and animations honour
+  `motion-reduce:animate-none`. External links (`Sources`) carry a visually-hidden
+  "(opens in a new tab)".
+- **Grids** (`Calendar`/`RangeCalendar`/`BanglaCalendar`): `role="grid"`,
+  `gridcell` on every cell (empty pads = `role="presentation"`), roving day,
+  `aria-current="date"` on today, `aria-selected` on the selection.
+
+**Documented deliberate deviations (not gaps):**
+
+- **`HoverCard`** is an intentional *sighted-mouse* enhancement (like the
+  reference hover-card pattern). Its trigger is a non-interactive wrapper, so it
+  carries no `aria-expanded`/`aria-controls` and the card no dialog role — adding
+  those would mislead (focus never enters). **Only use it for content that is
+  duplicative** of a reachable control/link; never put unique/only-here info in it.
+- **`List`** is a structural `role="list"` of individually-tabbable links/buttons
+  — *not* a selectable `listbox`. Repurposing it for selection would need
+  `listbox`/`option` + roving/`aria-selected`.
+- **`Menu` Tab-dismiss** lands focus at end of document (portal limitation), not
+  after the trigger. Esc and item-activation both return focus to the trigger
+  correctly; only raw Tab-out has this quirk.
+- **`NumberField`** exposes `role="spinbutton"` on a native `<input type=text>`
+  (editable-spinbutton) — some SRs double-announce "edit text / spin button".
+  Intentional and valid.
+
 ## Verify before "done"
 
 1. `npm run check` — 0 errors, 0 warnings.

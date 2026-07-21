@@ -16,6 +16,8 @@
 	interface SearchFieldProps extends Omit<HTMLInputAttributes, 'value' | 'class' | 'type'> {
 		label?: string;
 		description?: string;
+		/** When set, the field renders as invalid and announces this message. */
+		errorMessage?: string;
 		value?: string;
 		class?: string;
 		/** Fires on Enter with the current value. */
@@ -27,6 +29,7 @@
 	let {
 		label,
 		description,
+		errorMessage,
 		value = $bindable(''),
 		disabled = false,
 		placeholder = 'Search',
@@ -38,6 +41,15 @@
 
 	const id = useId('search');
 	const descriptionId = `${id}-description`;
+	const errorId = `${id}-error`;
+	const invalid = $derived(Boolean(errorMessage));
+	// When invalid, the description is superseded by the error, so point
+	// aria-describedby at the error instead (mirrors TextField).
+	const describedBy = $derived(
+		[description && !errorMessage ? descriptionId : null, errorMessage ? errorId : null]
+			.filter(Boolean)
+			.join(' ') || undefined
+	);
 	let input = $state<HTMLInputElement | null>(null);
 
 	function clear() {
@@ -62,12 +74,15 @@
 	{/if}
 
 	<div
+		data-invalid={invalid || undefined}
 		class={cn(
 			'flex items-center gap-2 rounded-sa border border-sa-gray-200 bg-sa-field px-3',
 			'transition-[border-color,box-shadow] duration-150',
 			'hover:border-sa-gray-300',
 			'has-[:focus-visible]:[outline:2px_solid_var(--sa-focus-ring-color)] has-[:focus-visible]:outline-offset-2',
-			'has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-55'
+			'has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-55',
+			'data-[invalid]:border-sa-invalid',
+			'data-[invalid]:has-[:focus-visible]:[outline-color:var(--sa-invalid-color)]'
 		)}
 	>
 		<Search class="size-4 shrink-0 text-sa-fg-muted" aria-hidden="true" />
@@ -80,7 +95,8 @@
 			{disabled}
 			{placeholder}
 			bind:value
-			aria-describedby={description ? descriptionId : undefined}
+			aria-invalid={invalid || undefined}
+			aria-describedby={describedBy}
 			onkeydown={onKeydown}
 			class="h-9 w-full bg-transparent text-sm text-sa-fg outline-none placeholder:text-sa-fg-muted disabled:cursor-not-allowed [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
 		/>
@@ -98,7 +114,10 @@
 		{/if}
 	</div>
 
-	{#if description}
+	{#if description && !errorMessage}
 		<p id={descriptionId} class="text-xs text-sa-fg-muted">{description}</p>
+	{/if}
+	{#if errorMessage}
+		<p id={errorId} role="alert" class="text-xs text-sa-invalid">{errorMessage}</p>
 	{/if}
 </div>
