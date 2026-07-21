@@ -48,9 +48,9 @@
 						</HoverCardTrigger>
 						<HoverCardContent class="w-72">
 							<div class="flex gap-3">
-								<Avatar alt="Ada Lovelace" size="lg" />
+								<Avatar alt="Ibn Sina" size="lg" />
 								<div class="min-w-0">
-									<p class="font-semibold text-sa-fg">Ada Lovelace</p>
+									<p class="font-semibold text-sa-fg">Ibn Sina</p>
 									<p class="text-sm text-sa-fg-muted">@ada</p>
 									<p class="mt-2 text-sm text-sa-fg">First programmer. Building accessible Svelte components.</p>
 									<p class="mt-2 flex items-center gap-1.5 text-xs text-sa-fg-muted">

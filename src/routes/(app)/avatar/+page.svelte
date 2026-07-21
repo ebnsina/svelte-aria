@@ -6,8 +6,8 @@
 	import CodeBlock from '$lib/site/CodeBlock.svelte';
 	import PropsTable, { type PropRow } from '$lib/site/PropsTable.svelte';
 
-	const code = `<Avatar src="/user.jpg" alt="Ada Lovelace" />
-<Avatar alt="Grace Hopper" />        <!-- fallback: GH -->`;
+	const code = `<Avatar src="/user.jpg" alt="Ibn Sina" />
+<Avatar alt="Al-Khwarizmi" />        <!-- fallback: GH -->`;
 
 	const headings = [
 		{ id: 'example', title: 'Example' },
@@ -36,9 +36,9 @@
 		<DemoCard>
 			{#snippet preview()}
 				<div class="flex items-center gap-4">
-					<Avatar src={ok} alt="Ada Lovelace" />
-					<Avatar src={broken} alt="Grace Hopper" />
-					<Avatar alt="Alan Turing" />
+					<Avatar src={ok} alt="Ibn Sina" />
+					<Avatar src={broken} alt="Al-Khwarizmi" />
+					<Avatar alt="Ibn al-Haytham" />
 				</div>
 			{/snippet}
 
@@ -51,10 +51,10 @@
 
 	<Section id="sizes" title="Sizes">
 		<div class="flex items-center gap-4">
-			<Avatar src={ok} alt="Ada Lovelace" size="sm" />
-			<Avatar src={ok} alt="Ada Lovelace" size="md" />
-			<Avatar src={ok} alt="Ada Lovelace" size="lg" />
-			<Avatar src={ok} alt="Ada Lovelace" size="xl" />
+			<Avatar src={ok} alt="Ibn Sina" size="sm" />
+			<Avatar src={ok} alt="Ibn Sina" size="md" />
+			<Avatar src={ok} alt="Ibn Sina" size="lg" />
+			<Avatar src={ok} alt="Ibn Sina" size="xl" />
 		</div>
 	</Section>
 

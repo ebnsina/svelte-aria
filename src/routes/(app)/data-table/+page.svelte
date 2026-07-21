@@ -33,13 +33,13 @@
 	}
 
 	const people: Person[] = [
-		{ id: 1, name: 'Ada Lovelace', email: 'ada@example.com', role: 'Owner', amount: 1200 },
-		{ id: 2, name: 'Grace Hopper', email: 'grace@example.com', role: 'Admin', amount: 980 },
-		{ id: 3, name: 'Alan Turing', email: 'alan@example.com', role: 'Member', amount: 0 },
-		{ id: 4, name: 'Katherine Johnson', email: 'kj@example.com', role: 'Member', amount: 640 },
-		{ id: 5, name: 'Edsger Dijkstra', email: 'edsger@example.com', role: 'Member', amount: 320 },
-		{ id: 6, name: 'Donald Knuth', email: 'don@example.com', role: 'Admin', amount: 1500 },
-		{ id: 7, name: 'Barbara Liskov', email: 'barbara@example.com', role: 'Member', amount: 770 }
+		{ id: 1, name: 'Ibn Sina', email: 'ibn-sina@bayt-al-hikma.example', role: 'Owner', amount: 1200 },
+		{ id: 2, name: 'Al-Khwarizmi', email: 'khwarizmi@bayt-al-hikma.example', role: 'Admin', amount: 980 },
+		{ id: 3, name: 'Ibn al-Haytham', email: 'alhazen@bayt-al-hikma.example', role: 'Member', amount: 0 },
+		{ id: 4, name: 'Fatima al-Fihri', email: 'al-fihri@bayt-al-hikma.example', role: 'Member', amount: 640 },
+		{ id: 5, name: 'Al-Biruni', email: 'al-biruni@bayt-al-hikma.example', role: 'Member', amount: 320 },
+		{ id: 6, name: 'Omar Khayyam', email: 'khayyam@bayt-al-hikma.example', role: 'Admin', amount: 1500 },
+		{ id: 7, name: 'Maryam al-Asturlabi', email: 'al-asturlabi@bayt-al-hikma.example', role: 'Member', amount: 770 }
 	];
 
 	const money = (n: number) => new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD' }).format(n);

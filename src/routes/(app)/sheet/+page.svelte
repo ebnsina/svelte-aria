@@ -64,8 +64,8 @@
 							<SheetDescription>Update your details, then save your changes.</SheetDescription>
 						</SheetHeader>
 						<div class="flex flex-1 flex-col gap-4">
-							<TextField label="Name" defaultValue="Ada Lovelace" />
-							<TextField label="Email" type="email" defaultValue="ada@example.com" />
+							<TextField label="Name" defaultValue="Ibn Sina" />
+							<TextField label="Email" type="email" defaultValue="ibn-sina@bayt-al-hikma.example" />
 						</div>
 						<SheetFooter>
 							<SheetClose>Cancel</SheetClose>

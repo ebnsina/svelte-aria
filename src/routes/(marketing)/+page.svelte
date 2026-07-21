@@ -159,23 +159,23 @@
 			title: 'Open',
 			count: 4,
 			tasks: [
-				{ id: 101, title: 'Button alignment issue', body: 'Buttons in the Settings menu are misaligned on smaller screens.', who: 'Gilberto Miguel' },
-				{ id: 102, title: 'Login page redesign', body: 'Requesting a redesign of the login page to improve UX.', who: 'Maia Pettegree' },
-				{ id: 104, title: 'Dark mode support', body: 'Implement a dark mode option for accessibility and preference.', who: 'Ana Silva' }
+				{ id: 101, title: 'Button alignment issue', body: 'Buttons in the Settings menu are misaligned on smaller screens.', who: 'Al-Kindi' },
+				{ id: 102, title: 'Login page redesign', body: 'Requesting a redesign of the login page to improve UX.', who: 'Al-Razi' },
+				{ id: 104, title: 'Dark mode support', body: 'Implement a dark mode option for accessibility and preference.', who: 'Al-Jazari' }
 			]
 		},
 		{
 			title: 'In Progress',
 			count: 2,
 			tasks: [
-				{ id: 103, title: 'Database connection error', body: 'Intermittent connection errors when accessing the database.', who: 'Mike Johnson' },
-				{ id: 110, title: 'Two-factor authentication', body: 'Add 2FA support for improved account security.', who: 'Maia Pettegree' }
+				{ id: 103, title: 'Database connection error', body: 'Intermittent connection errors when accessing the database.', who: 'Al-Farabi' },
+				{ id: 110, title: 'Two-factor authentication', body: 'Add 2FA support for improved account security.', who: 'Al-Razi' }
 			]
 		},
 		{
 			title: 'Closed',
 			count: 1,
-			tasks: [{ id: 106, title: 'Performance optimization', body: 'Reduce load times across the application shell.', who: 'Sarah Lee' }]
+			tasks: [{ id: 106, title: 'Performance optimization', body: 'Reduce load times across the application shell.', who: 'Ibn Rushd' }]
 		}
 	];
 

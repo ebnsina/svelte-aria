@@ -26,11 +26,11 @@
 	}
 
 	const people: Person[] = [
-		{ id: 1, name: 'Ada Lovelace', role: 'Owner', status: 'active', amount: 1200 },
-		{ id: 2, name: 'Grace Hopper', role: 'Admin', status: 'active', amount: 980 },
-		{ id: 3, name: 'Alan Turing', role: 'Member', status: 'invited', amount: 0 },
-		{ id: 4, name: 'Katherine Johnson', role: 'Member', status: 'active', amount: 640 },
-		{ id: 5, name: 'Edsger Dijkstra', role: 'Member', status: 'suspended', amount: 320 }
+		{ id: 1, name: 'Ibn Sina', role: 'Owner', status: 'active', amount: 1200 },
+		{ id: 2, name: 'Al-Khwarizmi', role: 'Admin', status: 'active', amount: 980 },
+		{ id: 3, name: 'Ibn al-Haytham', role: 'Member', status: 'invited', amount: 0 },
+		{ id: 4, name: 'Fatima al-Fihri', role: 'Member', status: 'active', amount: 640 },
+		{ id: 5, name: 'Al-Biruni', role: 'Member', status: 'suspended', amount: 320 }
 	];
 
 	let sortKey = $state<'name' | 'role' | 'amount'>('name');

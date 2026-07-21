@@ -103,8 +103,8 @@
 					<DialogDescription>Update your details, then save.</DialogDescription>
 				</DialogHeader>
 				<div class="mt-5 flex flex-col gap-4">
-					<TextField label="Name" placeholder="Ada Lovelace" />
-					<TextField label="Email" type="email" placeholder="ada@example.com" />
+					<TextField label="Name" placeholder="Ibn Sina" />
+					<TextField label="Email" type="email" placeholder="ibn-sina@bayt-al-hikma.example" />
 				</div>
 				<DialogFooter>
 					<DialogClose>Cancel</DialogClose>

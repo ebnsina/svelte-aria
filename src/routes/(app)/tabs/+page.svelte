@@ -56,7 +56,7 @@
 						</TabList>
 						<TabPanel value="account">
 							<div class="flex flex-col gap-3 pt-1">
-								<TextField label="Name" placeholder="Ada Lovelace" />
+								<TextField label="Name" placeholder="Ibn Sina" />
 								<Checkbox defaultChecked>Public profile</Checkbox>
 							</div>
 						</TabPanel>
