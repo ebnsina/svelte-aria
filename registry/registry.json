@@ -300,6 +300,16 @@
 			]
 		},
 		{
+			"name": "sources",
+			"type": "registry:ui",
+			"description": "Renders the citations behind an AI answer — numbered linked cards with title, domain, and snippet (Perplexity/Claude style).",
+			"dependencies": ["@lucide/svelte"],
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/Sources.svelte", "target": "{ui}/sources.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "tool-call",
 			"type": "registry:ui",
 			"description": "Renders a TanStack AI tool-call message part — name, live status (running/done/error), and collapsible input/output.",

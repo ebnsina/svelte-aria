@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createChat, createAudioRecorder } from '@tanstack/ai-svelte';
 	import {
-		MessageScroller, Message, Bubble, MessagePart, PromptInput, Marker, Attachment,
+		MessageScroller, Message, Bubble, MessagePart, PromptInput, Marker, Attachment, Sources,
 		Menu, MenuTrigger, MenuContent, MenuItem
 	} from '$lib/index.js';
 	import { Brain, Plus, Mic, Square, ChevronDown, CornerDownLeft, Check } from '@lucide/svelte';
@@ -45,6 +45,14 @@
 		'Use `data-[selected]` / `data-[pressed]` variants so styling stays declarative and the styled layer stays swappable.'
 	];
 	let ri = 0;
+
+	// Citations attached to an assistant message (by id), rendered with <Sources>.
+	const sourcesById: Record<string, { title: string; url: string; snippet?: string }[]> = {
+		'2': [
+			{ title: ':focus-visible — CSS pseudo-class', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible', snippet: 'Matches when an element has focus and the UA determines the ring should be visible.' },
+			{ title: 'WAI-ARIA Authoring Practices — keyboard', url: 'https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/', snippet: 'Focus visibility and keyboard interaction guidance.' }
+		]
+	};
 
 	// ---- Model selection: a real menu bound to state (updateForwardedProps in prod).
 	const models = ['Fable 5 · High', 'Fable 5 · Standard', 'Sonnet 5', 'Haiku 4.5'];
@@ -172,6 +180,9 @@
 								{#each m.parts as part, pi (pi)}
 									<MessagePart {part} />
 								{/each}
+								{#if sourcesById[m.id]}
+									<Sources sources={sourcesById[m.id]} class="mt-1" />
+								{/if}
 							</div>
 						{:else}
 							<Message align="end" aria-label="Your message">

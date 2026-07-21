@@ -119,6 +119,7 @@ export { default as MessageScroller } from './components/MessageScroller.svelte'
 export { default as Message } from './components/Message.svelte';
 export { default as MessagePart } from './components/MessagePart.svelte';
 export { default as ToolCall } from './components/ToolCall.svelte';
+export { default as Sources } from './components/Sources.svelte';
 export { default as PromptInput } from './components/PromptInput.svelte';
 export { default as Bubble, bubbleVariants, type BubbleVariant } from './components/Bubble.svelte';
 export { default as Attachment } from './components/Attachment.svelte';
