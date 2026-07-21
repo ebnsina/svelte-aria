@@ -15,7 +15,8 @@ export const nav: NavSection[] = [
 		title: 'Getting started',
 		items: [
 			{ title: 'Introduction', href: '/introduction' },
-			{ title: 'Installation', href: '/installation' }
+			{ title: 'Installation', href: '/installation' },
+			{ title: 'Changelog', href: '/changelog' }
 		]
 	},
 	{

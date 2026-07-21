@@ -21,8 +21,8 @@
 
 <div class="sa-marketing min-h-screen bg-sa-bg">
 	<header
-		class="sticky top-0 z-40 transition-[background-color,box-shadow] duration-300 {scrolled
-			? 'bg-[color-mix(in_oklch,var(--sa-background-color),transparent_25%)] shadow-sa-sm backdrop-blur-md'
+		class="sticky top-0 z-40 transition-[background-color] duration-300 {scrolled
+			? 'bg-[color-mix(in_oklch,var(--sa-background-color),transparent_25%)] backdrop-blur-md'
 			: 'bg-transparent'}"
 	>
 		<div class="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 lg:px-8">

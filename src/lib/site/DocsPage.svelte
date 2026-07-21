@@ -4,6 +4,7 @@
 	import { ArrowLeft, ArrowRight } from '@lucide/svelte';
 	import { nav, allLinks } from './nav.js';
 	import OnThisPage from './OnThisPage.svelte';
+	import PageActions from './PageActions.svelte';
 
 	interface Heading {
 		id: string;
@@ -37,9 +38,14 @@
 <div class="mx-auto flex w-full max-w-6xl gap-12 px-4 py-10 lg:px-8">
 	<article class="min-w-0 flex-1">
 		<header class="mb-12">
-			{#if section}
-				<p class="mb-3 text-sm font-semibold text-sa-accent">{section}</p>
-			{/if}
+			<div class="mb-3 flex items-center justify-between gap-4">
+				{#if section}
+					<p class="text-sm font-semibold text-sa-accent">{section}</p>
+				{:else}
+					<span></span>
+				{/if}
+				<PageActions {title} {description} />
+			</div>
 			<h1 class="text-4xl font-bold tracking-tight text-balance text-sa-fg">{title}</h1>
 			<p class="mt-4 text-lg leading-relaxed text-pretty text-sa-fg-muted">{description}</p>
 		</header>
