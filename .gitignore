@@ -9,6 +9,9 @@ node_modules
 /build
 /dist
 
+# npm pack artifact (local publish testing)
+/svelte-aria-*.tgz
+
 # OS
 .DS_Store
 Thumbs.db

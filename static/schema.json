@@ -1,0 +1,48 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://ebnsina.github.io/svelte-aria/schema.json",
+	"title": "svelte-aria components.json",
+	"description": "Configuration for the svelte-aria CLI: where copied components land and how their imports are rewritten.",
+	"type": "object",
+	"required": ["css", "aliases"],
+	"additionalProperties": false,
+	"properties": {
+		"$schema": {
+			"type": "string",
+			"description": "URL of this schema, for editor validation."
+		},
+		"css": {
+			"type": "string",
+			"description": "Path to the Tailwind entry CSS, relative to the project root (e.g. src/app.css). The svelte-aria @import is merged in here.",
+			"examples": ["src/app.css"]
+		},
+		"typescript": {
+			"type": "boolean",
+			"description": "Whether the project uses TypeScript.",
+			"default": true
+		},
+		"aliases": {
+			"type": "object",
+			"description": "Import aliases that decide where items land and how imports are rewritten.",
+			"required": ["ui", "utils", "lib"],
+			"additionalProperties": false,
+			"properties": {
+				"ui": {
+					"type": "string",
+					"description": "Where components are written (e.g. $lib/components/ui).",
+					"examples": ["$lib/components/ui"]
+				},
+				"utils": {
+					"type": "string",
+					"description": "Where the cn util is written (e.g. $lib/utils).",
+					"examples": ["$lib/utils"]
+				},
+				"lib": {
+					"type": "string",
+					"description": "Where primitives, state, and styles are written (e.g. $lib/svelte-aria).",
+					"examples": ["$lib/svelte-aria"]
+				}
+			}
+		}
+	}
+}

@@ -1,6 +1,7 @@
 /**
- * Registry client — reads the built registry (registry/dist) from a local dir or
- * a hosted URL, and resolves an item's full transitive dependency tree.
+ * Registry client — reads the built registry (a local dir like ./static/r, or the
+ * hosted URL it's deployed to), and resolves an item's full transitive dependency
+ * tree.
  */
 
 import { readFileSync } from 'node:fs';

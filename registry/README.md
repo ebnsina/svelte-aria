@@ -29,7 +29,7 @@ imports are rewritten:
 
 ```json
 {
-  "$schema": "https://svelte-aria.dev/schema/components.json",
+  "$schema": "https://ebnsina.github.io/svelte-aria/schema.json",
   "css": "src/app.css",
   "typescript": true,
   "aliases": {
@@ -134,19 +134,28 @@ did `cn`, this is a no-op). No `@lucide/svelte` — Dialog doesn't use it.
 1. reads each `files[].path`,
 2. applies the import rewrite (leaving `{ui}/{lib}/{utils}` as placeholders the
    CLI fills from the user's `components.json`),
-3. emits `registry/dist/<name>.json` (item + file contents) and an `index.json`.
+3. emits `static/r/<name>.json` (item + file contents) and an `index.json`.
 
-Hosted statically; the CLI fetches `…/registry/<name>.json`.
+`npm run registry:build` writes these into the site's `static/r/` dir, so the
+static docs site serves them. `build:site` runs the registry build first, and the
+GitHub Pages deploy publishes them at **`https://ebnsina.github.io/svelte-aria/r/<name>.json`**
+— the CLI's default registry (override with `--registry <path|url>` or
+`SVELTE_ARIA_REGISTRY`, e.g. `./static/r` for local dev).
 
-## CLI surface (planned)
+## CLI surface
 
 ```
-svelte-aria init
-svelte-aria add button checkbox dialog
-svelte-aria add            # interactive multiselect
-svelte-aria list           # names + descriptions from the registry
-svelte-aria diff <name>    # show local edits vs upstream
+svelte-aria init                        # config + base (theme, cn)
+svelte-aria add button checkbox dialog  # add items + their deps
+svelte-aria list                        # names + descriptions from the registry
 ```
+
+The CLI is authored as strip-only TS in `cli/`, compiled to `dist/cli/*.js` by
+`cli:build` (via `prepack`) so `npx svelte-aria` runs on any Node ≥18. The
+package `bin` points at `dist/cli/index.js`.
+
+Not yet implemented: `svelte-aria add` interactive multiselect, and
+`svelte-aria diff <name>` (local edits vs upstream).
 
 ## Open decisions
 

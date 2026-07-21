@@ -74,17 +74,22 @@ press · hover · focusVisible   toggle           Button/Checkbox/TextField/Spin
   Excluded from the published package (`files: !dist/site`). Not part of the API.
 - `registry/` — the **CLI registry** (committed, public): `schema.ts` (manifest
   types), `registry.json` (every installable item + dependency graph),
-  `README.md` (the design), and `build.ts` (the import rewriter → `dist/`,
-  gitignored). The copy-paste distribution model. **When adding a component**:
-  add a `registry:ui` item to `registry.json` with its `files` +
-  `registryDependencies`, then run `npm run registry:build`.
-- `cli/` — the **CLI** (`node cli/index.ts` / `npm run cli`): `init` (writes
-  `components.json`, installs base = theme + cn, adds the `@import`), `add`
-  (resolves the transitive tree from the registry, fills `{ui}/{lib}/{utils}`
-  placeholders from the user's aliases, writes files, installs npm deps), and
-  `list`. Import-graph correctness comes from the build's rewriter; the CLI just
-  fills placeholders. Keep it strip-only TS (no param-properties/enums so
-  `node` runs it directly).
+  `README.md` (the design), and `build.ts` (the import rewriter → `static/r/`,
+  gitignored). The copy-paste distribution model. The built JSON is served by the
+  GitHub Pages docs site at `https://ebnsina.github.io/svelte-aria/r` — the CLI's
+  default registry. `build:site` runs `registry:build` first, so the deploy always
+  ships a fresh registry (fix a component → redeploy the site, no CLI republish).
+  **When adding a component**: add a `registry:ui` item to `registry.json` with its
+  `files` + `registryDependencies`, then run `npm run registry:build`.
+- `cli/` — the **CLI** (`node cli/index.ts` for local dev; `npx svelte-aria` once
+  published): `init` (writes `components.json`, installs base = theme + cn, adds
+  the `@import`), `add` (resolves the transitive tree from the registry, fills
+  `{ui}/{lib}/{utils}` placeholders from the user's aliases, writes files, installs
+  npm deps), and `list`. Import-graph correctness comes from the build's rewriter;
+  the CLI just fills placeholders. Keep it strip-only TS — but for publish it's
+  compiled to `dist/cli/*.js` by `cli:build` (in `prepack`), and the package `bin`
+  (`svelte-aria`) points there so `npx` runs on any Node ≥18. Default registry is
+  overridable via `--registry <path|url>` or `SVELTE_ARIA_REGISTRY`.
 
 ## Design tokens & theming
 
@@ -196,8 +201,8 @@ the APG pattern named below. **All widgets are ✅ Ready** as of the audit.
 ## Verify before "done"
 
 1. `npm run check` — 0 errors, 0 warnings.
-2. `npm run prepack` — `svelte-package` + `publint` clean; check `dist/` ships
-   the styles.
+2. `npm run prepack` — `svelte-package` + `cli:build` + `publint` clean; check
+   `dist/` ships the styles and `dist/cli/*.js` (the `bin`).
 3. Browser pass in **light and dark** (dev server on `:5200`), console clean.
 4. **Behaviour parity** — keyboard, focus, and ARIA validated against the
    canonical pattern for that component (see `docs/component-checklist.md`).

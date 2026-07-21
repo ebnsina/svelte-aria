@@ -98,7 +98,7 @@ export async function init(opts: CliOptions) {
 	const lib = await promptText('Library (primitives) alias?', '$lib/svelte-aria', !!opts.yes);
 
 	const config: Config = {
-		$schema: 'https://svelte-aria.dev/schema/components.json',
+		$schema: 'https://ebnsina.github.io/svelte-aria/schema.json',
 		css,
 		typescript: true,
 		aliases: { ui, utils, lib }
