@@ -96,6 +96,10 @@ export { default as SheetFooter } from './components/DialogFooter.svelte';
 export { default as SheetClose } from './components/DialogClose.svelte';
 
 // Tabs (compound)
+// List
+export { default as List } from './components/List.svelte';
+export { default as ListItem } from './components/ListItem.svelte';
+
 // Table
 export { default as Table } from './components/Table.svelte';
 export { default as TableHeader } from './components/TableHeader.svelte';
@@ -104,6 +108,16 @@ export { default as TableRow } from './components/TableRow.svelte';
 export { default as TableHead } from './components/TableHead.svelte';
 export { default as TableCell } from './components/TableCell.svelte';
 export { default as TableCaption } from './components/TableCaption.svelte';
+
+// DataTable — TanStack Table (table-core) utilities for Svelte 5
+export { default as FlexRender } from './components/FlexRender.svelte';
+export { createSvelteTable } from './utils/create-svelte-table.svelte.js';
+export {
+	renderComponent,
+	renderSnippet,
+	RenderComponentConfig,
+	RenderSnippetConfig
+} from './utils/render-helpers.js';
 
 export { default as Tabs } from './components/Tabs.svelte';
 export { default as TabList } from './components/TabList.svelte';

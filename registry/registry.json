@@ -206,6 +206,29 @@
 			]
 		},
 		{
+			"name": "list",
+			"type": "registry:ui",
+			"description": "A simple divided list surface — List + ListItem (plain, link, or button rows).",
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/List.svelte", "target": "{ui}/list.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/components/ListItem.svelte", "target": "{ui}/list-item.svelte", "type": "registry:ui" }
+			]
+		},
+		{
+			"name": "data-table",
+			"type": "registry:ui",
+			"description": "TanStack Table (table-core) utilities for Svelte 5 — createSvelteTable + FlexRender + render helpers. Pairs with the table primitives.",
+			"dependencies": ["@tanstack/table-core"],
+			"registryDependencies": ["cn", "table"],
+			"files": [
+				{ "path": "src/lib/components/FlexRender.svelte", "target": "{ui}/flex-render.svelte", "type": "registry:ui" },
+				{ "path": "src/lib/utils/create-svelte-table.svelte.ts", "target": "{lib}/create-svelte-table.svelte.ts", "type": "registry:lib" },
+				{ "path": "src/lib/utils/render-helpers.ts", "target": "{lib}/render-helpers.ts", "type": "registry:lib" },
+				{ "path": "src/lib/utils/merge-objects.ts", "target": "{utils}/merge-objects.ts", "type": "registry:lib" }
+			]
+		},
+		{
 			"name": "table",
 			"type": "registry:ui",
 			"description": "Semantic table primitives with sortable headers (aria-sort) — the base for data grids.",
