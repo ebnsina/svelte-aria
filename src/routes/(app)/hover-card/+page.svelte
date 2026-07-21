@@ -10,7 +10,7 @@
 
 	const code = `<HoverCard>
   <HoverCardTrigger>
-    <a href="/ada" class="font-medium text-sa-accent">@ada</a>
+    <a href="/ebnsina" class="font-medium text-sa-accent">@ebnsina</a>
   </HoverCardTrigger>
   <HoverCardContent>
     Profile preview…
@@ -45,17 +45,17 @@
 					Follow
 					<HoverCard>
 						<HoverCardTrigger>
-							<a href="{base}/" class="rounded-sa-sm font-medium text-sa-accent hover:underline">@ada</a>
+							<a href="{base}/" class="rounded-sa-sm font-medium text-sa-accent hover:underline">@ebnsina</a>
 						</HoverCardTrigger>
 						<HoverCardContent class="w-72">
 							<div class="flex gap-3">
-								<Avatar alt="Ibn Sina" size="lg" />
+								<Avatar alt="Ebn Sina" size="lg" />
 								<div class="min-w-0">
-									<p class="font-semibold text-sa-fg">Ibn Sina</p>
-									<p class="text-sm text-sa-fg-muted">@ada</p>
-									<p class="mt-2 text-sm text-sa-fg">First programmer. Building accessible Svelte components.</p>
+									<p class="font-semibold text-sa-fg">Ebn Sina</p>
+									<p class="text-sm text-sa-fg-muted">@ebnsina</p>
+									<p class="mt-2 text-sm text-sa-fg">Building accessible components for Svelte 5.</p>
 									<p class="mt-2 flex items-center gap-1.5 text-xs text-sa-fg-muted">
-										<Calendar class="size-3.5" /> Joined December 1842
+										<Calendar class="size-3.5" /> Joined 2026
 									</p>
 								</div>
 							</div>
@@ -67,7 +67,7 @@
 
 			<CodeBlock {code} filename="HoverCard.svelte" flush />
 		</DemoCard>
-		<p class="mt-4 text-sm text-sa-fg-muted">Hover (or Tab to) the @ada link.</p>
+		<p class="mt-4 text-sm text-sa-fg-muted">Hover (or Tab to) the @ebnsina link.</p>
 	</Section>
 
 	<Section id="api" title="API">

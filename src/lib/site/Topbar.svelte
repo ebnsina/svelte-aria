@@ -1,9 +1,26 @@
 <script lang="ts">
 	import { Search, Menu, X, Sun, Moon, Monitor } from '@lucide/svelte';
 	import { base } from '$app/paths';
+	import { goto } from '$app/navigation';
+	import {
+		CommandDialog,
+		CommandInput,
+		CommandList,
+		CommandGroup,
+		CommandItem,
+		CommandEmpty
+	} from '$lib/index.js';
 	import { theme } from './theme.svelte.js';
+	import { nav } from './nav.js';
 	import AccentPicker from './AccentPicker.svelte';
 	import Logo from './Logo.svelte';
+
+	// Header search → a real ⌘K command palette over the docs nav.
+	let searchOpen = $state(false);
+	function goTo(href: string) {
+		searchOpen = false;
+		goto(base + href);
+	}
 
 	const show = 'scale-100 rotate-0 opacity-100';
 	const hide = 'scale-90 -rotate-90 opacity-0';
@@ -39,6 +56,7 @@
 			<div class="pointer-events-auto w-full max-w-sm px-4">
 				<button
 					type="button"
+					onclick={() => (searchOpen = true)}
 					class="group flex w-full items-center gap-2 rounded-sa border border-sa-border bg-sa-field px-3 py-2 text-sm text-sa-fg-muted transition-colors hover:border-sa-border-hover"
 				>
 					<Search class="size-4" />
@@ -97,3 +115,18 @@
 		</nav>
 	</div>
 </header>
+
+<!-- Command palette: opens on the header search click or ⌘K, jumps to any page. -->
+<CommandDialog bind:open={searchOpen}>
+	<CommandInput placeholder="Search components and pages…" aria-label="Search the docs" />
+	<CommandList>
+		<CommandEmpty>No matches.</CommandEmpty>
+		{#each nav as section (section.title)}
+			<CommandGroup heading={section.title}>
+				{#each section.items as item (item.href)}
+					<CommandItem value={item.title} onSelect={() => goTo(item.href)}>{item.title}</CommandItem>
+				{/each}
+			</CommandGroup>
+		{/each}
+	</CommandList>
+</CommandDialog>

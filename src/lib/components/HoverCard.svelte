@@ -5,7 +5,7 @@
   the trigger OR the card, and closes on leave. Owns open state, the anchor, and
   the hover-intent timers, shared via context. Compose:
     <HoverCard>
-      <HoverCardTrigger><a href="…">@ada</a></HoverCardTrigger>
+      <HoverCardTrigger><a href="…">@ebnsina</a></HoverCardTrigger>
       <HoverCardContent>…</HoverCardContent>
     </HoverCard>
   Controlled (open / bind:open) and uncontrolled.

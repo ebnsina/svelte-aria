@@ -39,7 +39,7 @@
 			{#snippet preview()}
 				<Collapsible class="w-full max-w-sm">
 					<div class="flex items-center justify-between gap-4 rounded-sa border border-sa-border bg-sa-field px-4 py-2.5">
-						<span class="text-sm font-medium text-sa-fg">@ada starred 3 repositories</span>
+						<span class="text-sm font-medium text-sa-fg">@ebnsina starred 3 repositories</span>
 						<CollapsibleTrigger
 							class="grid size-8 place-items-center rounded-sa-sm text-sa-fg-muted hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
 							aria-label="Toggle repositories"

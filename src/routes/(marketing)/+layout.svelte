@@ -10,6 +10,15 @@
 
 	const { children } = $props();
 
+	// Overlays (Select / DatePicker / Menu popovers) portal to <body>, outside the
+	// .sa-marketing wrapper — so they'd fall back to the docs accent. Tag <body>
+	// with the brand class while the landing is mounted so portaled content inherits
+	// the fixed lime tint too.
+	$effect(() => {
+		document.body.classList.add('sa-marketing');
+		return () => document.body.classList.remove('sa-marketing');
+	});
+
 	const show = 'scale-100 rotate-0 opacity-100';
 	const hide = 'scale-90 -rotate-90 opacity-0';
 
