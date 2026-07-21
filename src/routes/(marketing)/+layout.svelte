@@ -3,6 +3,7 @@
 	// fixed brand accent via the .sa-marketing scope, so the landing keeps one
 	// identity no matter what accent is chosen in the docs.
 	import { Sun, Moon, Monitor, ArrowUpRight } from '@lucide/svelte';
+	import { base } from '$app/paths';
 	import { theme } from '$lib/site/theme.svelte.js';
 	import Logo from '$lib/site/Logo.svelte';
 	import Footer from '$lib/site/Footer.svelte';
@@ -26,19 +27,19 @@
 			: 'bg-transparent'}"
 	>
 		<div class="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 lg:px-8">
-			<a href="/" class="rounded-sa-sm" aria-label="Svelte ARIA — home">
+			<a href="{base}/" class="rounded-sa-sm" aria-label="Svelte ARIA — home">
 				<Logo />
 			</a>
 
 			<nav class="ml-auto flex items-center gap-1 text-sm">
 				<a
-					href="/button"
+					href="{base}/button"
 					class="rounded-sa-sm px-3 py-2 text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
 				>
 					Components
 				</a>
 				<a
-					href="/installation"
+					href="{base}/installation"
 					class="rounded-sa-sm px-3 py-2 text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
 				>
 					Docs

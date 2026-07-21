@@ -5,6 +5,7 @@
 -->
 <script lang="ts">
 	import { page } from '$app/state';
+	import { base } from '$app/paths';
 	import { Home, RotateCcw, TriangleAlert, MapPinOff } from '@lucide/svelte';
 	import { Button } from '$lib/index.js';
 
@@ -47,7 +48,7 @@
 				<RotateCcw class="size-4" />
 				Try again
 			</Button>
-			<Button onPress={() => (location.href = '/')}>
+			<Button onPress={() => (location.href = `${base}/`)}>
 				<Home class="size-4" />
 				Go home
 			</Button>

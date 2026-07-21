@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Breadcrumb } from '$lib/index.js';
+	import { base } from '$app/paths';
 	import DocsPage from '$lib/site/DocsPage.svelte';
 	import DemoCard from '$lib/site/DemoCard.svelte';
 	import Section from '$lib/site/Section.svelte';
@@ -29,8 +30,8 @@
 	];
 
 	const items = [
-		{ label: 'Home', href: '/' },
-		{ label: 'Components', href: '/' },
+		{ label: 'Home', href: `${base}/` },
+		{ label: 'Components', href: `${base}/button` },
 		{ label: 'Breadcrumb' }
 	];
 </script>

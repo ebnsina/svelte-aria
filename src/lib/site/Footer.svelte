@@ -5,6 +5,7 @@
 -->
 <script lang="ts">
 	import { ArrowUpRight } from '@lucide/svelte';
+	import { base } from '$app/paths';
 	import Logo from './Logo.svelte';
 	import { nav } from './nav.js';
 
@@ -46,7 +47,7 @@
 		<div class="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
 			<!-- Brand -->
 			<div class="max-w-xs">
-				<a href="/" class="inline-flex rounded-sa-sm" aria-label="Svelte ARIA — home">
+				<a href="{base}/" class="inline-flex rounded-sa-sm" aria-label="Svelte ARIA — home">
 					<Logo />
 				</a>
 				<p class="mt-4 text-sm leading-relaxed text-sa-fg-muted">
@@ -72,7 +73,7 @@
 						{#each col.links as link (link.title)}
 							<li>
 								<a
-									href={link.href}
+									href={'external' in link && link.external ? link.href : base + link.href}
 									class="inline-flex items-center gap-1 text-sa-fg-muted transition-colors hover:text-sa-accent"
 								>
 									{link.title}

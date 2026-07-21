@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Search, Menu, X, Sun, Moon, Monitor } from '@lucide/svelte';
+	import { base } from '$app/paths';
 	import { theme } from './theme.svelte.js';
 	import AccentPicker from './AccentPicker.svelte';
 	import Logo from './Logo.svelte';
@@ -29,7 +30,7 @@
 			{#if menuOpen}<X class="size-5" />{:else}<Menu class="size-5" />{/if}
 		</button>
 
-		<a href="/" class="rounded-sa-sm" aria-label="Svelte ARIA — home">
+		<a href="{base}/" class="rounded-sa-sm" aria-label="Svelte ARIA — home">
 			<Logo />
 		</a>
 
@@ -82,7 +83,7 @@
 				</span>
 			</button>
 			<a
-				href="/"
+				href="{base}/"
 				class="rounded-sa-sm px-3 py-2 text-sa-fg-muted transition-colors hover:bg-[var(--sa-highlight-hover)] hover:text-sa-fg"
 			>
 				Docs

@@ -5,9 +5,10 @@
 	import Section from '$lib/site/Section.svelte';
 	import Callout from '$lib/site/Callout.svelte';
 	import { nav } from '$lib/site/nav.js';
+	import { base } from '$app/paths';
 
 	const count = nav.find((s) => s.title === 'Components')?.items.length ?? 0;
-	const go = (href: string) => (location.href = href);
+	const go = (href: string) => (location.href = base + href);
 
 	const features = [
 		{ icon: Accessibility, title: 'Accessible by default', body: 'Every component is validated against the WAI-ARIA Authoring Practices — roles, keyboard, and focus, edge cases included.' },
@@ -42,7 +43,7 @@
 			</p>
 		</div>
 		<Callout type="note">
-			Looking for the big picture and live demos? The <a href="/">landing page</a> tours everything.
+			Looking for the big picture and live demos? The <a href="{base}/">landing page</a> tours everything.
 			This section is the docs home — use the sidebar to jump to any component.
 		</Callout>
 	</Section>

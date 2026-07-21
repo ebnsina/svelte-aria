@@ -36,6 +36,7 @@
 		TerminalLine,
 		TerminalInput
 	} from '$lib/index.js';
+	import { base } from '$app/paths';
 	import { art } from '$lib/site/media-art.js';
 	import {
 		ArrowRight,
@@ -73,7 +74,7 @@
 	import { nav } from '$lib/site/nav.js';
 
 	const componentCount = nav.find((s) => s.title === 'Components')?.items.length ?? 45;
-	const go = (href: string) => (location.href = href);
+	const go = (href: string) => (location.href = href.startsWith('http') ? href : base + href);
 
 	// ---- Hero showcase: a Bayt al-Hikma (House of Wisdom) manuscript catalogue --
 	type Status = 'Translated' | 'Copying' | 'Original';
@@ -390,7 +391,7 @@ state.toggle();`
 		<!-- left callouts -->
 		<div class="absolute top-4 right-full bottom-4 hidden w-52 flex-col justify-around pr-2 lg:flex">
 			{#each leftCallouts as c (c.label)}
-				<a href={c.href} class="group flex items-center justify-end gap-1.5 text-sa-fg-muted transition-colors hover:text-sa-accent">
+				<a href="{base}{c.href}" class="group flex items-center justify-end gap-1.5 text-sa-fg-muted transition-colors hover:text-sa-accent">
 					<span class="font-mono text-xs">{c.label}</span>
 					{@render arrow(false)}
 				</a>
@@ -399,7 +400,7 @@ state.toggle();`
 		<!-- right callouts -->
 		<div class="absolute top-4 bottom-4 left-full hidden w-52 flex-col justify-around pl-2 lg:flex">
 			{#each rightCallouts as c (c.label)}
-				<a href={c.href} class="group flex items-center gap-1.5 text-sa-fg-muted transition-colors hover:text-sa-accent">
+				<a href="{base}{c.href}" class="group flex items-center gap-1.5 text-sa-fg-muted transition-colors hover:text-sa-accent">
 					{@render arrow(true)}
 					<span class="font-mono text-xs">{c.label}</span>
 				</a>
@@ -516,7 +517,7 @@ state.toggle();`
 			whole palette from one token, or style declaratively off the <code class="rounded-sa-sm bg-sa-subtle px-1.5 py-0.5 text-[0.85em] text-sa-fg">data-*</code>
 			state each part exposes.
 		</p>
-		<a href="/interactions" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
+		<a href="{base}/interactions" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
 			Learn more <ArrowRight class="size-4" />
 		</a>
 	</div>
@@ -558,7 +559,7 @@ state.toggle();`
 				Make your app feel native with rich interactions that adapt to device, platform, and user —
 				roving focus, type-ahead, keyboard multi-selection, form validation, and sortable data tables.
 			</p>
-			<a href="/data-table" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
+			<a href="{base}/data-table" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
 				Learn more <ArrowRight class="size-4" />
 			</a>
 			<p class="mt-3 text-sm text-sa-fg-muted">
@@ -624,7 +625,7 @@ state.toggle();`
 			image, video, audio, and terminal surfaces. Every part is keyboard-navigable, screen-reader
 			announced, and styled off the same tokens as the rest.
 		</p>
-		<a href="/ai-chat" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
+		<a href="{base}/ai-chat" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
 			Explore AI components <ArrowRight class="size-4" />
 		</a>
 	</div>
@@ -779,7 +780,7 @@ state.toggle();`
 					{/each}
 				</TabList>
 				<a
-					href={activeTab.href}
+					href="{base}{activeTab.href}"
 					class="group inline-flex items-center justify-center gap-1.5 rounded-sa bg-sa-accent px-4 py-2.5 text-sm font-medium text-sa-accent-fg transition-opacity hover:opacity-90"
 				>
 					View {activeTab.title} docs
@@ -800,7 +801,7 @@ state.toggle();`
 			A great experience for every user, whatever their device. Components are tuned for mouse, touch,
 			keyboard, and screen-reader interaction, with a meticulous attention to detail.
 		</p>
-		<a href="/interactions" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
+		<a href="{base}/interactions" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
 			Learn more <ArrowRight class="size-4" />
 		</a>
 	</div>
@@ -946,7 +947,7 @@ state.toggle();`
 			Date and number controls format and parse against the active locale, with calendar grids that
 			respect the first day of the week — internationalization considered from the start.
 		</p>
-		<a href="/calendar" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
+		<a href="{base}/calendar" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
 			Learn more <ArrowRight class="size-4" />
 		</a>
 	</div>
@@ -1012,7 +1013,7 @@ state.toggle();`
 				Start with ready-made components, compose your own patterns from the interaction primitives, or
 				drop all the way down to the rune-based state machines. Mix and match as needed.
 			</p>
-			<a href="/interactions" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
+			<a href="{base}/interactions" class="mt-5 inline-flex items-center gap-1 text-sm font-medium text-sa-accent transition-all hover:gap-2">
 				Learn more <ArrowRight class="size-4" />
 			</a>
 		</div>

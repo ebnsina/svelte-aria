@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { base } from '$app/paths';
 	import { nav } from './nav.js';
 
 	interface Props {
@@ -8,7 +9,8 @@
 	}
 	let { onnavigate }: Props = $props();
 
-	const isActive = (href: string) => page.url.pathname === href;
+	// page.url.pathname includes the base path, so compare against base + href.
+	const isActive = (href: string) => page.url.pathname === base + href;
 </script>
 
 <nav aria-label="Docs" class="flex flex-col gap-8 py-8 text-sm">
@@ -28,7 +30,7 @@
 							></span>
 						{/if}
 						<a
-							href={item.href}
+							href="{base}{item.href}"
 							aria-current={active ? 'page' : undefined}
 							onclick={onnavigate}
 							class="block rounded-sa-sm px-3 py-1.5 transition-colors duration-150

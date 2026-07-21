@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { HoverCard, HoverCardTrigger, HoverCardContent, Avatar, Button } from '$lib/index.js';
+	import { base } from '$app/paths';
 	import { Calendar } from '@lucide/svelte';
 	import DocsPage from '$lib/site/DocsPage.svelte';
 	import DemoCard from '$lib/site/DemoCard.svelte';
@@ -44,7 +45,7 @@
 					Follow
 					<HoverCard>
 						<HoverCardTrigger>
-							<a href="/" class="rounded-sa-sm font-medium text-sa-accent hover:underline">@ada</a>
+							<a href="{base}/" class="rounded-sa-sm font-medium text-sa-accent hover:underline">@ada</a>
 						</HoverCardTrigger>
 						<HoverCardContent class="w-72">
 							<div class="flex gap-3">

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { page } from '$app/state';
+	import { base } from '$app/paths';
 	import { ArrowLeft, ArrowRight } from '@lucide/svelte';
 	import { nav, allLinks } from './nav.js';
 	import OnThisPage from './OnThisPage.svelte';
@@ -18,9 +19,10 @@
 	}
 	let { title, description, headings = [], children }: Props = $props();
 
+	// page.url.pathname includes the base path, so match against base + href.
 	const path = $derived(page.url.pathname);
-	const section = $derived(nav.find((s) => s.items.some((i) => i.href === path))?.title);
-	const index = $derived(allLinks.findIndex((l) => l.href === path));
+	const section = $derived(nav.find((s) => s.items.some((i) => base + i.href === path))?.title);
+	const index = $derived(allLinks.findIndex((l) => base + l.href === path));
 	const prev = $derived(index > 0 ? allLinks[index - 1] : undefined);
 	const next = $derived(index >= 0 && index < allLinks.length - 1 ? allLinks[index + 1] : undefined);
 	const pageTitle = $derived(`${title} — svelte-aria`);
@@ -61,7 +63,7 @@
 			>
 				{#if prev}
 					<a
-						href={prev.href}
+						href="{base}{prev.href}"
 						class="group flex flex-col gap-1 rounded-sa-lg border border-sa-hairline p-4 transition-colors hover:border-sa-border hover:bg-[var(--sa-highlight-hover)]"
 					>
 						<span class="text-xs text-sa-fg-muted">Previous</span>
@@ -77,7 +79,7 @@
 				{/if}
 				{#if next}
 					<a
-						href={next.href}
+						href="{base}{next.href}"
 						class="group col-start-2 flex flex-col items-end gap-1 rounded-sa-lg border border-sa-hairline p-4 text-right transition-colors hover:border-sa-border hover:bg-[var(--sa-highlight-hover)]"
 					>
 						<span class="text-xs text-sa-fg-muted">Next</span>

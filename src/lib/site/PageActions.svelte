@@ -3,6 +3,7 @@
 	// for pasting into an assistant, or grab the machine-readable llms.txt / the
 	// agent skill file. Built on the library's own Menu (dogfooding).
 	import { Copy, Check, ChevronDown, FileText, Bot, Link2 } from '@lucide/svelte';
+	import { base } from '$app/paths';
 	import {
 		Menu,
 		MenuTrigger,
@@ -44,7 +45,7 @@
 
 	async function copyLlms() {
 		try {
-			const res = await fetch('/llms.txt');
+			const res = await fetch(`${base}/llms.txt`);
 			write(await res.text(), 'llms');
 		} catch {
 			/* ignore */
@@ -85,10 +86,10 @@
 			<MenuItem onSelect={copyLlms}>
 				<FileText class="size-4 text-sa-fg-muted" /> Copy llms.txt
 			</MenuItem>
-			<MenuItem onSelect={() => window.open('/llms.txt', '_blank', 'noopener')}>
+			<MenuItem onSelect={() => window.open(`${base}/llms.txt`, '_blank', 'noopener')}>
 				<FileText class="size-4 text-sa-fg-muted" /> View llms.txt
 			</MenuItem>
-			<MenuItem onSelect={() => window.open('/skill.md', '_blank', 'noopener')}>
+			<MenuItem onSelect={() => window.open(`${base}/skill.md`, '_blank', 'noopener')}>
 				<Bot class="size-4 text-sa-fg-muted" /> Agent skill file
 			</MenuItem>
 		</MenuContent>
