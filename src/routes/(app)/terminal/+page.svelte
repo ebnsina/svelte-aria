@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Terminal } from '$lib/index.js';
+	import { Terminal, TerminalLine, TerminalInput } from '$lib/index.js';
 	import { Bot } from '@lucide/svelte';
 	import DocsPage from '$lib/site/DocsPage.svelte';
 	import DemoCard from '$lib/site/DemoCard.svelte';
@@ -8,30 +8,34 @@
 	import PropsTable, { type PropRow } from '$lib/site/PropsTable.svelte';
 
 	const code = `<Terminal title="claude-code — ~/projects/app">
-  <div class="flex flex-col gap-4">
-    <div><span class="text-sa-accent">&gt;</span> add a loading state to Button</div>
-    <div><span class="text-sa-accent">●</span> Updated Button.svelte</div>
-    <div class="rounded-sa border border-sa-hairline px-3 py-2">
-      <span class="text-sa-accent">&gt;</span>
-      <span class="ml-1 inline-block h-4 w-[0.55ch] animate-pulse bg-sa-fg"></span>
-    </div>
-  </div>
+  <TerminalLine marker=">">add a loading state to Button</TerminalLine>
+  <TerminalLine marker="●">Updated <span class="text-sa-fg">Button.svelte</span></TerminalLine>
+  <TerminalLine marker="⎿" muted indent={1}>+ loading?: boolean;</TerminalLine>
+  <TerminalInput />
 </Terminal>`;
 
 	const headings = [
 		{ id: 'example', title: 'Claude Code TUI' },
 		{ id: 'api', title: 'API' }
 	];
-	const props: PropRow[] = [
+	const terminalProps: PropRow[] = [
 		{ name: 'title', type: 'string', default: "'claude-code — zsh'", description: 'Text shown in the window title bar.' },
-		{ name: 'class', type: 'string', description: 'Extra classes on the window.' },
-		{ name: 'children', type: 'Snippet', description: 'The session content — compose your own monospace lines.' }
+		{ name: 'children', type: 'Snippet', description: 'The session content — compose with TerminalLine / TerminalInput.' }
+	];
+	const lineProps: PropRow[] = [
+		{ name: 'marker', type: 'string', description: "Leading glyph (accent): '>', '●', '⎿', '$', '+' …" },
+		{ name: 'muted', type: 'boolean', default: 'false', description: 'Dim the line (tool output, diffs); mutes the marker too.' },
+		{ name: 'indent', type: 'number', default: '0', description: 'Indent level (≈ 1rem each).' }
+	];
+	const inputProps: PropRow[] = [
+		{ name: 'value', type: 'string', default: "''", description: 'Text before the cursor.' },
+		{ name: 'prompt', type: 'string', default: "'>'", description: 'Prompt glyph.' }
 	];
 </script>
 
 <DocsPage
 	title="Terminal"
-	description="A window-chromed monospace surface for terminal and CLI mockups. It provides the window (traffic lights + title) and a monospace body; you compose the session lines. Theme-aware, so it reads as a dark terminal in dark mode. Separate from the chat components."
+	description="A window-chromed monospace surface for terminal and CLI mockups. Compose sessions from TerminalLine (marker + tone) and TerminalInput (bordered prompt + blinking cursor) — no hand-written spans. Theme-aware, so it reads as a dark terminal in dark mode. Separate from the chat components."
 	{headings}
 >
 	<Section id="example" title="Claude Code TUI">
@@ -51,22 +55,19 @@
 								</div>
 							</div>
 
-							<div><span class="text-sa-accent">&gt;</span> add a loading state to the Button component</div>
+							<TerminalLine marker=">">add a loading state to the Button component</TerminalLine>
 
 							<div class="flex flex-col gap-0.5">
-								<div><span class="text-sa-accent">●</span> I’ll add a <span class="text-sa-fg">loading</span> prop that shows a spinner and blocks the press.</div>
-								<div class="pl-4 text-sa-fg-muted">⎿ &nbsp;Updated <span class="text-sa-fg">src/lib/components/Button.svelte</span></div>
-								<div class="pl-7 text-sa-fg-muted">+ loading?: boolean;</div>
-								<div class="pl-7 text-sa-fg-muted">+ aria-busy=&#123;loading || undefined&#125;</div>
+								<TerminalLine marker="●">I’ll add a <span class="text-sa-fg">loading</span> prop that shows a spinner and blocks the press.</TerminalLine>
+								<TerminalLine marker="⎿" muted indent={1}>Updated <span class="text-sa-fg">src/lib/components/Button.svelte</span></TerminalLine>
+								<TerminalLine muted indent={2}>+ loading?: boolean;</TerminalLine>
+								<TerminalLine muted indent={2}>+ aria-busy=&#123;loading || undefined&#125;</TerminalLine>
 							</div>
 
-							<div><span class="text-sa-accent">●</span> Ran <span class="text-sa-fg">npm run check</span> — <span class="text-sa-fg-muted">0 errors, 0 warnings</span></div>
-							<div><span class="text-sa-accent">●</span> Done. The button stays focusable, announces busy, and keeps a stable width.</div>
+							<TerminalLine marker="●">Ran <span class="text-sa-fg">npm run check</span> — <span class="text-sa-fg-muted">0 errors, 0 warnings</span></TerminalLine>
+							<TerminalLine marker="●">Done. The button stays focusable, announces busy, and keeps a stable width.</TerminalLine>
 
-							<div class="rounded-sa border border-sa-hairline px-3 py-2">
-								<span class="text-sa-accent">&gt;</span>
-								<span class="ml-1 inline-block h-4 w-[0.55ch] animate-pulse bg-sa-fg align-text-bottom"></span>
-							</div>
+							<TerminalInput />
 
 							<div class="flex justify-between text-xs text-sa-fg-muted">
 								<span>? for shortcuts</span>
@@ -81,6 +82,11 @@
 	</Section>
 
 	<Section id="api" title="API">
-		<PropsTable rows={props} />
+		<h3 class="mb-2 text-sm font-medium text-sa-fg">Terminal</h3>
+		<PropsTable rows={terminalProps} />
+		<h3 class="mb-2 mt-6 text-sm font-medium text-sa-fg">TerminalLine</h3>
+		<PropsTable rows={lineProps} />
+		<h3 class="mb-2 mt-6 text-sm font-medium text-sa-fg">TerminalInput</h3>
+		<PropsTable rows={inputProps} />
 	</Section>
 </DocsPage>

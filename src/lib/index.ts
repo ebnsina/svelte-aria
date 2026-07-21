@@ -117,10 +117,14 @@ export { default as ListItem } from './components/ListItem.svelte';
 // Chat / AI
 export { default as MessageScroller } from './components/MessageScroller.svelte';
 export { default as Message } from './components/Message.svelte';
+export { default as MessagePart } from './components/MessagePart.svelte';
+export { default as PromptInput } from './components/PromptInput.svelte';
 export { default as Bubble, bubbleVariants, type BubbleVariant } from './components/Bubble.svelte';
 export { default as Attachment } from './components/Attachment.svelte';
 export { default as Marker } from './components/Marker.svelte';
 export { default as Terminal } from './components/Terminal.svelte';
+export { default as TerminalLine } from './components/TerminalLine.svelte';
+export { default as TerminalInput } from './components/TerminalInput.svelte';
 
 // Table
 export { default as Table } from './components/Table.svelte';

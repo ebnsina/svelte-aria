@@ -14,7 +14,7 @@ export const nav: NavSection[] = [
 	{
 		title: 'Getting started',
 		items: [
-			{ title: 'Introduction', href: '/' },
+			{ title: 'Introduction', href: '/introduction' },
 			{ title: 'Installation', href: '/installation' }
 		]
 	},
@@ -22,6 +22,7 @@ export const nav: NavSection[] = [
 		title: 'Components',
 		items: [
 			{ title: 'Accordion', href: '/accordion' },
+			{ title: 'AI Chat', href: '/ai-chat' },
 			{ title: 'Avatar', href: '/avatar' },
 			{ title: 'Badge', href: '/badge' },
 			{ title: 'BanglaCalendar', href: '/bangla-calendar' },

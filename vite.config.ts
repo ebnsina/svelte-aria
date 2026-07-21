@@ -4,6 +4,11 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+	// @tanstack/ai-svelte ships .svelte.js files with extensionless internal
+	// imports that Node's SSR resolver can't follow — let Vite bundle it instead.
+	ssr: {
+		noExternal: ['@tanstack/ai-svelte', '@tanstack/ai-client']
+	},
 	plugins: [
 		tailwindcss(),
 		sveltekit({

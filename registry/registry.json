@@ -300,6 +300,42 @@
 			]
 		},
 		{
+			"name": "prompt-input",
+			"type": "registry:ui",
+			"description": "A composable chat composer — Enter to send, with a toolbar snippet that receives submit().",
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/PromptInput.svelte", "target": "{ui}/prompt-input.svelte", "type": "registry:ui" }
+			]
+		},
+		{
+			"name": "message-part",
+			"type": "registry:ui",
+			"description": "Renders one part of a chat/AI message (TanStack AI UIMessage.parts) by type; override via children.",
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/MessagePart.svelte", "target": "{ui}/message-part.svelte", "type": "registry:ui" }
+			]
+		},
+		{
+			"name": "terminal-line",
+			"type": "registry:ui",
+			"description": "One line of a Terminal session — a marker glyph + text, with muted/indent options.",
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/TerminalLine.svelte", "target": "{ui}/terminal-line.svelte", "type": "registry:ui" }
+			]
+		},
+		{
+			"name": "terminal-input",
+			"type": "registry:ui",
+			"description": "A bordered terminal prompt line with a blinking block cursor.",
+			"registryDependencies": ["cn"],
+			"files": [
+				{ "path": "src/lib/components/TerminalInput.svelte", "target": "{ui}/terminal-input.svelte", "type": "registry:ui" }
+			]
+		},
+		{
 			"name": "list",
 			"type": "registry:ui",
 			"description": "A simple divided list surface — List + ListItem (plain, link, or button rows).",
