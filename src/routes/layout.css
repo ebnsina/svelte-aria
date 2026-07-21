@@ -61,13 +61,31 @@ kbd {
    the tint + the tokens the utilities actually consume (they resolve at :root
    otherwise). Light/dark still follows the theme. */
 .sa-marketing {
-	--sa-tint: var(--sa-pink);
+	/* Fixed brand: white surfaces + a lime accent. Lime is a light colour, so it
+	   plays two roles that need different shades:
+	     - FILLS (buttons, logo square, toggles): a bright, punchy lime with a
+	       dark ink foreground — the iconic "lime" pop.
+	     - TEXT on white/dark (heading words, links, icons): bright lime is
+	       illegible on white, so accent text uses a deeper lime instead.
+	   The two share --color-sa-accent, so accent text is decoupled below. */
+	--sa-lime: oklch(0.88 0.21 128);
+	--sa-tint: var(--sa-lime);
 	--sa-tint-1000: oklch(from var(--sa-tint) var(--sa-l-1000) var(--sa-c-1000) h);
-	--sa-highlight-background: oklch(from var(--sa-tint) 55% c h);
-	--sa-highlight-background-pressed: oklch(from var(--sa-tint) 50% c h);
-	--sa-focus-ring-color: var(--sa-tint-1000);
+	--sa-highlight-background: oklch(from var(--sa-tint) 84% c h);
+	--sa-highlight-background-pressed: oklch(from var(--sa-tint) 78% c h);
+	--sa-highlight-foreground: oklch(0.28 0.05 128);
+	--sa-focus-ring-color: oklch(from var(--sa-tint) 62% c h);
 	--color-sa-accent: var(--sa-highlight-background);
 	--color-sa-accent-pressed: var(--sa-highlight-background-pressed);
+	/* Deep lime for accent text so headings/links stay legible on any surface. */
+	--sa-accent-ink: oklch(0.55 0.16 128);
+}
+
+/* Accent TEXT is decoupled from the bright fill (both would resolve to
+   --color-sa-accent otherwise). Unlayered, so it beats Tailwind's layered
+   .text-sa-accent utility without a specificity war. Fills keep bright lime. */
+.sa-marketing :is(.text-sa-accent) {
+	color: var(--sa-accent-ink);
 }
 
 /* Smooth crossfade during a theme toggle (added briefly by the theme controller,
